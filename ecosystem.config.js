@@ -6,6 +6,7 @@ module.exports = {
       args: 'start',
       env: {
         NODE_ENV: 'production',
+        TZ: 'Asia/Shanghai',
       },
     },
   ],
