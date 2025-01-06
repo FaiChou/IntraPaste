@@ -33,3 +33,8 @@ export async function POST(request: Request) {
   
   return NextResponse.json(card)
 }
+
+export async function DELETE() {
+  await prisma.card.deleteMany()
+  return NextResponse.json({ success: true })
+}
