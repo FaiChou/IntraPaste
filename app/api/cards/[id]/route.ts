@@ -5,13 +5,12 @@ const prisma = new PrismaClient()
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } } & { params: Record<string, string | string[]> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = parseInt(params.id)
-  
+  const id = (await params).id;
   await prisma.card.delete({
     where: {
-      id,
+      id: parseInt(id),
     },
   })
   
