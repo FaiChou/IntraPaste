@@ -20,9 +20,19 @@ IntraPaste is a simple text sharing service that allows users to create temporar
 - [TypeScript](https://www.typescriptlang.org/)
 - [PM2](https://pm2.keymetrics.io/)
 
-## Deployment Guide
+## How to use
 
-### 1. Clone and Install Dependencies
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+Frist, clone the project and install dependencies
+
+```bash
+git clone https://github.com/FaiChou/IntraPaste.git
+cd IntraPaste
+npm install
+```
+
+Then, run the development server
 
 ```bash
 npm run dev
