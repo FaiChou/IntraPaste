@@ -5,12 +5,16 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --input-background: #ffffff;
+  --border-color: #e5e7eb;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --input-background: #1a1a1a;
+    --border-color: #2e2e2e;
   }
 }
 
@@ -18,4 +22,11 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 添加输入框样式 */
+input, textarea {
+  background-color: var(--input-background);
+  color: var(--foreground);
+  border-color: var(--border-color);
 }

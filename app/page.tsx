@@ -39,12 +39,12 @@ export default function Home() {
             <CardComponent 
               key={card.id} 
               content={card.content}
-              createdAt={card.createdAt.toISOString()} 
+              createdAt={typeof card.createdAt === 'string' ? card.createdAt : card.createdAt.toISOString()} 
             />
           ))}
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t">
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t border-gray-200 dark:border-gray-800">
           <div className="max-w-4xl mx-auto">
             <TextInput onSubmit={handleNewCard} />
           </div>

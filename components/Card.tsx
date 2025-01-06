@@ -48,11 +48,11 @@ export function Card({ content, createdAt }: CardProps) {
 
   return (
     <div 
-      className="p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
+      className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow hover:shadow-md dark:shadow-gray-900 transition-shadow cursor-pointer border border-gray-100 dark:border-gray-800"
       onClick={handleCopy}
     >
-      <p className="text-gray-800 break-words">{content}</p>
-      <div className="mt-2 flex justify-between items-center text-sm text-gray-500">
+      <p className="text-gray-800 dark:text-gray-100 break-words">{content}</p>
+      <div className="mt-2 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
         <span>{new Date(createdAt).toLocaleString()}</span>
         <span>{copied ? '已复制!' : '点击复制'}</span>
       </div>
