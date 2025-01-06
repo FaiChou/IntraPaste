@@ -1,8 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IntraPaste
 
-## Getting Started
+IntraPaste is a simple text sharing service that allows users to create temporary text cards and share them with others. Each text card is stored in the database and the system automatically cleans up expired content.
 
-First, run the development server:
+## Features
+
+- 🚀 Quick text creation and sharing
+- 🌓 Light/Dark theme support
+- 📱 Fully responsive design
+- 📋 Click card to copy to clipboard
+- 👨‍💼 Admin panel
+- 🧹 Automatic cleanup of expired content
+
+## Tech Stack
+
+- [Next.js 15](https://nextjs.org/)
+- [React 19](https://react.dev/)
+- [Prisma](https://www.prisma.io/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [PM2](https://pm2.keymetrics.io/)
+
+## Deployment Guide
+
+### 1. Clone and Install Dependencies
 
 ```bash
 npm run dev
