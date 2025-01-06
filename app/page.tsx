@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card } from '@/components/Card'
+import { Card as CardComponent } from '@/components/Card'
 import { TextInput } from '@/components/TextInput'
+import { Card as PrismaCard } from '@prisma/client'
 
 export default function Home() {
-  const [cards, setCards] = useState([])
+  const [cards, setCards] = useState<PrismaCard[]>([])
 
   useEffect(() => {
     fetchCards()
@@ -34,8 +35,12 @@ export default function Home() {
         <h1 className="text-2xl font-bold mb-8">IntraPaste</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          {cards.map((card) => (
-            <Card key={card.id} {...card} />
+          {cards.map((card: PrismaCard) => (
+            <CardComponent 
+              key={card.id} 
+              content={card.content}
+              createdAt={card.createdAt.toISOString()} 
+            />
           ))}
         </div>
 
