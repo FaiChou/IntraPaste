@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Card as PrismaCard } from '@prisma/client'
 import { Dialog } from '@headlessui/react'
+import Link from 'next/link'
 
 export default function AdminPage() {
   const [cards, setCards] = useState<PrismaCard[]>([])
@@ -36,7 +37,23 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-8">管理面板</h1>
+        <h1 className="text-2xl font-bold mb-4">管理面板</h1>
+        
+        <div className="flex items-center gap-4 mb-8">
+          <Link 
+            href="/"
+            className="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          >
+            ← 返回首页
+          </Link>
+
+          <button
+            onClick={() => setIsConfirmOpen(true)}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+          >
+            清空所有数据
+          </button>
+        </div>
         
         <div className="space-y-4 mb-8">
           {cards.map((card) => (
@@ -56,13 +73,6 @@ export default function AdminPage() {
             </div>
           ))}
         </div>
-
-        <button
-          onClick={() => setIsConfirmOpen(true)}
-          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-        >
-          清空所有数据
-        </button>
 
         <Dialog
           open={isConfirmOpen}
