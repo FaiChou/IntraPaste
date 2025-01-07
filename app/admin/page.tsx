@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card as PrismaCard } from '@prisma/client'
 import { Dialog } from '@headlessui/react'
@@ -14,13 +14,8 @@ export default function AdminPage() {
   const [newPassword, setNewPassword] = useState('')
   const [error, setError] = useState('')
   const router = useRouter()
-  
-  useEffect(() => {
-    checkAuth()
-    fetchCards()
-  }, [])
 
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     const res = await fetch('/api/auth/check')
     const data = await res.json()
     
@@ -32,13 +27,18 @@ export default function AdminPage() {
     if (data.isDefaultPassword) {
       setIsChangePasswordOpen(true)
     }
-  }
+  }, [router])
 
-  const fetchCards = async () => {
+  const fetchCards = useCallback(async () => {
     const res = await fetch('/api/cards')
     const data = await res.json()
     setCards(data)
-  }
+  }, [])
+  
+  useEffect(() => {
+    checkAuth()
+    fetchCards()
+  }, [checkAuth, fetchCards])
 
   const handleDelete = async (id: number) => {
     await fetch(`/api/cards/${id}`, {
@@ -75,7 +75,7 @@ export default function AdminPage() {
       } else {
         setError(data.message)
       }
-    } catch (err) {
+    } catch {
       setError('修改失败')
     }
   }

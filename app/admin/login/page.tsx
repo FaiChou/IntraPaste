@@ -26,7 +26,7 @@ export default function LoginPage() {
       } else {
         setError('密码错误')
       }
-    } catch (err) {
+    } catch {
       setError('登录失败')
     }
   }
