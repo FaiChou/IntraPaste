@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Card as PrismaCard } from '@prisma/client'
 import { Dialog } from '@headlessui/react'
 import Link from 'next/link'
@@ -8,10 +9,30 @@ import Link from 'next/link'
 export default function AdminPage() {
   const [cards, setCards] = useState<PrismaCard[]>([])
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false)
+  const [oldPassword, setOldPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [error, setError] = useState('')
+  const router = useRouter()
   
   useEffect(() => {
+    checkAuth()
     fetchCards()
   }, [])
+
+  const checkAuth = async () => {
+    const res = await fetch('/api/auth/check')
+    const data = await res.json()
+    
+    if (!data.success) {
+      router.push('/admin/login')
+      return
+    }
+    
+    if (data.isDefaultPassword) {
+      setIsChangePasswordOpen(true)
+    }
+  }
 
   const fetchCards = async () => {
     const res = await fetch('/api/cards')
@@ -34,6 +55,31 @@ export default function AdminPage() {
     fetchCards()
   }
 
+  const handleChangePassword = async () => {
+    try {
+      const res = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ oldPassword, newPassword }),
+      })
+      
+      const data = await res.json()
+      
+      if (data.success) {
+        setIsChangePasswordOpen(false)
+        setOldPassword('')
+        setNewPassword('')
+        setError('')
+      } else {
+        setError(data.message)
+      }
+    } catch (err) {
+      setError('修改失败')
+    }
+  }
+
   return (
     <main className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
@@ -52,6 +98,13 @@ export default function AdminPage() {
             className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
           >
             清空所有数据
+          </button>
+
+          <button
+            onClick={() => setIsChangePasswordOpen(true)}
+            className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+          >
+            修改密码
           </button>
         </div>
         
@@ -101,6 +154,59 @@ export default function AdminPage() {
                 >
                   确认删除
                 </button>
+              </div>
+            </Dialog.Panel>
+          </div>
+        </Dialog>
+
+        <Dialog
+          open={isChangePasswordOpen}
+          onClose={() => setIsChangePasswordOpen(false)}
+          className="relative z-50"
+        >
+          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+          
+          <div className="fixed inset-0 flex items-center justify-center p-4">
+            <Dialog.Panel className="mx-auto max-w-sm rounded bg-white dark:bg-gray-800 p-6">
+              <Dialog.Title className="text-lg font-medium mb-4">
+                修改密码
+              </Dialog.Title>
+              
+              <div className="space-y-4">
+                <input
+                  type="password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  className="w-full px-4 py-2 border rounded-lg"
+                  placeholder="原密码"
+                />
+                
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-4 py-2 border rounded-lg"
+                  placeholder="新密码"
+                />
+                
+                {error && (
+                  <p className="text-red-500 text-sm">{error}</p>
+                )}
+                
+                <div className="flex justify-end gap-4">
+                  <button
+                    className="px-4 py-2 text-gray-500"
+                    onClick={() => setIsChangePasswordOpen(false)}
+                  >
+                    取消
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                    onClick={handleChangePassword}
+                  >
+                    确认修改
+                  </button>
+                </div>
               </div>
             </Dialog.Panel>
           </div>
