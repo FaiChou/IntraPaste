@@ -39,6 +39,12 @@ export async function POST(request: Request) {
     // 生成随机 token
     const token = crypto.randomBytes(32).toString('hex')
     
+    // 更新用户的 token
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { token }
+    })
+
     const cookieStore = await cookies()
     cookieStore.set('admin_token', token, {
       httpOnly: true,
