@@ -1,18 +1,22 @@
 import { NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
-
-const prisma = new PrismaClient()
+import crypto from 'crypto'
 
 export async function POST(request: Request) {
-  const { password } = await request.json()
-
   try {
-    // 获取用户
+    const { password } = await request.json()
+
+    if (!password) {
+      return NextResponse.json(
+        { success: false, message: '密码不能为空' },
+        { status: 400 }
+      )
+    }
+
     let user = await prisma.user.findFirst()
     
-    // 如果没有用户，创建默认用户
     if (!user) {
       const hashedPassword = await bcrypt.hash('admin', 10)
       user = await prisma.user.create({
@@ -23,20 +27,25 @@ export async function POST(request: Request) {
       })
     }
 
-    // 验证密码
     const isValid = await bcrypt.compare(password, user.password)
     
     if (!isValid) {
-      return NextResponse.json({ success: false })
+      return NextResponse.json(
+        { success: false, message: '密码错误' },
+        { status: 401 }
+      )
     }
 
-    // 设置登录 cookie
-    const cookieStore = cookies()
-    cookieStore.set('admin_token', 'true', {
+    // 生成随机 token
+    const token = crypto.randomBytes(32).toString('hex')
+    
+    const cookieStore = await cookies()
+    cookieStore.set('admin_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'strict',
       maxAge: 60 * 60 * 24, // 24 hours
+      path: '/',
     })
 
     return NextResponse.json({ 
@@ -45,6 +54,9 @@ export async function POST(request: Request) {
     })
   } catch (error) {
     console.error('Login error:', error)
-    return NextResponse.json({ success: false })
+    return NextResponse.json(
+      { success: false, message: '登录失败' },
+      { status: 500 }
+    )
   }
 } 
