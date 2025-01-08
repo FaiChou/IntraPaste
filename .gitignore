@@ -43,3 +43,13 @@ next-env.d.ts
 # prisma
 prisma/dev.db
 prisma/dev.db-journal
+
+# iOS
+ios/build/
+ios/DerivedData/
+ios/*.xcodeproj/*
+!ios/*.xcodeproj/project.pbxproj
+!ios/*.xcodeproj/xcshareddata/
+!ios/*.xcworkspace/contents.xcworkspacedata
+ios/*.xcworkspace/xcuserdata/
+ios/.DS_Store
