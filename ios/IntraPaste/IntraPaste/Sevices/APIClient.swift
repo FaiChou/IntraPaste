@@ -64,7 +64,7 @@ class APIClient {
         return try decoder.decode(Card.self, from: data)
     }
     
-    func login(password: String, server: Server) async throws -> String {
+    func login(password: String, server: Server) async throws {
         guard let url = URL(string: "\(server.url)/api/auth/login") else {
             throw APIError.invalidURL
         }
@@ -83,8 +83,7 @@ class APIClient {
             throw APIError.unauthorized
         }
         
-        // 解析响应 JSON
-        struct LoginResponse: Codable {
+        struct LoginResponse: Decodable {
             let success: Bool
         }
         
@@ -93,29 +92,10 @@ class APIClient {
         guard loginResponse.success else {
             throw APIError.unauthorized
         }
-        
-        // 从 Cookie 中获取 token
-        if let cookieHeader = httpResponse.value(forHTTPHeaderField: "Set-Cookie"),
-           let adminToken = self.extractAdminToken(from: cookieHeader) {
-            return adminToken
-        }
-        
-        throw APIError.invalidResponse
-    }
-    
-    private func extractAdminToken(from cookieHeader: String) -> String? {
-        let components = cookieHeader.components(separatedBy: ";")
-        for component in components {
-            let cookiePair = component.trimmingCharacters(in: .whitespaces).split(separator: "=")
-            if cookiePair.count == 2 && cookiePair[0] == "admin_token" {
-                return String(cookiePair[1])
-            }
-        }
-        return nil
     }
     
     func deleteCard(id: Int, server: Server) async throws {
-        guard let token = server.token else {
+        guard server.isLoggedIn else {
             throw APIError.unauthorized
         }
         
@@ -125,12 +105,22 @@ class APIClient {
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
-        request.setValue("admin_token=\(token)", forHTTPHeaderField: "Cookie")
         
         let (_, response) = try await URLSession.shared.data(for: request)
         
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.invalidResponse
+        }
+        
+        if httpResponse.statusCode == 401 {
+            // 如果返回未授权,更新登录状态
+            await MainActor.run {
+                ServerManager().updateServerLoginStatus(for: server, isLoggedIn: false)
+            }
+            throw APIError.unauthorized
+        }
+        
+        guard httpResponse.statusCode == 200 else {
             throw APIError.invalidResponse
         }
     }

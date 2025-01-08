@@ -42,10 +42,10 @@ struct LoginView: View {
         
         Task {
             do {
-                let token = try await APIClient.shared.login(password: password, server: server)
+                let _ = try await APIClient.shared.login(password: password, server: server)
                 await MainActor.run {
-                    // Update server token in ServerManager
-                    ServerManager().updateServerToken(for: server, token: token)
+                    // 更新服务器登录状态
+                    ServerManager().updateServerLoginStatus(for: server, isLoggedIn: true)
                     isLoading = false
                     dismiss()
                 }

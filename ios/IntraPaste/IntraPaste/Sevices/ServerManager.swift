@@ -32,9 +32,9 @@ class ServerManager: ObservableObject {
         }
     }
     
-    func updateServerToken(for server: Server, token: String?) {
+    func updateServerLoginStatus(for server: Server, isLoggedIn: Bool) {
         if let index = servers.firstIndex(where: { $0.id == server.id }) {
-            servers[index].token = token
+            servers[index].isLoggedIn = isLoggedIn
             saveServers()
         }
     }

@@ -34,7 +34,7 @@ struct CardListView: View {
                             ForEach(cards) { card in
                                 CardCell(card: card)
                                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                        if server.token != nil {
+                                        if server.isLoggedIn {
                                             Button(role: .destructive) {
                                                 deleteCard(card)
                                             } label: {
@@ -68,7 +68,7 @@ struct CardListView: View {
         }
         .navigationTitle("卡片列表")
         .toolbar {
-            if server.token == nil {
+            if !server.isLoggedIn {
                 Button("登录") {
                     showingLoginSheet = true
                 }
