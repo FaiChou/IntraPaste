@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ServerListView: View {
-    @StateObject private var serverManager = ServerManager()
+    @EnvironmentObject var serverManager: ServerManager
     @State private var showingAddServer = false
     
     var body: some View {
@@ -14,6 +14,9 @@ struct ServerListView: View {
                                 .font(.headline)
                             Text(server.url)
                                 .font(.subheadline)
+                                .foregroundColor(.gray)
+                            Text(server.isLoggedIn ? "已登录" : "未登录")
+                                .font(.caption)
                                 .foregroundColor(.gray)
                         }
                     }

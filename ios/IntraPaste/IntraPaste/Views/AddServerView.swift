@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AddServerView: View {
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var serverManager: ServerManager
+    @StateObject var serverManager: ServerManager
     
     @State private var name = ""
     @State private var url = ""

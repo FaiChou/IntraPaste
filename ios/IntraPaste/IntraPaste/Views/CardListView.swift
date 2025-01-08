@@ -14,6 +14,7 @@ extension String {
 
 struct CardListView: View {
     let server: Server
+    @EnvironmentObject var serverManager: ServerManager
     @State private var cards: [Card] = []
     @State private var newContent = ""
     @State private var showingLoginSheet = false
@@ -71,6 +72,10 @@ struct CardListView: View {
             if !server.isLoggedIn {
                 Button("登录") {
                     showingLoginSheet = true
+                }
+            } else {
+                Button("登出") {
+                    serverManager.updateServerLoginStatus(for: server, isLoggedIn: false)
                 }
             }
         }
@@ -137,7 +142,13 @@ struct CardListView: View {
                 }
             } catch {
                 await MainActor.run {
-                    self.error = "删除卡片失败"
+                    switch error {
+                    case APIError.unauthorized:
+                        serverManager.updateServerLoginStatus(for: server, isLoggedIn: false)
+                        self.error = "登录已过期，请重新登录"
+                    default:
+                        self.error = "删除卡片失败"
+                    }
                 }
             }
         }

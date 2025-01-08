@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct IntraPasteApp: App {
+    @StateObject var serverManager = ServerManager()
     var body: some Scene {
         WindowGroup {
             ServerListView()
+                .environmentObject(serverManager)
         }
     }
 }

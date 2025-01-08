@@ -112,15 +112,10 @@ class APIClient {
             throw APIError.invalidResponse
         }
         
-        if httpResponse.statusCode == 401 {
-            // 如果返回未授权,更新登录状态
-            await MainActor.run {
-                ServerManager().updateServerLoginStatus(for: server, isLoggedIn: false)
-            }
-            throw APIError.unauthorized
-        }
-        
         guard httpResponse.statusCode == 200 else {
+            if httpResponse.statusCode == 401 {
+                throw APIError.unauthorized
+            }
             throw APIError.invalidResponse
         }
     }

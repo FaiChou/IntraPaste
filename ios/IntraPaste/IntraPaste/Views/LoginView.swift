@@ -2,6 +2,7 @@ import SwiftUI
 
 struct LoginView: View {
     let server: Server
+    @EnvironmentObject var serverManager: ServerManager
     @Environment(\.dismiss) private var dismiss
     @State private var password = ""
     @State private var error: String?
@@ -45,7 +46,7 @@ struct LoginView: View {
                 let _ = try await APIClient.shared.login(password: password, server: server)
                 await MainActor.run {
                     // 更新服务器登录状态
-                    ServerManager().updateServerLoginStatus(for: server, isLoggedIn: true)
+                    serverManager.updateServerLoginStatus(for: server, isLoggedIn: true)
                     isLoading = false
                     dismiss()
                 }
