@@ -95,7 +95,12 @@ export default function AdminPage() {
 
           <button
             onClick={() => setIsConfirmOpen(true)}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            disabled={cards.length === 0}
+            className={`px-4 py-2 text-white rounded-lg ${
+              cards.length === 0 
+                ? 'bg-red-300 cursor-not-allowed' 
+                : 'bg-red-500 hover:bg-red-600'
+            }`}
           >
             清空所有数据
           </button>
