@@ -9,6 +9,7 @@ struct CardCell: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(card.content)
                     .lineLimit(3)
+                    .truncationMode(.tail)
                 
                 Text(card.createdAt.formatted())
                     .font(.caption)

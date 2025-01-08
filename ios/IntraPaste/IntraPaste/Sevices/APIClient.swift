@@ -83,13 +83,35 @@ class APIClient {
             throw APIError.unauthorized
         }
         
+        // 解析响应 JSON
         struct LoginResponse: Codable {
             let success: Bool
-            let token: String
         }
         
         let loginResponse = try JSONDecoder().decode(LoginResponse.self, from: data)
-        return loginResponse.token
+        
+        guard loginResponse.success else {
+            throw APIError.unauthorized
+        }
+        
+        // 从 Cookie 中获取 token
+        if let cookieHeader = httpResponse.value(forHTTPHeaderField: "Set-Cookie"),
+           let adminToken = self.extractAdminToken(from: cookieHeader) {
+            return adminToken
+        }
+        
+        throw APIError.invalidResponse
+    }
+    
+    private func extractAdminToken(from cookieHeader: String) -> String? {
+        let components = cookieHeader.components(separatedBy: ";")
+        for component in components {
+            let cookiePair = component.trimmingCharacters(in: .whitespaces).split(separator: "=")
+            if cookiePair.count == 2 && cookiePair[0] == "admin_token" {
+                return String(cookiePair[1])
+            }
+        }
+        return nil
     }
     
     func deleteCard(id: Int, server: Server) async throws {
@@ -103,7 +125,7 @@ class APIClient {
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("admin_token=\(token)", forHTTPHeaderField: "Cookie")
         
         let (_, response) = try await URLSession.shared.data(for: request)
         

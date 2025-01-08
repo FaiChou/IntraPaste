@@ -1,5 +1,17 @@
 import SwiftUI
 
+extension String {
+    func height(withConstrainedWidth width: CGFloat) -> CGFloat {
+        let size = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: UIFont.systemFontSize)]
+        let estimatedFrame = self.boundingRect(with: size,
+                                             options: .usesLineFragmentOrigin,
+                                             attributes: attributes,
+                                             context: nil)
+        return estimatedFrame.height + 20 // 添加一些额外的padding
+    }
+}
+
 struct CardListView: View {
     let server: Server
     @State private var cards: [Card] = []
@@ -10,18 +22,13 @@ struct CardListView: View {
     
     var body: some View {
         ZStack {
-            // Add background view to handle taps
-            Color.clear
-                .contentShape(Rectangle())
-                .ignoresSafeArea()
-                .onTapGesture {
-                    dismissKeyboard()
-                }
-            
             VStack {
                 ZStack {
                     if isLoading && cards.isEmpty {
-                        ProgressView()
+                        VStack {
+                            ProgressView()
+                            Spacer()
+                        }
                     } else {
                         List {
                             ForEach(cards) { card in
@@ -44,8 +51,12 @@ struct CardListView: View {
                 }
                 
                 HStack {
-                    TextField("输入新内容", text: $newContent)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    TextEditor(text: $newContent)
+                        .frame(minHeight: 40, maxHeight: max(40, min(120, newContent.height(withConstrainedWidth: UIScreen.main.bounds.width - 80))))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        )
                     
                     Button(action: createNewCard) {
                         Image(systemName: "paperplane.fill")
@@ -107,6 +118,7 @@ struct CardListView: View {
                 await MainActor.run {
                     newContent = ""
                     fetchCards()
+                    dismissKeyboard()
                 }
             } catch {
                 await MainActor.run {
