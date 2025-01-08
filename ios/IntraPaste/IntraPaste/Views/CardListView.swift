@@ -9,39 +9,51 @@ struct CardListView: View {
     @State private var error: String?
     
     var body: some View {
-        VStack {
-            if isLoading && cards.isEmpty {
-                ProgressView()
-            } else {
-                List {
-                    ForEach(cards) { card in
-                        CardCell(card: card)
-                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                if server.token != nil {
-                                    Button(role: .destructive) {
-                                        deleteCard(card)
-                                    } label: {
-                                        Label("删除", systemImage: "trash")
+        ZStack {
+            // Add background view to handle taps
+            Color.clear
+                .contentShape(Rectangle())
+                .ignoresSafeArea()
+                .onTapGesture {
+                    dismissKeyboard()
+                }
+            
+            VStack {
+                ZStack {
+                    if isLoading && cards.isEmpty {
+                        ProgressView()
+                    } else {
+                        List {
+                            ForEach(cards) { card in
+                                CardCell(card: card)
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                        if server.token != nil {
+                                            Button(role: .destructive) {
+                                                deleteCard(card)
+                                            } label: {
+                                                Label("删除", systemImage: "trash")
+                                            }
+                                        }
                                     }
-                                }
                             }
+                        }
+                        .refreshable {
+                            await refreshCards()
+                        }
                     }
                 }
-                .refreshable {
-                    await refreshCards()
-                }
-            }
-            
-            HStack {
-                TextField("输入新内容", text: $newContent)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
                 
-                Button(action: createNewCard) {
-                    Image(systemName: "paperplane.fill")
+                HStack {
+                    TextField("输入新内容", text: $newContent)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    Button(action: createNewCard) {
+                        Image(systemName: "paperplane.fill")
+                    }
+                    .disabled(newContent.isEmpty)
                 }
-                .disabled(newContent.isEmpty)
+                .padding()
             }
-            .padding()
         }
         .navigationTitle("卡片列表")
         .toolbar {
@@ -130,5 +142,10 @@ struct CardListView: View {
                 self.error = "刷新失败"
             }
         }
+    }
+    
+    private func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                      to: nil, from: nil, for: nil)
     }
 }
