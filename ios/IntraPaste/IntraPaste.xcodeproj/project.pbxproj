@@ -33,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		4DBF42E72D2E39AF00DA6FFD /* IntraPasteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntraPasteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DBF42F22D2E969E00DA6FFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4DD7CC1E2D2E2ADB0097C48D /* IntraPaste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntraPaste.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntraPasteApp.swift; sourceTree = "<group>"; };
 		4DD7CC252D2E2ADD0097C48D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -91,6 +92,7 @@
 		4DD7CC202D2E2ADB0097C48D /* IntraPaste */ = {
 			isa = PBXGroup;
 			children = (
+				4DBF42F22D2E969E00DA6FFD /* Info.plist */,
 				4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */,
 				4DD7CC4E2D2E2C300097C48D /* Views */,
 				4DD7CC4D2D2E2C260097C48D /* Sevices */,
@@ -443,6 +445,8 @@
 				DEVELOPMENT_TEAM = 7WS42S6435;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = IntraPaste/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -472,6 +476,8 @@
 				DEVELOPMENT_TEAM = 7WS42S6435;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = IntraPaste/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
