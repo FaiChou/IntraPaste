@@ -65,4 +65,4 @@ struct AddServerView: View {
             }
         }
     }
-} 
+}

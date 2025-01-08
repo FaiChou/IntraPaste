@@ -35,4 +35,4 @@ struct ServerListView: View {
             }
         }
     }
-} 
+}

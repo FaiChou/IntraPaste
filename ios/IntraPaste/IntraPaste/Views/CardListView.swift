@@ -10,7 +10,7 @@ struct CardListView: View {
     
     var body: some View {
         VStack {
-            if isLoading {
+            if isLoading && cards.isEmpty {
                 ProgressView()
             } else {
                 List {
@@ -26,6 +26,9 @@ struct CardListView: View {
                                 }
                             }
                     }
+                }
+                .refreshable {
+                    await refreshCards()
                 }
             }
             
@@ -52,7 +55,9 @@ struct CardListView: View {
             LoginView(server: server)
         }
         .onAppear {
-            fetchCards()
+            if cards.isEmpty {
+                fetchCards()
+            }
         }
         .alert("错误", isPresented: .constant(error != nil)) {
             Button("确定") { error = nil }
@@ -112,4 +117,17 @@ struct CardListView: View {
             }
         }
     }
-} 
+    
+    private func refreshCards() async {
+        do {
+            let refreshedCards = try await APIClient.shared.fetchCards(from: server)
+            await MainActor.run {
+                cards = refreshedCards
+            }
+        } catch {
+            await MainActor.run {
+                self.error = "刷新失败"
+            }
+        }
+    }
+}

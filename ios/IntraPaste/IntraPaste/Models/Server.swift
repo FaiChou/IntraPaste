@@ -12,4 +12,4 @@ struct Server: Identifiable, Codable {
         self.url = url
         self.token = token
     }
-} 
+}

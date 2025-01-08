@@ -38,4 +38,4 @@ class ServerManager: ObservableObject {
             saveServers()
         }
     }
-} 
+}

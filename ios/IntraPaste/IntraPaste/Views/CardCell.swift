@@ -34,4 +34,4 @@ struct CardCell: View {
             }
         }
     }
-} 
+}
