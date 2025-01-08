@@ -77,6 +77,7 @@ struct CardListView: View {
                     isLoading = false
                 }
             } catch {
+                print(error)
                 await MainActor.run {
                     self.error = "获取卡片失败"
                     isLoading = false

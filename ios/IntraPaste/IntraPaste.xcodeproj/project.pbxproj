@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -21,7 +21,18 @@
 		4DD7CC4B2D2E2C0F0097C48D /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC422D2E2C0F0097C48D /* CardListView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4DBF42EB2D2E39AF00DA6FFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4DD7CC162D2E2ADB0097C48D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4DD7CC1D2D2E2ADB0097C48D;
+			remoteInfo = IntraPaste;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		4DBF42E72D2E39AF00DA6FFD /* IntraPasteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntraPasteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DD7CC1E2D2E2ADB0097C48D /* IntraPaste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntraPaste.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntraPasteApp.swift; sourceTree = "<group>"; };
 		4DD7CC252D2E2ADD0097C48D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -37,7 +48,18 @@
 		4DD7CC422D2E2C0F0097C48D /* CardListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		4DBF42E82D2E39AF00DA6FFD /* IntraPasteTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = IntraPasteTests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
+		4DBF42E42D2E39AF00DA6FFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4DD7CC1B2D2E2ADB0097C48D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -52,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				4DD7CC202D2E2ADB0097C48D /* IntraPaste */,
+				4DBF42E82D2E39AF00DA6FFD /* IntraPasteTests */,
 				4DD7CC1F2D2E2ADB0097C48D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -60,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				4DD7CC1E2D2E2ADB0097C48D /* IntraPaste.app */,
+				4DBF42E72D2E39AF00DA6FFD /* IntraPasteTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,6 +142,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4DBF42E62D2E39AF00DA6FFD /* IntraPasteTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4DBF42EF2D2E39AF00DA6FFD /* Build configuration list for PBXNativeTarget "IntraPasteTests" */;
+			buildPhases = (
+				4DBF42E32D2E39AF00DA6FFD /* Sources */,
+				4DBF42E42D2E39AF00DA6FFD /* Frameworks */,
+				4DBF42E52D2E39AF00DA6FFD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DBF42EC2D2E39AF00DA6FFD /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4DBF42E82D2E39AF00DA6FFD /* IntraPasteTests */,
+			);
+			name = IntraPasteTests;
+			packageProductDependencies = (
+			);
+			productName = IntraPasteTests;
+			productReference = 4DBF42E72D2E39AF00DA6FFD /* IntraPasteTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4DD7CC1D2D2E2ADB0097C48D /* IntraPaste */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4DD7CC2C2D2E2ADD0097C48D /* Build configuration list for PBXNativeTarget "IntraPaste" */;
@@ -142,9 +189,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					4DBF42E62D2E39AF00DA6FFD = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 4DD7CC1D2D2E2ADB0097C48D;
+					};
 					4DD7CC1D2D2E2ADB0097C48D = {
 						CreatedOnToolsVersion = 15.0;
 					};
@@ -164,11 +215,19 @@
 			projectRoot = "";
 			targets = (
 				4DD7CC1D2D2E2ADB0097C48D /* IntraPaste */,
+				4DBF42E62D2E39AF00DA6FFD /* IntraPasteTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4DBF42E52D2E39AF00DA6FFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4DD7CC1C2D2E2ADB0097C48D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -181,6 +240,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4DBF42E32D2E39AF00DA6FFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4DD7CC1A2D2E2ADB0097C48D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -200,7 +266,53 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		4DBF42EC2D2E39AF00DA6FFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4DD7CC1D2D2E2ADB0097C48D /* IntraPaste */;
+			targetProxy = 4DBF42EB2D2E39AF00DA6FFD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		4DBF42ED2D2E39AF00DA6FFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7WS42S6435;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.faichou.IntraPasteTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IntraPaste.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/IntraPaste";
+			};
+			name = Debug;
+		};
+		4DBF42EE2D2E39AF00DA6FFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7WS42S6435;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.faichou.IntraPasteTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/IntraPaste.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/IntraPaste";
+			};
+			name = Release;
+		};
 		4DD7CC2A2D2E2ADD0097C48D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -381,6 +493,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4DBF42EF2D2E39AF00DA6FFD /* Build configuration list for PBXNativeTarget "IntraPasteTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4DBF42ED2D2E39AF00DA6FFD /* Debug */,
+				4DBF42EE2D2E39AF00DA6FFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4DD7CC192D2E2ADB0097C48D /* Build configuration list for PBXProject "IntraPaste" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

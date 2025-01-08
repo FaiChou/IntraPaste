@@ -10,6 +10,15 @@ enum APIError: Error {
 
 class APIClient {
     static let shared = APIClient()
+    
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
+    
     private init() {}
     
     func fetchCards(from server: Server) async throws -> [Card] {
@@ -25,7 +34,7 @@ class APIClient {
         }
         
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
+        decoder.dateDecodingStrategy = .formatted(APIClient.dateFormatter)
         
         return try decoder.decode([Card].self, from: data)
     }
@@ -50,7 +59,7 @@ class APIClient {
         }
         
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
+        decoder.dateDecodingStrategy = .formatted(APIClient.dateFormatter)
         
         return try decoder.decode(Card.self, from: data)
     }

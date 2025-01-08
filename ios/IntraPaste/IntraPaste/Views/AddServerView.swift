@@ -52,7 +52,7 @@ struct AddServerView: View {
         
         Task {
             do {
-                let cards = try await APIClient.shared.fetchCards(from: Server(name: name, url: finalURL))
+                let _ = try await APIClient.shared.fetchCards(from: Server(name: name, url: finalURL))
                 await MainActor.run {
                     serverManager.addServer(Server(name: name, url: finalURL))
                     dismiss()

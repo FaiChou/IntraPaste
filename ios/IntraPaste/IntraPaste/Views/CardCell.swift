@@ -5,13 +5,16 @@ struct CardCell: View {
     @State private var isCopied = false
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(card.content)
-                .lineLimit(3)
-            
-            Text(card.createdAt.formatted())
-                .font(.caption)
-                .foregroundColor(.gray)
+        HStack {
+            VStack(alignment: .leading, spacing: 8) {
+                Text(card.content)
+                    .lineLimit(3)
+                
+                Text(card.createdAt.formatted())
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
+            Spacer()
         }
         .contentShape(Rectangle())
         .onTapGesture {
