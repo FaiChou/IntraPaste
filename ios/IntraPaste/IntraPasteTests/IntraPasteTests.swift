@@ -8,8 +8,6 @@ import Foundation
 import Testing
 @testable import IntraPaste
 
-
-
 @Test(.disabled("Due to that .iso8601 not support fractional seconds in the date string."),
       .bug("https://stackoverflow.com/questions/50847139/error-decoding-date-with-swift", "Error Decoding Date with Swift"))
 func testJsonParse() throws {

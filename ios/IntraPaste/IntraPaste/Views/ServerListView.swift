@@ -17,7 +17,7 @@ struct ServerListView: View {
                                 .foregroundColor(.gray)
                             Text(server.isLoggedIn ? "已登录" : "未登录")
                                 .font(.caption)
-                                .foregroundColor(.gray)
+                                .foregroundColor(server.isLoggedIn ? .green : .gray)
                         }
                     }
                 }

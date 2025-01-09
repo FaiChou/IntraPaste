@@ -96,74 +96,61 @@ struct CardListView: View {
         }
     }
     
+    @MainActor
     private func fetchCards() {
         isLoading = true
         Task {
             do {
                 cards = try await APIClient.shared.fetchCards(from: server)
-                await MainActor.run {
-                    isLoading = false
-                }
+                isLoading = false
             } catch {
                 print(error)
-                await MainActor.run {
-                    self.error = "获取卡片失败"
-                    isLoading = false
-                }
+                self.error = "获取卡片失败"
+                isLoading = false
             }
         }
     }
     
+    @MainActor
     private func createNewCard() {
         guard !newContent.isEmpty else { return }
         
         Task {
             do {
                 _ = try await APIClient.shared.createCard(content: newContent, server: server)
-                await MainActor.run {
-                    newContent = ""
-                    fetchCards()
-                    dismissKeyboard()
-                }
+                newContent = ""
+                fetchCards()
+                dismissKeyboard()
             } catch {
-                await MainActor.run {
-                    self.error = "创建卡片失败"
-                }
+                self.error = "创建卡片失败"
             }
         }
     }
     
+    @MainActor
     private func deleteCard(_ card: Card) {
         Task {
             do {
                 try await APIClient.shared.deleteCard(id: card.id, server: server)
-                await MainActor.run {
-                    fetchCards()
-                }
+                fetchCards()
             } catch {
-                await MainActor.run {
-                    switch error {
-                    case APIError.unauthorized:
-                        serverManager.updateServerLoginStatus(for: server, isLoggedIn: false)
-                        self.error = "登录已过期，请重新登录"
-                    default:
-                        self.error = "删除卡片失败"
-                    }
+                switch error {
+                case APIError.unauthorized:
+                    serverManager.updateServerLoginStatus(for: server, isLoggedIn: false)
+                    self.error = "登录已过期，请重新登录"
+                default:
+                    self.error = "删除卡片失败"
                 }
             }
         }
     }
-    
+    @MainActor
     private func refreshCards() async {
         do {
             let refreshedCards = try await APIClient.shared.fetchCards(from: server)
-            await MainActor.run {
-                cards = refreshedCards
-            }
+            cards = refreshedCards
         } catch {
-            await MainActor.run {
-                self.error = "刷新失败"
-            }
+            self.error = "刷新失败"
         }
     }
     

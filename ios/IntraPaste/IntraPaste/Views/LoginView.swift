@@ -38,23 +38,20 @@ struct LoginView: View {
         }
     }
     
+    @MainActor
     private func login() {
         isLoading = true
         
         Task {
             do {
                 let _ = try await APIClient.shared.login(password: password, server: server)
-                await MainActor.run {
-                    // 更新服务器登录状态
-                    serverManager.updateServerLoginStatus(for: server, isLoggedIn: true)
-                    isLoading = false
-                    dismiss()
-                }
+                // 更新服务器登录状态
+                serverManager.updateServerLoginStatus(for: server, isLoggedIn: true)
+                isLoading = false
+                dismiss()
             } catch {
-                await MainActor.run {
-                    self.error = "登录失败"
-                    isLoading = false
-                }
+                self.error = "登录失败"
+                isLoading = false
             }
         }
     }

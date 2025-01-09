@@ -33,6 +33,7 @@ struct AddServerView: View {
         }
     }
     
+    @MainActor
     private func validateAndSave() {
         guard var urlComponents = URLComponents(string: url) else {
             error = "无效的URL"
@@ -53,15 +54,11 @@ struct AddServerView: View {
         Task {
             do {
                 let _ = try await APIClient.shared.fetchCards(from: Server(name: name, url: finalURL))
-                await MainActor.run {
-                    serverManager.addServer(Server(name: name, url: finalURL))
-                    dismiss()
-                }
+                serverManager.addServer(Server(name: name, url: finalURL))
+                dismiss()
             } catch {
-                await MainActor.run {
-                    self.error = "无法连接到服务器"
-                    isValidating = false
-                }
+                self.error = "无法连接到服务器"
+                isValidating = false
             }
         }
     }
