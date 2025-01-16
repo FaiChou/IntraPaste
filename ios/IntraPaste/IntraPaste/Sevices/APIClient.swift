@@ -39,7 +39,14 @@ class APIClient {
         return try decoder.decode([Card].self, from: data)
     }
     
-    func createCard(content: String, server: Server) async throws -> Card {
+    func createCard(
+        content: String,
+        type: String = "text",
+        fileName: String? = nil,
+        objectName: String? = nil,
+        fileUrl: String? = nil,
+        server: Server
+    ) async throws -> Card {
         guard let url = URL(string: "\(server.url)/api/cards") else {
             throw APIError.invalidURL
         }
@@ -48,8 +55,15 @@ class APIClient {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let body = ["content": content]
-        request.httpBody = try JSONEncoder().encode(body)
+        let body: [String: Any] = [
+            "content": content,
+            "type": type,
+            "fileName": fileName as Any,
+            "objectName": objectName as Any,
+            "fileUrl": fileUrl as Any
+        ].compactMapValues { $0 }
+        
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -118,5 +132,69 @@ class APIClient {
             }
             throw APIError.invalidResponse
         }
+    }
+    
+    func uploadImage(imageData: Data, fileName: String, server: Server) async throws -> Card {
+        // 1. 获取预签名 URL
+        guard let url = URL(string: "\(server.url)/api/upload") else {
+            throw APIError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let body = [
+            "fileName": fileName,
+            "fileType": "image/jpeg"
+        ]
+        request.httpBody = try JSONEncoder().encode(body)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw APIError.invalidResponse
+        }
+        
+        struct UploadResponse: Decodable {
+            let success: Bool
+            let data: UploadData
+            
+            struct UploadData: Decodable {
+                let uploadUrl: String
+                let objectName: String
+                let fileUrl: String
+            }
+        }
+        
+        let uploadResponse = try JSONDecoder().decode(UploadResponse.self, from: data)
+        
+        // 2. 上传图片到预签名 URL
+        guard let uploadURL = URL(string: uploadResponse.data.uploadUrl) else {
+            throw APIError.invalidURL
+        }
+        
+        var uploadRequest = URLRequest(url: uploadURL)
+        uploadRequest.httpMethod = "PUT"
+        uploadRequest.setValue("image/jpeg", forHTTPHeaderField: "Content-Type")
+        uploadRequest.httpBody = imageData
+        
+        let (_, uploadResponseData) = try await URLSession.shared.data(for: uploadRequest)
+        
+        guard let uploadHttpResponse = uploadResponseData as? HTTPURLResponse,
+              uploadHttpResponse.statusCode == 200 else {
+            throw APIError.invalidResponse
+        }
+        
+        // 3. 创建卡片
+        return try await createCard(
+            content: "",
+            type: "image",
+            fileName: fileName,
+            objectName: uploadResponse.data.objectName,
+            fileUrl: uploadResponse.data.fileUrl,
+            server: server
+        )
     }
 }

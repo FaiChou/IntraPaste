@@ -1,4 +1,5 @@
 import SwiftUI
+import PhotosUI
 
 extension String {
     func height(withConstrainedWidth width: CGFloat) -> CGFloat {
@@ -20,6 +21,7 @@ struct CardListView: View {
     @State private var showingLoginSheet = false
     @State private var isLoading = false
     @State private var error: String?
+    @State private var selectedItem: PhotosPickerItem?
     
     var body: some View {
         ZStack {
@@ -53,11 +55,16 @@ struct CardListView: View {
                 
                 HStack {
                     TextEditor(text: $newContent)
-                        .frame(minHeight: 40, maxHeight: max(40, min(120, newContent.height(withConstrainedWidth: UIScreen.main.bounds.width - 80))))
+                        .frame(minHeight: 40, maxHeight: max(40, min(120, newContent.height(withConstrainedWidth: UIScreen.main.bounds.width - 120))))
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.gray.opacity(0.2), lineWidth: 1)
                         )
+                    
+                    PhotosPicker(selection: $selectedItem, matching: .images) {
+                        Image(systemName: "photo")
+                            .foregroundColor(.green)
+                    }
                     
                     Button(action: createNewCard) {
                         Image(systemName: "paperplane.fill")
@@ -92,6 +99,25 @@ struct CardListView: View {
         } message: {
             if let error = error {
                 Text(error)
+            }
+        }
+        .onChange(of: selectedItem) { _ in
+            Task {
+                if let data = try? await selectedItem?.loadTransferable(type: Data.self),
+                   let uiImage = UIImage(data: data),
+                   let imageData = uiImage.jpegData(compressionQuality: 0.8) {
+                    do {
+                        _ = try await APIClient.shared.uploadImage(
+                            imageData: imageData,
+                            fileName: "\(Date().timeIntervalSince1970).jpg",
+                            server: server
+                        )
+                        selectedItem = nil
+                        await refreshCards()
+                    } catch {
+                        self.error = "上传图片失败"
+                    }
+                }
             }
         }
     }
