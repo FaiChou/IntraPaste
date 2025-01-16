@@ -10,6 +10,13 @@ const nextConfig: NextConfig = {
         pathname: '/intrapaste/**',
         search: '',
       },
+      {
+        protocol: 'http',
+        hostname: '100.64.0.19',
+        port: '9000',
+        pathname: '/intrapaste/**',
+        search: '',
+      },
     ],
   },
 };
