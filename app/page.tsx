@@ -18,13 +18,23 @@ export default function Home() {
     setCards(data)
   }
 
-  const handleNewCard = async (content: string) => {
+  const handleNewCard = async (content: string, type: string, fileInfo?: any) => {
+    const payload = type === 'text' 
+      ? { content, type }
+      : {
+          type,
+          fileName: fileInfo.fileName,
+          fileType: fileInfo.fileType,
+          objectName: fileInfo.objectName,
+          fileUrl: fileInfo.fileUrl,
+        }
+
     await fetch('/api/cards', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ content }),
+      body: JSON.stringify(payload),
     })
     fetchCards()
   }
@@ -36,10 +46,14 @@ export default function Home() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 auto-rows-min">
           {cards.map((card: PrismaCard) => (
-            <CardComponent 
+            <CardComponent
               key={card.id} 
               content={card.content}
               createdAt={typeof card.createdAt === 'string' ? card.createdAt : card.createdAt.toISOString()} 
+              type={card.type}
+              fileName={card.fileName}
+              fileSize={card.fileSize}
+              filePath={card.filePath}
             />
           ))}
         </div>

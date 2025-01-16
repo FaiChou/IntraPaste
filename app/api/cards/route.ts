@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
+import { getObjectSize } from '@/lib/minio'
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const cards = await prisma.card.findMany({
       where: {
@@ -27,21 +28,38 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { content } = await request.json()
+    const { content, type, fileName, fileType, objectName, fileUrl } = await request.json()
     
-    if (!content || typeof content !== 'string') {
+    if (!content && !objectName) {
       return NextResponse.json(
         { success: false, message: '内容不能为空' },
         { status: 400 }
       )
     }
 
+    const headersList = await headers()
+    const ipAddress = headersList.get('x-forwarded-for') || 'unknown'
+    const userAgent = headersList.get('user-agent') || 'unknown'
+
     const expiresAt = new Date()
     expiresAt.setHours(expiresAt.getHours() + 1)
+    
+    let fileSize: number | undefined
+
+    if (type === 'image') {
+      fileSize = await getObjectSize(objectName)
+    }
     
     const card = await prisma.card.create({
       data: {
         content,
+        type,
+        fileName,
+        fileSize,
+        fileType,
+        filePath: fileUrl,
+        ipAddress,
+        userAgent,
         expiresAt,
       },
     })

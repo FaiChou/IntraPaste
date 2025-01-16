@@ -116,12 +116,44 @@ export default function AdminPage() {
         <div className="space-y-4 mb-8">
           {cards.map((card) => (
             <div key={card.id} className="flex items-center justify-between p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
-              <div className="flex-1 mr-4 min-w-0">
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                  {new Date(card.createdAt).toLocaleString()}
-                </p>
-                <p className="truncate">{card.content}</p>
+              <div className="flex-1 mr-4 min-w-0 space-y-2">
+                <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                  <span>创建时间: {new Date(card.createdAt).toLocaleString()}</span>
+                  <span>|</span>
+                  <span>过期时间: {new Date(card.expiresAt).toLocaleString()}</span>
+                </div>
+                
+                <div className="space-y-1">
+                  {card.content && (
+                    <p className="break-all">{card.content}</p>
+                  )}
+                  
+                  {card.type === 'image' && (
+                    <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                      <p>类型: 图片</p>
+                      {card.fileName && <p>文件名: {card.fileName}</p>}
+                      {card.fileSize && <p>文件大小: {(card.fileSize / 1024 / 1024).toFixed(2)} MB</p>}
+                      {card.fileType && <p>文件类型: {card.fileType}</p>}
+                      {card.filePath && (
+                        <a 
+                          href={card.filePath}
+                          target="_blank"
+                          rel="noopener noreferrer" 
+                          className="text-blue-500 hover:underline"
+                        >
+                          查看图片
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div className="text-xs text-gray-400 dark:text-gray-500 space-y-1">
+                  <p>IP: {card.ipAddress}</p>
+                  <p>UA: {card.userAgent}</p>
+                </div>
               </div>
+              
               <button
                 onClick={() => handleDelete(card.id)}
                 className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded shrink-0"

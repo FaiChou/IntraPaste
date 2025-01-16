@@ -9,9 +9,18 @@ datasource db {
 
 model Card {
   id        Int      @id @default(autoincrement())
-  content   String
+  content   String?
   createdAt DateTime @default(now())
   expiresAt DateTime
+  type      String   @default("text")
+  
+  fileName  String?
+  fileSize  Int?
+  fileType  String?
+  filePath  String?
+  
+  ipAddress String?
+  userAgent String?
 }
 
 model User {
