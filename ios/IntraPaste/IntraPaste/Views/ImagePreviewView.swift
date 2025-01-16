@@ -6,6 +6,8 @@ struct ImagePreviewView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isDownloading = false
     @State private var downloadProgress: Float = 0
+    @State private var showingSaveSuccess = false
+    @State private var hasDownloaded = false
     
     var body: some View {
         NavigationView {
@@ -38,8 +40,13 @@ struct ImagePreviewView: View {
                             Image(systemName: "square.and.arrow.down")
                         }
                     }
-                    .disabled(isDownloading)
+                    .disabled(isDownloading || hasDownloaded)
                 }
+            }
+            .alert("保存成功", isPresented: $showingSaveSuccess) {
+                Button("确定", role: .cancel) { }
+            } message: {
+                Text("图片已保存到相册")
             }
         }
     }
@@ -49,33 +56,29 @@ struct ImagePreviewView: View {
         
         isDownloading = true
         
-        let task = URLSession.shared.downloadTask(with: url) { localURL, response, error in
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            defer {
+                DispatchQueue.main.async {
+                    isDownloading = false
+                }
+            }
+            
             if let error = error {
                 print("Download error:", error)
                 return
             }
             
-            guard let localURL = localURL else { return }
+            guard let data = data,
+                  let image = UIImage(data: data) else { return }
             
-            let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let destinationURL = documentsPath.appendingPathComponent(fileName)
+            // 保存图片到相册并处理回调
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
             
-            do {
-                try? FileManager.default.removeItem(at: destinationURL)
-                try FileManager.default.copyItem(at: localURL, to: destinationURL)
-                
-                DispatchQueue.main.async {
-                    isDownloading = false
-                    UIApplication.shared.open(destinationURL)
-                }
-            } catch {
-                print("File error:", error)
-                DispatchQueue.main.async {
-                    isDownloading = false
-                }
+            DispatchQueue.main.async {
+                hasDownloaded = true
+                showingSaveSuccess = true
             }
-        }
-        
-        task.resume()
+            
+        }.resume()
     }
-} 
+}

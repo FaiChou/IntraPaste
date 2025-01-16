@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D84CD532D3938AB00A24CEE /* ImagePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84CD522D3938AB00A24CEE /* ImagePreviewView.swift */; };
 		4DD7CC222D2E2ADB0097C48D /* IntraPasteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */; };
 		4DD7CC262D2E2ADD0097C48D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7CC252D2E2ADD0097C48D /* Assets.xcassets */; };
 		4DD7CC292D2E2ADD0097C48D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7CC282D2E2ADD0097C48D /* Preview Assets.xcassets */; };
@@ -32,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4D84CD522D3938AB00A24CEE /* ImagePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewView.swift; sourceTree = "<group>"; };
 		4DBF42E72D2E39AF00DA6FFD /* IntraPasteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntraPasteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DBF42F22D2E969E00DA6FFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4DD7CC1E2D2E2ADB0097C48D /* IntraPaste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntraPaste.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +139,7 @@
 				4DD7CC422D2E2C0F0097C48D /* CardListView.swift */,
 				4DD7CC3D2D2E2C0F0097C48D /* LoginView.swift */,
 				4DD7CC412D2E2C0F0097C48D /* ServerListView.swift */,
+				4D84CD522D3938AB00A24CEE /* ImagePreviewView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				4DD7CC432D2E2C0F0097C48D /* ServerManager.swift in Sources */,
 				4DD7CC482D2E2C0F0097C48D /* APIClient.swift in Sources */,
 				4DD7CC4B2D2E2C0F0097C48D /* CardListView.swift in Sources */,
+				4D84CD532D3938AB00A24CEE /* ImagePreviewView.swift in Sources */,
 				4DD7CC4A2D2E2C0F0097C48D /* ServerListView.swift in Sources */,
 				4DD7CC442D2E2C0F0097C48D /* AddServerView.swift in Sources */,
 				4DD7CC452D2E2C0F0097C48D /* Server.swift in Sources */,
@@ -447,6 +451,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = IntraPaste/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "IntraPaste use this function to save images to local photo libraries";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -478,6 +483,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = IntraPaste/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "IntraPaste use this function to save images to local photo libraries";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
