@@ -1,10 +1,36 @@
 import cron from 'node-cron'
 import { prisma } from './prisma'
+import { deleteObject } from './minio'
 
 export function startCleanupJob() {
   // 每天凌晨2点执行清理
   cron.schedule('0 2 * * *', async () => {
     try {
+      // 先查找需要删除的过期记录
+      const expiredCards = await prisma.card.findMany({
+        where: {
+          expiresAt: {
+            lt: new Date(),
+          },
+        },
+        select: {
+          id: true,
+          filePath: true,
+        },
+      })
+
+      // 删除 MinIO 中的文件
+      for (const card of expiredCards) {
+        if (card.filePath) {
+          // 从文件URL中提取对象名称
+          const objectName = card.filePath.split('/').pop()
+          if (objectName) {
+            await deleteObject(objectName)
+          }
+        }
+      }
+
+      // 删除数据库记录
       const result = await prisma.card.deleteMany({
         where: {
           expiresAt: {
@@ -12,6 +38,7 @@ export function startCleanupJob() {
           },
         },
       })
+      
       console.log(`Cleanup completed: ${result.count} cards deleted`)
     } catch (error) {
       console.error('Cleanup failed:', error)

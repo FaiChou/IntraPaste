@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { cookies, headers } from 'next/headers'
-import { getObjectSize } from '@/lib/minio'
+import { deleteObject, getObjectSize } from '@/lib/minio'
 
 export async function GET(request: Request) {
   try {
@@ -99,6 +99,30 @@ export async function DELETE() {
   }
 
   try {
+    // 获取所有需要删除的卡片
+    const cards = await prisma.card.findMany({
+      where: {
+        type: 'image',
+        filePath: {
+          not: null
+        }
+      },
+      select: {
+        filePath: true
+      }
+    })
+
+    // 删除所有关联的文件
+    for (const card of cards) {
+      if (card.filePath) {
+        const objectName = card.filePath.split('/').pop()
+        if (objectName) {
+          await deleteObject(objectName)
+        }
+      }
+    }
+
+    // 删除所有卡片记录
     await prisma.card.deleteMany()
     return NextResponse.json({ success: true })
   } catch (error) {

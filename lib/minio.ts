@@ -60,3 +60,14 @@ export async function getObjectSize(objectName: string) {
   const stat = await minioClient.statObject(MINIO_CONFIG.bucket, objectName)
   return stat.size
 }
+
+// 删除对象
+export async function deleteObject(objectName: string) {
+  try {
+    await minioClient.removeObject(MINIO_CONFIG.bucket, objectName)
+    return true
+  } catch (error) {
+    console.error('Failed to delete object from MinIO:', error)
+    return false
+  }
+}

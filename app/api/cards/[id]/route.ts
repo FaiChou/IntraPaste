@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { cookies } from 'next/headers'
+import { deleteObject } from '@/lib/minio'
 
 export async function DELETE(
   request: Request,
@@ -39,6 +40,27 @@ export async function DELETE(
       )
     }
 
+    // 获取卡片信息
+    const card = await prisma.card.findUnique({
+      where: { id },
+    })
+
+    if (!card) {
+      return NextResponse.json(
+        { success: false, message: '卡片不存在' },
+        { status: 404 }
+      )
+    }
+
+    // 如果存在文件，则删除文件
+    if (card.type === 'image' && card.filePath) {
+      const objectName = card.filePath.split('/').pop()
+      if (objectName) {
+        await deleteObject(objectName)
+      }
+    }
+
+    // 删除卡片记录
     await prisma.card.delete({
       where: { id },
     })
