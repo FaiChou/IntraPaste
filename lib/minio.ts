@@ -36,6 +36,7 @@ export async function ensureBucket() {
     }
     await minioClient.setBucketPolicy(MINIO_CONFIG.bucket, JSON.stringify(policy))
   }
+  console.log('Bucket exists and policy set')
 }
 
 // 生成预签名上传 URL

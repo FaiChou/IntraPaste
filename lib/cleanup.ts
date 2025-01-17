@@ -18,17 +18,20 @@ export function startCleanupJob() {
           filePath: true,
         },
       })
-
+      let deletedCount = 0
       // 删除 MinIO 中的文件
       for (const card of expiredCards) {
+        console.log('Deleting minio file, card id:', card.id, 'with filePath:', card.filePath)
         if (card.filePath) {
           // 从文件URL中提取对象名称
           const objectName = card.filePath.split('/').pop()
           if (objectName) {
             await deleteObject(objectName)
+            deletedCount++
           }
         }
       }
+      console.log(`Cleanup completed: ${deletedCount} minio files deleted`)
 
       // 删除数据库记录
       const result = await prisma.card.deleteMany({
