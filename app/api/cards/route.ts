@@ -75,7 +75,6 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE() {
-  // 验证身份
   const cookieStore = await cookies()
   const adminToken = cookieStore.get('admin_token')
 
@@ -86,7 +85,6 @@ export async function DELETE() {
     )
   }
 
-  // 验证 token 是否有效
   const user = await prisma.user.findFirst({
     where: { token: adminToken.value }
   })
@@ -99,7 +97,6 @@ export async function DELETE() {
   }
 
   try {
-    // 获取所有需要删除的卡片
     const cards = await prisma.card.findMany({
       where: {
         type: 'image',
@@ -112,7 +109,6 @@ export async function DELETE() {
       }
     })
 
-    // 删除所有关联的文件
     for (const card of cards) {
       if (card.filePath) {
         const objectName = card.filePath.split('/').pop()
@@ -122,7 +118,6 @@ export async function DELETE() {
       }
     }
 
-    // 删除所有卡片记录
     await prisma.card.deleteMany()
     return NextResponse.json({ success: true })
   } catch (error) {

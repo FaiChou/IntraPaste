@@ -9,7 +9,7 @@ extension String {
                                              options: .usesLineFragmentOrigin,
                                              attributes: attributes,
                                              context: nil)
-        return estimatedFrame.height + 20 // 添加一些额外的padding
+        return estimatedFrame.height + 20
     }
 }
 

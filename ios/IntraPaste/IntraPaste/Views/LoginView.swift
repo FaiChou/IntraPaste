@@ -45,7 +45,6 @@ struct LoginView: View {
         Task {
             do {
                 let _ = try await APIClient.shared.login(password: password, server: server)
-                // 更新服务器登录状态
                 serverManager.updateServerLoginStatus(for: server, isLoggedIn: true)
                 isLoading = false
                 dismiss()

@@ -71,7 +71,6 @@ struct ImagePreviewView: View {
             guard let data = data,
                   let image = UIImage(data: data) else { return }
             
-            // 保存图片到相册并处理回调
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
             
             DispatchQueue.main.async {

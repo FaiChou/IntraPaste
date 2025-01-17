@@ -15,14 +15,11 @@ export function TextInput({ onSubmit }: TextInputProps) {
   const adjustHeight = () => {
     const textarea = textareaRef.current
     if (textarea) {
-      // 重置高度以获取正确的 scrollHeight
       textarea.style.height = 'auto'
-      // 设置新高度
       textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`
     }
   }
 
-  // 监听内容变化
   useEffect(() => {
     adjustHeight()
   }, [content])
@@ -47,7 +44,6 @@ export function TextInput({ onSubmit }: TextInputProps) {
     try {
       setIsUploading(true)
 
-      // 1. 获取预签名 URL
       const res = await fetch('/api/upload', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -58,14 +54,12 @@ export function TextInput({ onSubmit }: TextInputProps) {
       })
       const { data } = await res.json()
 
-      // 2. 上传文件到 MinIO
       await fetch(data.uploadUrl, {
         method: 'PUT',
         body: file,
         headers: { 'Content-Type': file.type },
       })
 
-      // 3. 创建卡片
       onSubmit('', 'image', {
         fileName: file.name,
         fileType: file.type,
@@ -87,10 +81,8 @@ export function TextInput({ onSubmit }: TextInputProps) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
       if (e.shiftKey) {
-        // Shift + Enter: 允许换行
         return
       } else {
-        // 普通 Enter: 提交表单
         e.preventDefault()
         handleSubmit(e as unknown as React.FormEvent)
       }

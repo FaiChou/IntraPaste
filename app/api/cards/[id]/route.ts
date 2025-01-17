@@ -11,7 +11,6 @@ export async function DELETE(
   const startTime = Date.now()
   const headers = Object.fromEntries(request.headers)
 
-  // 验证身份
   const cookieStore = await cookies()
   const adminToken = cookieStore.get('admin_token')
 
@@ -31,7 +30,6 @@ export async function DELETE(
     )
   }
 
-  // 验证 token 是否有效
   const user = await prisma.user.findFirst({
     where: { token: adminToken.value }
   })
@@ -53,7 +51,6 @@ export async function DELETE(
       )
     }
 
-    // 获取卡片信息
     const card = await prisma.card.findUnique({
       where: { id },
     })
@@ -74,7 +71,6 @@ export async function DELETE(
       )
     }
 
-    // 如果存在文件，则删除文件
     if (card.type === 'image' && card.filePath) {
       const objectName = card.filePath.split('/').pop()
       if (objectName) {
@@ -89,7 +85,6 @@ export async function DELETE(
       }
     }
 
-    // 删除卡片记录
     await prisma.card.delete({
       where: { id },
     })

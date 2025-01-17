@@ -15,7 +15,6 @@ export async function GET() {
       }, { status: 401 })
     }
 
-    // 查找具有匹配 token 的用户
     const user = await prisma.user.findFirst({
       where: {
         token: adminToken.value
@@ -29,7 +28,6 @@ export async function GET() {
       }, { status: 401 })
     }
 
-    // 检查是否是默认密码
     const isDefaultPassword = await bcrypt.compare('admin', user.password)
 
     return NextResponse.json({ 

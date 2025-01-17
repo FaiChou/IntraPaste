@@ -18,7 +18,6 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath }:
   const [isImageOpen, setIsImageOpen] = useState(false)
 
   const fallbackCopyToClipboard = (text: string) => {
-    // 创建临时textarea
     const textArea = document.createElement('textarea')
     textArea.value = text
     document.body.appendChild(textArea)
@@ -35,18 +34,15 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath }:
 
   const handleCopy = async () => {
     try {
-      // 优先使用现代API
       if (navigator.clipboard) {
         await navigator.clipboard.writeText(content)
       } else {
-        // 降级使用传统方法
         fallbackCopyToClipboard(content)
       }
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
       console.error('复制失败:', err)
-      // 尝试降级方案
       fallbackCopyToClipboard(content)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)

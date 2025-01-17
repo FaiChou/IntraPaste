@@ -1,7 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 
-// 日志级别枚举
 export enum LogLevel {
   DEBUG = 'DEBUG',
   INFO = 'INFO',
@@ -9,19 +8,13 @@ export enum LogLevel {
   ERROR = 'ERROR'
 }
 
-// 日志配置
 const LOG_CONFIG = {
-  // 日志文件路径
   LOG_DIR: path.join(process.cwd(), 'logs'),
-  // 日志文件名格式
   LOG_FILE: 'app.log',
-  // 是否输出到控制台
   CONSOLE_OUTPUT: process.env.NODE_ENV !== 'production',
-  // 最小日志级别
   MIN_LEVEL: process.env.NODE_ENV === 'production' ? LogLevel.INFO : LogLevel.DEBUG
 }
 
-// 确保日志目录存在
 if (!fs.existsSync(LOG_CONFIG.LOG_DIR)) {
   fs.mkdirSync(LOG_CONFIG.LOG_DIR, { recursive: true })
 }
@@ -52,16 +45,13 @@ class Logger {
   }
 
   private write(message: string) {
-    // 追加到日志文件
     fs.appendFileSync(this.logFile, message + '\n')
     
-    // 开发环境下同时输出到控制台
     if (LOG_CONFIG.CONSOLE_OUTPUT) {
       console.log(message)
     }
   }
 
-  // API 请求日志
   logRequest(module: string, data: {
     method: string
     url: string
@@ -95,7 +85,6 @@ class Logger {
     this.write(message)
   }
 
-  // 管理员操作日志
   logAdmin(module: string, data: {
     action: string
     userId: string | number
@@ -114,7 +103,6 @@ class Logger {
     this.write(message)
   }
 
-  // 系统操作日志
   logSystem(module: string, data: {
     action: string
     details?: any
@@ -132,7 +120,6 @@ class Logger {
     this.write(message)
   }
 
-  // 通用日志方法
   log(level: LogLevel, module: string, message: any) {
     if (!this.shouldLog(level)) return
     

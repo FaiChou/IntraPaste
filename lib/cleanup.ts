@@ -16,7 +16,6 @@ export function startCleanupJob() {
         details: 'Starting daily cleanup task'
       })
 
-      // 先查找需要删除的过期记录
       const expiredCards = await prisma.card.findMany({
         where: {
           expiresAt: {
@@ -37,7 +36,6 @@ export function startCleanupJob() {
       })
 
       let deletedCount = 0
-      // 删除 MinIO 中的文件
       for (const card of expiredCards) {
         logger.debug('CLEANUP', {
           action: 'deleting_file',
@@ -56,7 +54,6 @@ export function startCleanupJob() {
         }
       }
 
-      // 删除数据库记录
       const result = await prisma.card.deleteMany({
         where: {
           expiresAt: {
