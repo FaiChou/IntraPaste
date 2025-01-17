@@ -3,12 +3,25 @@ import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
 import crypto from 'crypto'
+import { logger } from '@/lib/logger'
 
 export async function POST(request: Request) {
+  const startTime = Date.now()
+  const headers = Object.fromEntries(request.headers)
+  
   try {
     const { password } = await request.json()
 
     if (!password) {
+      logger.logRequest('AUTH', {
+        method: 'POST',
+        url: '/api/auth/login',
+        headers,
+        startTime,
+        statusCode: 400,
+        error: 'Password is required'
+      })
+      
       return NextResponse.json(
         { success: false, message: '密码不能为空' },
         { status: 400 }
@@ -53,12 +66,38 @@ export async function POST(request: Request) {
       path: '/',
     })
 
+    logger.logAdmin('AUTH', {
+      action: 'login',
+      userId: user.id,
+      details: {
+        username: user.username,
+        isDefaultPassword: password === 'admin'
+      }
+    })
+
+    logger.logRequest('AUTH', {
+      method: 'POST',
+      url: '/api/auth/login',
+      headers,
+      userId: user.id,
+      startTime,
+      statusCode: 200
+    })
+
     return NextResponse.json({ 
       success: true,
       isDefaultPassword: password === 'admin'
     })
   } catch (error) {
-    console.error('Login error:', error)
+    logger.logRequest('AUTH', {
+      method: 'POST',
+      url: '/api/auth/login',
+      headers,
+      startTime,
+      statusCode: 500,
+      error
+    })
+    
     return NextResponse.json(
       { success: false, message: '登录失败' },
       { status: 500 }

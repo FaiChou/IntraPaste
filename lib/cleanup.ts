@@ -1,11 +1,21 @@
 import cron from 'node-cron'
 import { prisma } from './prisma'
 import { deleteObject } from './minio'
+import { logger } from './logger'
 
 export function startCleanupJob() {
-  // 每天凌晨2点执行清理
+  logger.logSystem('CLEANUP', {
+    action: 'start_cleanup_job',
+    details: 'Cleanup job scheduled for 2 AM daily'
+  })
+
   cron.schedule('0 2 * * *', async () => {
     try {
+      logger.logSystem('CLEANUP', {
+        action: 'cleanup_started',
+        details: 'Starting daily cleanup task'
+      })
+
       // 先查找需要删除的过期记录
       const expiredCards = await prisma.card.findMany({
         where: {
@@ -18,12 +28,26 @@ export function startCleanupJob() {
           filePath: true,
         },
       })
+
+      logger.logSystem('CLEANUP', {
+        action: 'found_expired_cards',
+        details: {
+          count: expiredCards.length
+        }
+      })
+
       let deletedCount = 0
       // 删除 MinIO 中的文件
       for (const card of expiredCards) {
-        console.log('Deleting minio file, card id:', card.id, 'with filePath:', card.filePath)
+        logger.debug('CLEANUP', {
+          action: 'deleting_file',
+          details: {
+            cardId: card.id,
+            filePath: card.filePath
+          }
+        })
+
         if (card.filePath) {
-          // 从文件URL中提取对象名称
           const objectName = card.filePath.split('/').pop()
           if (objectName) {
             await deleteObject(objectName)
@@ -31,7 +55,6 @@ export function startCleanupJob() {
           }
         }
       }
-      console.log(`Cleanup completed: ${deletedCount} minio files deleted`)
 
       // 删除数据库记录
       const result = await prisma.card.deleteMany({
@@ -42,9 +65,18 @@ export function startCleanupJob() {
         },
       })
       
-      console.log(`Cleanup completed: ${result.count} cards deleted`)
+      logger.logSystem('CLEANUP', {
+        action: 'cleanup_completed',
+        details: {
+          deletedFiles: deletedCount,
+          deletedCards: result.count
+        }
+      })
     } catch (error) {
-      console.error('Cleanup failed:', error)
+      logger.logSystem('CLEANUP', {
+        action: 'cleanup_failed',
+        error
+      })
     }
   })
 }
