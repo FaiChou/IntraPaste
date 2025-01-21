@@ -6,8 +6,8 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
-# 读取 MINIO_ENDPOINT 配置
-MINIO_ENDPOINT=$(grep MINIO_ENDPOINT .env | cut -d '=' -f2)
+# 读取 MINIO_ENDPOINT 配置，排除注释行
+MINIO_ENDPOINT=$(grep -v '^#' .env | grep MINIO_ENDPOINT | cut -d '=' -f2)
 
 # 根据 MINIO_ENDPOINT 决定启动模式
 if [[ $MINIO_ENDPOINT == "http://minio" ]]; then
