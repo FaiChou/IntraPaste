@@ -6,6 +6,11 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
 
 ## Features
 
+- 📱 iOS Client
+  - Native iOS app with SwiftUI
+  - Multiple server management
+  - Dark mode support
+  - Image preview & download
 - 📝 Text Sharing
   - Multi-line text support
   - Click to copy
@@ -36,14 +41,18 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
 - [TypeScript](https://www.typescriptlang.org/) - Type System
 - [MinIO](https://min.io/) - Object Storage
 - [PM2](https://pm2.keymetrics.io/) - Process Manager
+- [SwiftUI](https://developer.apple.com/xcode/swiftui/) - iOS UI Framework
 
 ## Requirements
 
 - Node.js 18+
 - SQLite
 - MinIO Server
+- Xcode 15+ (for iOS development)
 
 ## Getting Started
+
+### Backend Setup
 
 1. Clone and install dependencies
 
@@ -79,6 +88,20 @@ npm run dev
 ```
 
 Visit [http://localhost:3000](http://localhost:3000) to see the result.
+
+### iOS App Setup
+
+1. Open iOS project
+
+```bash
+cd ios/IntraPaste
+open IntraPaste.xcodeproj
+```
+
+2. Build and run
+- Select your target device/simulator
+- Press Cmd+R or click the Run button
+- The app requires iOS 17.0 or later
 
 ## Deployment Guide
 
@@ -123,6 +146,10 @@ Access path: `http://your-domain/admin`
 - `components/` - React components
 - `lib/` - Utility functions
 - `prisma/` - Database models
+- `ios/` - iOS native app
+  - `Views/` - SwiftUI views
+  - `Services/` - API and server management
+  - `Models/` - Data models
 
 ## License
 

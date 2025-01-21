@@ -6,6 +6,11 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
 
 ## 功能特性
 
+- 📱 iOS 客户端
+  - 基于 SwiftUI 的原生应用
+  - 多服务器管理
+  - 深色模式支持
+  - 图片预览与下载
 - 📝 文本分享
   - 支持多行文本
   - 点击即可复制
@@ -36,14 +41,18 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
 - [TypeScript](https://www.typescriptlang.org/) - 类型系统
 - [MinIO](https://min.io/) - 对象存储服务
 - [PM2](https://pm2.keymetrics.io/) - 进程管理器
+- [SwiftUI](https://developer.apple.com/xcode/swiftui/) - iOS UI 框架
 
 ## 环境要求
 
 - Node.js 18+
 - SQLite
 - MinIO Server
+- Xcode 15+ (用于 iOS 开发)
 
 ## 快速开始
+
+### 后端设置
 
 1. 克隆项目并安装依赖
 
@@ -79,6 +88,20 @@ npm run dev
 ```
 
 访问 [http://localhost:3000](http://localhost:3000) 查看效果。
+
+### iOS 应用设置
+
+1. 打开 iOS 项目
+
+```bash
+cd ios/IntraPaste
+open IntraPaste.xcodeproj
+```
+
+2. 构建和运行
+- 选择目标设备/模拟器
+- 按下 Cmd+R 或点击运行按钮
+- 应用需要 iOS 17.0 或更高版本
 
 ## 部署指南
 
@@ -123,6 +146,10 @@ pm2 start ecosystem.config.js
 - `components/` - React 组件
 - `lib/` - 工具函数
 - `prisma/` - 数据库模型
+- `ios/` - iOS 原生应用
+  - `Views/` - SwiftUI 视图
+  - `Services/` - API 和服务器管理
+  - `Models/` - 数据模型
 
 ## 许可证
 
