@@ -88,7 +88,7 @@ chmod +x start.sh
 
 4. 访问服务：
 - Web 界面：http://localhost:3210
-- MinIO 控制台（如果使用内置服务）：http://localhost:9001
+- MinIO 控制台（如果使用内置服务）：http://localhost:9002
 
 ### 手动部署
 
@@ -129,7 +129,7 @@ pm2 start ecosystem.config.js
 1. 安装 MinIO Server
 ```bash
 # 使用 Docker
-docker run -p 9000:9000 -p 9001:9001 minio/minio server /data --console-address ":9001"
+docker run -p 9000:9000 -p 9002:9001 minio/minio server /data --console-address ":9001"
 ```
 
 2. Bucket 创建

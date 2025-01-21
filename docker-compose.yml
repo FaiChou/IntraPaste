@@ -20,7 +20,7 @@ services:
     image: minio/minio
     ports:
       - "${MINIO_PORT}:9000"  # API 端口
-      - "9001:9001"           # Console 端口
+      - "9002:9001"           # Console 端口
     env_file:
       - .env
     volumes:

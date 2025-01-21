@@ -88,7 +88,7 @@ The script will automatically:
 
 4. Access the service:
 - Web UI: http://localhost:3210
-- MinIO Console (if using built-in service): http://localhost:9001
+- MinIO Console (if using built-in service): http://localhost:9002
 
 ### Manual Deployment
 
@@ -129,7 +129,7 @@ pm2 start ecosystem.config.js
 1. Install MinIO Server
 ```bash
 # Using Docker
-docker run -p 9000:9000 -p 9001:9001 minio/minio server /data --console-address ":9001"
+docker run -p 9000:9000 -p 9002:9001 minio/minio server /data --console-address ":9001"
 ```
 
 2. Bucket Creation
