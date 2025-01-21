@@ -51,7 +51,7 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
 1. 克隆仓库：
 ```bash
 git clone https://github.com/FaiChou/IntraPaste.git
-cd intrapaste
+cd IntraPaste
 ```
 
 2. 配置环境变量：
