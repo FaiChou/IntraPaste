@@ -28,3 +28,6 @@ services:
     command: server /data --console-address ":9001"
     profiles:
       - with-minio
+
+volumes:
+  minio_data:
