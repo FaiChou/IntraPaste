@@ -6,14 +6,14 @@ import { logger } from './logger'
 export function startCleanupJob() {
   logger.logSystem('CLEANUP', {
     action: 'start_cleanup_job',
-    details: 'Cleanup job scheduled for 2 AM daily'
+    details: { message: 'Cleanup job scheduled for 2 AM daily' }
   })
 
   cron.schedule('0 2 * * *', async () => {
     try {
       logger.logSystem('CLEANUP', {
         action: 'cleanup_started',
-        details: 'Starting daily cleanup task'
+        details: { message: 'Starting daily cleanup task' }
       })
 
       const expiredCards = await prisma.card.findMany({
@@ -72,7 +72,7 @@ export function startCleanupJob() {
     } catch (error) {
       logger.logSystem('CLEANUP', {
         action: 'cleanup_failed',
-        error
+        error: error instanceof Error ? error : new Error(String(error))
       })
     }
   })

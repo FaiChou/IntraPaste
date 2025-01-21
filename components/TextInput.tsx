@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { FileInfo } from '@/app/page'
 
 interface TextInputProps {
-  onSubmit: (content: string, type: string, fileInfo?: any) => void
+  onSubmit: (content: string, type: string, fileInfo?: FileInfo) => void
 }
 
 export function TextInput({ onSubmit }: TextInputProps) {

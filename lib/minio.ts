@@ -1,4 +1,5 @@
 import { Client } from 'minio'
+import { logger } from './logger'
 
 const MINIO_CONFIG = {
   endpoint: process.env.MINIO_ENDPOINT!,
@@ -37,9 +38,10 @@ export async function ensureBucket() {
 }
 
 export async function generatePresignedUrl(fileName: string, fileType: string) {
+  logger.info('generatePresignedUrl', { fileName, fileType });
   const objectName = `${Date.now()}-${fileName}`
   const url = await minioClient.presignedPutObject(MINIO_CONFIG.bucket, objectName, 60 * 5)
-  
+  logger.info('generatePresignedUrl', { url });
   const fileUrl = MINIO_CONFIG.port !== '80' && MINIO_CONFIG.port !== '443'
     ? `${MINIO_CONFIG.endpoint}:${MINIO_CONFIG.port}/${MINIO_CONFIG.bucket}/${objectName}`
     : `${MINIO_CONFIG.endpoint}/${MINIO_CONFIG.bucket}/${objectName}`

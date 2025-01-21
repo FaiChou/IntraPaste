@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { cookies, headers } from 'next/headers'
 import { deleteObject, getObjectSize } from '@/lib/minio'
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     const cards = await prisma.card.findMany({
       where: {

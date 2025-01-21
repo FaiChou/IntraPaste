@@ -19,6 +19,34 @@ if (!fs.existsSync(LOG_CONFIG.LOG_DIR)) {
   fs.mkdirSync(LOG_CONFIG.LOG_DIR, { recursive: true })
 }
 
+// 添加自定义类型定义
+type LogMessage = Record<string, unknown>
+type ErrorType = Error | null | undefined
+
+interface RequestLogData {
+  method: string
+  url: string
+  headers?: Record<string, string>
+  userId?: string | number
+  ip?: string
+  startTime: number
+  statusCode?: number
+  error?: ErrorType
+}
+
+interface AdminLogData {
+  action: string
+  userId: string | number
+  details?: Record<string, unknown>
+  error?: ErrorType
+}
+
+interface SystemLogData {
+  action: string
+  details?: Record<string, unknown>
+  error?: ErrorType
+}
+
 class Logger {
   private logFile: string
 
@@ -33,7 +61,7 @@ class Logger {
     return currentLevelIndex >= minLevelIndex
   }
 
-  private formatMessage(level: LogLevel, module: string, message: any): string {
+  private formatMessage(level: LogLevel, module: string, message: LogMessage): string {
     const timestamp = new Date().toISOString()
     const logData = {
       timestamp,
@@ -52,16 +80,7 @@ class Logger {
     }
   }
 
-  logRequest(module: string, data: {
-    method: string
-    url: string
-    headers?: Record<string, string>
-    userId?: string | number
-    ip?: string
-    startTime: number
-    statusCode?: number
-    error?: any
-  }) {
+  logRequest(module: string, data: RequestLogData) {
     const duration = Date.now() - data.startTime
     const level = data.error ? LogLevel.ERROR : LogLevel.INFO
     
@@ -85,12 +104,7 @@ class Logger {
     this.write(message)
   }
 
-  logAdmin(module: string, data: {
-    action: string
-    userId: string | number
-    details?: any
-    error?: any
-  }) {
+  logAdmin(module: string, data: AdminLogData) {
     const level = data.error ? LogLevel.ERROR : LogLevel.INFO
     
     if (!this.shouldLog(level)) return
@@ -103,11 +117,7 @@ class Logger {
     this.write(message)
   }
 
-  logSystem(module: string, data: {
-    action: string
-    details?: any
-    error?: any
-  }) {
+  logSystem(module: string, data: SystemLogData) {
     const level = data.error ? LogLevel.ERROR : LogLevel.INFO
     
     if (!this.shouldLog(level)) return
@@ -120,7 +130,7 @@ class Logger {
     this.write(message)
   }
 
-  log(level: LogLevel, module: string, message: any) {
+  log(level: LogLevel, module: string, message: LogMessage) {
     if (!this.shouldLog(level)) return
     
     const formattedMessage = this.formatMessage(level, module, {
@@ -131,19 +141,19 @@ class Logger {
     this.write(formattedMessage)
   }
 
-  debug(module: string, message: any) {
+  debug(module: string, message: LogMessage) {
     this.log(LogLevel.DEBUG, module, message)
   }
 
-  info(module: string, message: any) {
+  info(module: string, message: LogMessage) {
     this.log(LogLevel.INFO, module, message)
   }
 
-  warn(module: string, message: any) {
+  warn(module: string, message: LogMessage) {
     this.log(LogLevel.WARN, module, message)
   }
 
-  error(module: string, message: any) {
+  error(module: string, message: LogMessage) {
     this.log(LogLevel.ERROR, module, message)
   }
 }

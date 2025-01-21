@@ -19,7 +19,7 @@ export async function POST(request: Request) {
         headers,
         startTime,
         statusCode: 400,
-        error: 'Password is required'
+        error: new Error('Password is required')
       })
       
       return NextResponse.json(
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
       headers,
       startTime,
       statusCode: 500,
-      error
+      error: error instanceof Error ? error : new Error(String(error))
     })
     
     return NextResponse.json(

@@ -35,15 +35,15 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath }:
   const handleCopy = async () => {
     try {
       if (navigator.clipboard) {
-        await navigator.clipboard.writeText(content)
+        await navigator.clipboard.writeText(content ?? '')
       } else {
-        fallbackCopyToClipboard(content)
+        fallbackCopyToClipboard(content ?? '')
       }
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
       console.error('复制失败:', err)
-      fallbackCopyToClipboard(content)
+      fallbackCopyToClipboard(content ?? '')
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     }
@@ -94,11 +94,14 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath }:
           <div className="fixed inset-0 bg-black/70" aria-hidden="true" />
           
           <div className="fixed inset-0 flex items-center justify-center p-4">
-            <Dialog.Panel className="max-w-4xl w-full">
-              <img
-                src={filePath}
+            <Dialog.Panel className="max-w-4xl w-full relative aspect-[16/9]">
+              <Image
+                src={filePath!}
                 alt={fileName || '图片'}
-                className="w-full h-auto rounded"
+                fill
+                className="rounded object-contain"
+                sizes="(max-width: 896px) 100vw, 896px"
+                priority
               />
             </Dialog.Panel>
           </div>

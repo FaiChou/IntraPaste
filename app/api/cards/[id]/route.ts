@@ -21,7 +21,7 @@ export async function DELETE(
       headers,
       startTime,
       statusCode: 401,
-      error: 'Unauthorized'
+      error: new Error('Unauthorized')
     })
 
     return NextResponse.json(
@@ -62,7 +62,7 @@ export async function DELETE(
         headers,
         startTime,
         statusCode: 404,
-        error: 'Card not found'
+        error: new Error('Card not found')
       })
 
       return NextResponse.json(
@@ -115,7 +115,7 @@ export async function DELETE(
       headers,
       startTime,
       statusCode: 500,
-      error
+      error: error instanceof Error ? error : new Error(String(error))
     })
 
     return NextResponse.json(

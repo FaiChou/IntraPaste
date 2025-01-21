@@ -5,6 +5,13 @@ import { Card as CardComponent } from '@/components/Card'
 import { TextInput } from '@/components/TextInput'
 import { Card as PrismaCard } from '@prisma/client'
 
+export interface FileInfo {
+  fileName: string;
+  fileType: string;
+  objectName: string;
+  fileUrl: string;
+}
+
 export default function Home() {
   const [cards, setCards] = useState<PrismaCard[]>([])
 
@@ -18,15 +25,15 @@ export default function Home() {
     setCards(data)
   }
 
-  const handleNewCard = async (content: string, type: string, fileInfo?: any) => {
+  const handleNewCard = async (content: string, type: string, fileInfo?: FileInfo) => {
     const payload = type === 'text' 
       ? { content, type }
       : {
           type,
-          fileName: fileInfo.fileName,
-          fileType: fileInfo.fileType,
-          objectName: fileInfo.objectName,
-          fileUrl: fileInfo.fileUrl,
+          fileName: fileInfo?.fileName ?? '',
+          fileType: fileInfo?.fileType ?? '',
+          objectName: fileInfo?.objectName ?? '',
+          fileUrl: fileInfo?.fileUrl ?? '',
         }
 
     await fetch('/api/cards', {
@@ -48,12 +55,12 @@ export default function Home() {
           {cards.map((card: PrismaCard) => (
             <CardComponent
               key={card.id} 
-              content={card.content}
+              content={card.content ?? ''}
               createdAt={typeof card.createdAt === 'string' ? card.createdAt : card.createdAt.toISOString()} 
               type={card.type}
-              fileName={card.fileName}
-              fileSize={card.fileSize}
-              filePath={card.filePath}
+              fileName={card.fileName ?? undefined}
+              fileSize={card.fileSize ?? undefined}
+              filePath={card.filePath ?? undefined}
             />
           ))}
         </div>
