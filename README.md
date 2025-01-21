@@ -1,30 +1,49 @@
 # IntraPaste
 
-IntraPaste is a simple text sharing service that allows users to create temporary text cards and share them with others. Each text card is stored in the database and the system automatically cleans up expired content.
+IntraPaste is a simple and efficient temporary content sharing service that supports text and image sharing. All content will be automatically cleaned up after a specified time to keep the system clean.
 
 ## Features
 
-- 🚀 Quick text creation and sharing
-- 🌓 Light/Dark theme support
-- 📱 Fully responsive design
-- 📋 Click card to copy to clipboard
-- 👨‍💼 Admin panel
-- 🧹 Automatic cleanup of expired content
+- 📝 Text Sharing
+  - Multi-line text support
+  - Click to copy
+  - Shift + Enter for new line
+- 📸 Image Sharing
+  - Image preview
+  - Click to zoom
+  - One-click download
+- 🎨 UI/UX
+  - Light/Dark theme
+  - Fully responsive design
+  - Clean and intuitive interface
+- 👨‍💼 Admin Features
+  - Admin dashboard
+  - Content management
+  - Password management
+- 🧹 System Features
+  - Auto cleanup expired content
+  - File storage management
+  - System logging
 
 ## Tech Stack
 
-- [Next.js 15](https://nextjs.org/)
-- [React 19](https://react.dev/)
-- [Prisma](https://www.prisma.io/)
-- [TailwindCSS](https://tailwindcss.com/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [PM2](https://pm2.keymetrics.io/)
+- [Next.js 15](https://nextjs.org/) - React Framework
+- [React 19](https://react.dev/) - UI Library
+- [Prisma](https://www.prisma.io/) - Database ORM
+- [TailwindCSS](https://tailwindcss.com/) - CSS Framework
+- [TypeScript](https://www.typescriptlang.org/) - Type System
+- [MinIO](https://min.io/) - Object Storage
+- [PM2](https://pm2.keymetrics.io/) - Process Manager
 
-## How to use
+## Requirements
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+- Node.js 18+
+- SQLite
+- MinIO Server
 
-Frist, clone the project and install dependencies
+## Getting Started
+
+1. Clone and install dependencies
 
 ```bash
 git clone https://github.com/FaiChou/IntraPaste.git
@@ -32,35 +51,77 @@ cd IntraPaste
 npm install
 ```
 
-Then, run the development server
+2. Configure environment variables
+
+Create `.env` file:
+
+```bash
+# MinIO Config
+MINIO_ENDPOINT=http://your-minio-server
+MINIO_PORT=9000
+MINIO_ROOT_USER=your-access-key
+MINIO_ROOT_PASSWORD=your-secret-key
+```
+
+3. Initialize database
+
+```bash
+npx prisma generate
+npx prisma migrate deploy
+```
+
+4. Start development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment Guide
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### MinIO Setup
 
-## Learn More
+1. Install MinIO Server
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Using Docker
+docker run -p 9000:9000 -p 9001:9001 minio/minio server /data --console-address ":9001"
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Bucket Creation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The system will automatically create a bucket named `intrapaste` and set appropriate access policies.
 
-## Deploy on Vercel
+### Deploy with PM2
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Build the project
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+```
+
+2. Start with PM2
+
+```bash
+pm2 start ecosystem.config.js
+```
+
+The project runs on port 3210 by default.
+
+### Admin Access
+
+The default password for first-time admin panel access is `admin`. Please change it immediately for security.
+
+Access path: `http://your-domain/admin`
+
+## Development
+
+- `app/page.tsx` - Main page
+- `components/` - React components
+- `lib/` - Utility functions
+- `prisma/` - Database models
+
+## License
+
+[MIT License](LICENSE)
