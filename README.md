@@ -42,57 +42,102 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
 - [MinIO](https://min.io/) - Object Storage
 - [PM2](https://pm2.keymetrics.io/) - Process Manager
 - [SwiftUI](https://developer.apple.com/xcode/swiftui/) - iOS UI Framework
+- [Docker](https://www.docker.com/) - Containerization
 
-## Requirements
+## Deployment
+
+### Docker Deployment (Recommended)
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/intrapaste.git
+cd intrapaste
+```
+
+2. Configure environment variables:
+```bash
+cp .env.example .env
+```
+
+Edit `.env` file according to your needs:
+- Use built-in MinIO service:
+```bash
+MINIO_ENDPOINT=http://minio
+MINIO_PORT=9000
+MINIO_ROOT_USER=minioadmin
+MINIO_ROOT_PASSWORD=minioadmin
+```
+- Use external MinIO service:
+```bash
+MINIO_ENDPOINT=http://your-minio-server
+MINIO_PORT=9000
+MINIO_ROOT_USER=your-user
+MINIO_ROOT_PASSWORD=your-password
+```
+
+3. Start the service:
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+The script will automatically:
+- Detect if you're using built-in or external MinIO service
+- Start necessary containers based on your configuration
+- Initialize the database and run migrations
+
+4. Access the service:
+- Web UI: http://localhost:3210
+- MinIO Console (if using built-in service): http://localhost:9001
+
+### Manual Deployment
+
+#### Requirements
 
 - Node.js 18+
 - SQLite
 - MinIO Server
 - Xcode 15+ (for iOS development)
 
-## Getting Started
+#### Backend Setup
 
-### Backend Setup
-
-1. Clone and install dependencies
-
+1. Install dependencies
 ```bash
-git clone https://github.com/FaiChou/IntraPaste.git
-cd IntraPaste
 npm install
 ```
 
 2. Configure environment variables
-
-Create `.env` file:
-
 ```bash
-# MinIO Config
-MINIO_ENDPOINT=http://your-minio-server
-MINIO_PORT=9000
-MINIO_ROOT_USER=your-access-key
-MINIO_ROOT_PASSWORD=your-secret-key
+cp .env.example .env
+# Edit .env with your settings
 ```
 
 3. Initialize database
-
 ```bash
 npx prisma generate
 npx prisma migrate deploy
 ```
 
-4. Start development server
-
+4. Build and start with PM2
 ```bash
-npm run dev
+npm run build
+pm2 start ecosystem.config.js
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see the result.
+#### MinIO Setup
+
+1. Install MinIO Server
+```bash
+# Using Docker
+docker run -p 9000:9000 -p 9001:9001 minio/minio server /data --console-address ":9001"
+```
+
+2. Bucket Creation
+The system will automatically create a bucket named `intrapaste` and set appropriate access policies.
 
 ### iOS App Setup
 
 1. Open iOS project
-
 ```bash
 cd ios/IntraPaste
 open IntraPaste.xcodeproj
@@ -102,43 +147,6 @@ open IntraPaste.xcodeproj
 - Select your target device/simulator
 - Press Cmd+R or click the Run button
 - The app requires iOS 17.0 or later
-
-## Deployment Guide
-
-### MinIO Setup
-
-1. Install MinIO Server
-
-```bash
-# Using Docker
-docker run -p 9000:9000 -p 9001:9001 minio/minio server /data --console-address ":9001"
-```
-
-2. Bucket Creation
-
-The system will automatically create a bucket named `intrapaste` and set appropriate access policies.
-
-### Deploy with PM2
-
-1. Build the project
-
-```bash
-npm run build
-```
-
-2. Start with PM2
-
-```bash
-pm2 start ecosystem.config.js
-```
-
-The project runs on port 3210 by default.
-
-### Admin Access
-
-The default password for first-time admin panel access is `admin`. Please change it immediately for security.
-
-Access path: `http://your-domain/admin`
 
 ## Development
 

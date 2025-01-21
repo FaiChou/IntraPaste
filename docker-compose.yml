@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3210:3210"
+    env_file:
+      - .env
+    volumes:
+      - ./prisma:/app/prisma
+      - ./logs:/app/logs
+    depends_on:
+      - minio
+    profiles:
+      - default
+
+  # MinIO 服务仅在未指定外部 MINIO_ENDPOINT 时启用
+  minio:
+    image: minio/minio
+    ports:
+      - "${MINIO_PORT}:9000"  # API 端口
+      - "9001:9001"           # Console 端口
+    env_file:
+      - .env
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    profiles:
+      - with-minio
+
+volumes:
+  minio_data:
+    profiles:
+      - with-minio 
