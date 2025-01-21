@@ -16,4 +16,4 @@ if [[ $MINIO_ENDPOINT == "http://minio" ]]; then
 else
     echo "Using external MinIO service at $MINIO_ENDPOINT"
     docker compose up -d app
-fi 
+fi
