@@ -5,12 +5,19 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# 设置 npm 镜像
-RUN npm config set registry https://registry.npmmirror.com
+# 设置 npm 镜像和配置
+RUN npm config set registry https://registry.npmmirror.com && \
+    npm config set fetch-retries 5 && \
+    npm config set fetch-retry-mintimeout 20000 && \
+    npm config set fetch-retry-maxtimeout 120000
+
+# 设置 Prisma 镜像
+ENV PRISMA_ENGINES_MIRROR=https://registry.npmmirror.com/-/binary/prisma
 
 # 安装构建依赖
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --no-audit --no-fund || \
+    (rm -rf node_modules && npm cache clean --force && npm ci --no-audit --no-fund)
 
 # 复制源代码
 COPY . .
