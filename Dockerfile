@@ -32,8 +32,11 @@ RUN npm config set registry https://registry.npmmirror.com
 # 安装 PM2
 RUN npm install -g pm2
 
-# 创建必要的目录
-RUN mkdir -p /app/logs /app/prisma
+# 创建必要的目录并设置权限
+RUN mkdir -p /app/logs /app/prisma && \
+    chown -R node:node /app && \
+    # 确保 prisma 目录可写
+    chmod 777 /app/prisma
 
 # 复制构建产物和必要文件
 COPY --from=builder /app/.next/standalone ./
@@ -46,7 +49,9 @@ COPY docker-entrypoint.sh ./
 
 # 设置权限
 RUN chmod +x ./docker-entrypoint.sh && \
-    chown -R node:node /app
+    chown -R node:node /app && \
+    # 确保数据库目录有写权限
+    chmod 777 /app/prisma
 
 # 切换到非 root 用户
 USER node
