@@ -2,16 +2,17 @@
 
 FROM node:18-alpine AS base
 
+# 配置 npm 镜像源和重试策略
+RUN npm config set registry https://registry.npmmirror.com \
+    && npm config set fetch-retry-maxtimeout 600000 \
+    && npm config set fetch-retry-mintimeout 10000 \
+    && npm config set fetch-retries 5
+
 # Install dependencies only when needed
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-
-# 添加 npm 重试配置
-RUN npm config set fetch-retry-maxtimeout 600000 \
-    && npm config set fetch-retry-mintimeout 10000 \
-    && npm config set fetch-retries 5
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
@@ -50,11 +51,6 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-
-# 添加 npm 重试配置
-RUN npm config set fetch-retry-maxtimeout 600000 \
-    && npm config set fetch-retry-mintimeout 10000 \
-    && npm config set fetch-retries 5
 
 # Install PM2 globally
 RUN npm install -g pm2
