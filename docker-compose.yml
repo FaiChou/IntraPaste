@@ -12,26 +12,7 @@ services:
       - ./logs:/app/logs
       - sqlite_data:/app/prisma
       - log_data:/app/logs
-    depends_on:
-      minio:
-        condition: service_started
-        required: false
-
-  # MinIO 服务仅在未指定外部 MINIO_ENDPOINT 时启用
-  minio:
-    image: minio/minio
-    ports:
-      - "${MINIO_PORT}:9000"  # API 端口
-      - "9002:9001"           # Console 端口
-    env_file:
-      - .env
-    volumes:
-      - minio_data:/data
-    command: server /data --console-address ":9001"
-    profiles:
-      - with-minio
 
 volumes:
-  minio_data:
   sqlite_data:
   log_data:

@@ -32,21 +32,9 @@ load_env() {
 # 启动服务
 start_services() {
     echo -e "${YELLOW}Starting IntraPaste services...${NC}"
-    
-    if [[ "${MINIO_ENDPOINT}" == "http://minio" ]]; then
-        echo -e "${GREEN}Using built-in MinIO service...${NC}"
-        docker compose --profile with-minio up -d
-    else
-        echo -e "${GREEN}Using external MinIO service at ${MINIO_ENDPOINT}${NC}"
-        docker compose up -d app
-    fi
-
+    docker compose up -d app
     echo -e "${GREEN}Services started successfully!${NC}"
     echo "Web UI: http://localhost:3210"
-    
-    if [[ "${MINIO_ENDPOINT}" == "http://minio" ]]; then
-        echo "MinIO Console: http://localhost:9002"
-    fi
 }
 
 # 主流程

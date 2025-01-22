@@ -59,15 +59,7 @@ cd IntraPaste
 cp .env.example .env
 ```
 
-Edit `.env` file according to your needs:
-- Use built-in MinIO service:
-```bash
-MINIO_ENDPOINT=http://minio
-MINIO_PORT=9000
-MINIO_ROOT_USER=minioadmin
-MINIO_ROOT_PASSWORD=minioadmin
-```
-- Use external MinIO service:
+Edit `.env` file with your MinIO settings:
 ```bash
 MINIO_ENDPOINT=http://your-minio-server
 MINIO_PORT=9000
@@ -75,20 +67,39 @@ MINIO_ROOT_USER=your-user
 MINIO_ROOT_PASSWORD=your-password
 ```
 
-3. Start the service:
+3. (Optional) Run MinIO locally:
+If you don't have a MinIO server, you can run one locally:
+```bash
+docker run -d \
+  --name minio \
+  -p 9000:9000 \
+  -p 9001:9001 \
+  -e "MINIO_ROOT_USER=minioadmin" \
+  -e "MINIO_ROOT_PASSWORD=minioadmin" \
+  minio/minio server /data --console-address ":9001"
+```
+
+Then update your `.env` file:
+```bash
+MINIO_ENDPOINT=http://192.168.2.100
+MINIO_PORT=9000
+MINIO_ROOT_USER=minioadmin
+MINIO_ROOT_PASSWORD=minioadmin
+```
+
+4. Start the service:
 ```bash
 chmod +x start.sh
 ./start.sh
 ```
 
 The script will automatically:
-- Detect if you're using built-in or external MinIO service
-- Start necessary containers based on your configuration
+- Start the application container
 - Initialize the database and run migrations
 
-4. Access the service:
+5. Access the service:
 - Web UI: http://localhost:3210
-- MinIO Console (if using built-in service): http://localhost:9002
+- MinIO Console (if running locally): http://192.168.2.100:9001
 
 ### Manual Deployment
 

@@ -59,15 +59,7 @@ cd IntraPaste
 cp .env.example .env
 ```
 
-根据需要编辑 `.env` 文件：
-- 使用内置 MinIO 服务：
-```bash
-MINIO_ENDPOINT=http://minio
-MINIO_PORT=9000
-MINIO_ROOT_USER=minioadmin
-MINIO_ROOT_PASSWORD=minioadmin
-```
-- 使用外部 MinIO 服务：
+编辑 `.env` 文件配置 MinIO 设置：
 ```bash
 MINIO_ENDPOINT=http://your-minio-server
 MINIO_PORT=9000
@@ -75,20 +67,39 @@ MINIO_ROOT_USER=your-user
 MINIO_ROOT_PASSWORD=your-password
 ```
 
-3. 启动服务：
+3. （可选）本地运行 MinIO：
+如果你没有 MinIO 服务器，可以在本地运行一个：
+```bash
+docker run -d \
+  --name minio \
+  -p 9000:9000 \
+  -p 9001:9001 \
+  -e "MINIO_ROOT_USER=minioadmin" \
+  -e "MINIO_ROOT_PASSWORD=minioadmin" \
+  minio/minio server /data --console-address ":9001"
+```
+
+然后更新你的 `.env` 文件：
+```bash
+MINIO_ENDPOINT=http://192.168.2.100
+MINIO_PORT=9000
+MINIO_ROOT_USER=minioadmin
+MINIO_ROOT_PASSWORD=minioadmin
+```
+
+4. 启动服务：
 ```bash
 chmod +x start.sh
 ./start.sh
 ```
 
 启动脚本会自动：
-- 检测是使用内置还是外部 MinIO 服务
-- 根据配置启动必要的容器
+- 启动应用容器
 - 初始化数据库并运行迁移
 
-4. 访问服务：
+5. 访问服务：
 - Web 界面：http://localhost:3210
-- MinIO 控制台（如果使用内置服务）：http://localhost:9002
+- MinIO 控制台（如果在本地运行）：http://192.168.2.100:9001
 
 ### 手动部署
 
