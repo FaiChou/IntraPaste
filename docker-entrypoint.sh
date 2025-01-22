@@ -4,6 +4,10 @@ set -e
 MAX_RETRIES=5
 RETRY_DELAY=5
 
+# 确保数据库目录存在并设置正确的权限
+mkdir -p /app/prisma/db
+chown -R nextjs:nodejs /app/prisma/db
+
 echo "Running database migrations..."
 for i in $(seq 1 $MAX_RETRIES); do
     if npx prisma migrate deploy; then

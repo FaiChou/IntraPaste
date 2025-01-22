@@ -59,6 +59,10 @@ RUN npm install -g pm2 prisma
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+# Create prisma and database directories with correct permissions
+RUN mkdir -p /app/prisma/db \
+    && chown -R nextjs:nodejs /app/prisma
+
 # Copy necessary files
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/ecosystem.config.js ./
