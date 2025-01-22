@@ -5,19 +5,16 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# 设置 npm 镜像和配置
-RUN npm config set registry https://registry.npmmirror.com && \
-    npm config set fetch-retries 5 && \
-    npm config set fetch-retry-mintimeout 20000 && \
-    npm config set fetch-retry-maxtimeout 120000
-
-# 设置 Prisma 镜像
-ENV PRISMA_ENGINES_MIRROR=https://registry.npmmirror.com/-/binary/prisma
+# 复制 package.json 和 .npmrc
+COPY package*.json .npmrc ./
 
 # 安装构建依赖
-COPY package*.json ./
 RUN npm ci --no-audit --no-fund || \
     (rm -rf node_modules && npm cache clean --force && npm ci --no-audit --no-fund)
+
+# 设置 Prisma 相关环境变量
+ENV PRISMA_CLIENT_ENGINE_TYPE="binary"
+ENV PRISMA_ENGINES_TIMEOUT=30000
 
 # 复制源代码
 COPY . .
@@ -32,9 +29,6 @@ RUN npm run build
 FROM node:18-alpine AS runner
 
 WORKDIR /app
-
-# 设置 npm 镜像
-RUN npm config set registry https://registry.npmmirror.com
 
 # 创建必要的目录并设置权限
 RUN mkdir -p /app/logs /app/prisma && \
