@@ -24,7 +24,7 @@ COPY . .
 
 # 生成 Prisma Client
 RUN npx prisma generate
-
+RUN npx prisma migrate deploy
 # 构建应用
 RUN npm run build
 
@@ -60,5 +60,9 @@ USER node
 # 暴露端口
 EXPOSE 3210
 
-# 启动命令
-ENTRYPOINT ["./docker-entrypoint.sh"] 
+ENV PORT=3210
+
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
+ENV HOSTNAME="0.0.0.0"
+CMD ["node", "server.js"]
