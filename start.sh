@@ -13,13 +13,11 @@ check_requirements() {
         echo -e "${RED}Error: .env file not found!${NC}"
         echo "Please copy .env.example to .env and configure it."
         exit 1
-    }
 
     if ! command -v docker compose &> /dev/null; then
         echo -e "${RED}Error: docker compose not found!${NC}"
         echo "Please install Docker and docker compose."
         exit 1
-    }
 }
 
 # 读取环境变量
