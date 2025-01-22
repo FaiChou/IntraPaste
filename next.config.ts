@@ -6,25 +6,16 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: '192.168.11.101',
-        port: '9000',
-        pathname: '/intrapaste/**',
-        search: '',
+        hostname: '*',
+        port: '*',
+        pathname: '**',
       },
       {
-        protocol: 'http',
-        hostname: '100.64.0.19',
-        port: '9000',
-        pathname: '/intrapaste/**',
-        search: '',
-      },
-      {
-        protocol: 'http',
-        hostname: '100.64.0.4',
-        port: '9000',
-        pathname: '/intrapaste/**',
-        search: '',
-      },
+        protocol: 'https',
+        hostname: '*',
+        port: '*',
+        pathname: '**',
+      }
     ],
   },
 };
