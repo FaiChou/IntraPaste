@@ -47,11 +47,9 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma/
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-COPY docker-entrypoint.sh ./
 
 # 设置权限
-RUN chmod +x ./docker-entrypoint.sh && \
-    chown -R node:node /app && \
+RUN chown -R node:node /app && \
     chmod 777 /app/prisma
 
 # 切换到非 root 用户
