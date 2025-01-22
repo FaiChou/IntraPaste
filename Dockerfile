@@ -21,7 +21,7 @@ COPY . .
 
 # 生成 Prisma Client
 RUN npx prisma generate
-RUN npx prisma migrate deploy
+
 # 构建应用
 RUN npm run build
 
@@ -52,9 +52,17 @@ USER node
 # 暴露端口
 EXPOSE 3210
 
+# 环境变量配置
 ENV PORT=3210
-
-# server.js is created by next build from the standalone output
-# https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+ENV NODE_ENV=production
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT}/api/health || exit 1
+
+# 启动命令
+COPY --from=builder /app/docker-entrypoint.sh ./
+RUN chmod +x docker-entrypoint.sh
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
