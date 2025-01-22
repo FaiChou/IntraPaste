@@ -50,6 +50,9 @@ RUN chown -R node:node /app && \
     chmod 777 /app/prisma && \
     chmod +x docker-entrypoint.sh
 
+# 安装必要工具
+RUN apk add --no-cache curl
+
 # 切换到非 root 用户
 USER node
 
