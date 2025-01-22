@@ -11,6 +11,7 @@ services:
       - ./prisma:/app/prisma
       - ./logs:/app/logs
       - sqlite_data:/app/prisma
+      - log_data:/app/logs
     depends_on:
       minio:
         condition: service_started
@@ -33,3 +34,4 @@ services:
 volumes:
   minio_data:
   sqlite_data:
+  log_data:

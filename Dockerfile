@@ -33,6 +33,7 @@ WORKDIR /app
 # 创建必要的目录并设置权限
 RUN mkdir -p /app/logs /app/prisma && \
     chown -R node:node /app && \
+    chmod -R 777 /app/logs && \
     chmod 777 /app/prisma
 
 # 复制构建产物和必要文件
@@ -45,6 +46,7 @@ COPY --from=builder /app/docker-entrypoint.sh ./
 
 # 设置权限
 RUN chown -R node:node /app && \
+    chmod -R 777 /app/logs && \
     chmod 777 /app/prisma && \
     chmod +x docker-entrypoint.sh
 
