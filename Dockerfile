@@ -5,6 +5,9 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
+# 设置 npm 镜像
+RUN npm config set registry https://registry.npmmirror.com
+
 # 安装构建依赖
 COPY package*.json ./
 RUN npm ci
@@ -22,6 +25,9 @@ RUN npm run build
 FROM node:18-alpine AS runner
 
 WORKDIR /app
+
+# 设置 npm 镜像
+RUN npm config set registry https://registry.npmmirror.com
 
 # 安装 PM2
 RUN npm install -g pm2
