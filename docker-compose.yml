@@ -11,7 +11,9 @@ services:
       - ./prisma:/app/prisma
       - ./logs:/app/logs
     depends_on:
-      - minio
+      minio:
+        condition: service_started
+        required: false
 
   # MinIO 服务仅在未指定外部 MINIO_ENDPOINT 时启用
   minio:
