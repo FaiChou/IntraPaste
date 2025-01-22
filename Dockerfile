@@ -41,10 +41,12 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma/
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder /app/docker-entrypoint.sh ./
 
 # 设置权限
 RUN chown -R node:node /app && \
-    chmod 777 /app/prisma
+    chmod 777 /app/prisma && \
+    chmod +x docker-entrypoint.sh
 
 # 切换到非 root 用户
 USER node
@@ -62,7 +64,4 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT}/api/health || exit 1
 
 # 启动命令
-COPY --from=builder /app/docker-entrypoint.sh ./
-RUN chmod +x docker-entrypoint.sh
-
 ENTRYPOINT ["./docker-entrypoint.sh"]
