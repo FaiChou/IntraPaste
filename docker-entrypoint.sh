@@ -7,7 +7,7 @@ chmod -R 777 /app/logs
 
 # 等待数据库就绪
 echo "Waiting for database to be ready..."
-npx prisma migrate deploy
+NODE_ENV=production ./node_modules/.bin/prisma migrate deploy
 
 # 启动应用
 echo "Starting application..."

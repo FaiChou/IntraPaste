@@ -36,13 +36,18 @@ RUN mkdir -p /app/logs /app/prisma && \
     chmod -R 777 /app/logs && \
     chmod 777 /app/prisma
 
+# 复制 package.json 和 prisma 相关文件
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/prisma ./prisma/
+
+# 安装生产环境依赖
+RUN npm install --production --no-audit --no-fund prisma
+
 # 复制构建产物和必要文件
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/prisma ./prisma/
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder /app/docker-entrypoint.sh ./
 
 # 设置权限
