@@ -12,6 +12,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [minioEnabled, setMinioEnabled] = useState(false)
 
   const adjustHeight = () => {
     const textarea = textareaRef.current
@@ -24,6 +25,22 @@ export function TextInput({ onSubmit }: TextInputProps) {
   useEffect(() => {
     adjustHeight()
   }, [content])
+
+  useEffect(() => {
+    // 检查 MinIO 状态
+    const checkMinioStatus = async () => {
+      try {
+        const res = await fetch('/api/minio/health')
+        const data = await res.json()
+        setMinioEnabled(data.enabled)
+      } catch (error) {
+        console.error('Failed to check MinIO status:', error)
+        setMinioEnabled(false)
+      }
+    }
+
+    checkMinioStatus()
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -108,14 +125,16 @@ export function TextInput({ onSubmit }: TextInputProps) {
         onChange={handleFileUpload}
         className="hidden"
       />
-      <button
-        type="button"
-        onClick={() => fileInputRef.current?.click()}
-        disabled={isUploading}
-        className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-400"
-      >
-        {isUploading ? '上传中...' : '上传图片'}
-      </button>
+      {minioEnabled && (
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={isUploading}
+          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-400"
+        >
+          {isUploading ? '上传中...' : '上传图片'}
+        </button>
+      )}
       <button
         type="submit"
         className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"

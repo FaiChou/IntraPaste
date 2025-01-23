@@ -17,24 +17,64 @@ const minioClient = new Client({
   secretKey: MINIO_CONFIG.password,
 })
 
-export async function ensureBucket() {
-  const exists = await minioClient.bucketExists(MINIO_CONFIG.bucket)
-  if (!exists) {
-    await minioClient.makeBucket(MINIO_CONFIG.bucket)
-    const policy = {
-      Version: '2012-10-17',
-      Statement: [
-        {
-          Effect: 'Allow',
-          Principal: { AWS: ['*'] },
-          Action: ['s3:GetObject'],
-          Resource: [`arn:aws:s3:::${MINIO_CONFIG.bucket}/*`],
-        },
-      ],
-    }
-    await minioClient.setBucketPolicy(MINIO_CONFIG.bucket, JSON.stringify(policy))
+export async function checkMinioConnection() {
+  if (!process.env.MINIO_ENDPOINT || 
+      !process.env.MINIO_ROOT_USER || 
+      !process.env.MINIO_ROOT_PASSWORD) {
+    return false
   }
-  console.log('Bucket exists and policy set')
+
+  try {
+    await minioClient.listBuckets()
+    return true
+  } catch (error) {
+    logger.error('minio', { 
+      action: 'check_connection',
+      error: error instanceof Error ? error.message : String(error)
+    })
+    return false
+  }
+}
+
+export async function ensureBucket() {
+  const isConnected = await checkMinioConnection()
+  if (!isConnected) {
+    logger.warn('minio', { 
+      action: 'ensure_bucket',
+      message: 'MinIO is not configured or unavailable'
+    })
+    return false
+  }
+
+  try {
+    const exists = await minioClient.bucketExists(MINIO_CONFIG.bucket)
+    if (!exists) {
+      await minioClient.makeBucket(MINIO_CONFIG.bucket)
+      const policy = {
+        Version: '2012-10-17',
+        Statement: [
+          {
+            Effect: 'Allow',
+            Principal: { AWS: ['*'] },
+            Action: ['s3:GetObject'],
+            Resource: [`arn:aws:s3:::${MINIO_CONFIG.bucket}/*`],
+          },
+        ],
+      }
+      await minioClient.setBucketPolicy(MINIO_CONFIG.bucket, JSON.stringify(policy))
+    }
+    logger.info('minio', { 
+      action: 'ensure_bucket',
+      message: 'Bucket exists and policy set'
+    })
+    return true
+  } catch (error) {
+    logger.error('minio', {
+      action: 'ensure_bucket',
+      error: error instanceof Error ? error.message : String(error)
+    })
+    return false
+  }
 }
 
 export async function generatePresignedUrl(fileName: string, fileType: string) {
