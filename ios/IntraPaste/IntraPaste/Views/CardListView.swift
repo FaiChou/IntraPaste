@@ -22,6 +22,7 @@ struct CardListView: View {
     @State private var isLoading = false
     @State private var error: String?
     @State private var selectedItem: PhotosPickerItem?
+    @State private var minioEnabled = false
     
     var body: some View {
         ZStack {
@@ -61,9 +62,11 @@ struct CardListView: View {
                                 .stroke(Color.gray.opacity(0.2), lineWidth: 1)
                         )
                     
-                    PhotosPicker(selection: $selectedItem, matching: .images) {
-                        Image(systemName: "photo")
-                            .foregroundColor(.green)
+                    if minioEnabled {
+                        PhotosPicker(selection: $selectedItem, matching: .images) {
+                            Image(systemName: "photo")
+                                .foregroundColor(.green)
+                        }
                     }
                     
                     Button(action: createNewCard) {
@@ -93,6 +96,7 @@ struct CardListView: View {
             if cards.isEmpty {
                 fetchCards()
             }
+            checkMinioStatus()
         }
         .alert("错误", isPresented: .constant(error != nil)) {
             Button("确定") { error = nil }
@@ -183,5 +187,17 @@ struct CardListView: View {
     private func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                       to: nil, from: nil, for: nil)
+    }
+    
+    @MainActor
+    private func checkMinioStatus() {
+        Task {
+            do {
+                minioEnabled = try await APIClient.shared.checkMinioStatus(server: server)
+            } catch {
+                minioEnabled = false
+                print("Failed to check MinIO status:", error)
+            }
+        }
     }
 }

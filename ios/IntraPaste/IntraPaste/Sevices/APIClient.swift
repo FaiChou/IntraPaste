@@ -8,6 +8,10 @@ enum APIError: Error {
     case decodingError
 }
 
+struct MinioHealthResponse: Decodable {
+    let enabled: Bool
+}
+
 class APIClient {
     static let shared = APIClient()
     
@@ -197,4 +201,21 @@ class APIClient {
             server: server
         )
     }
+    
+    func checkMinioStatus(server: Server) async throws -> Bool {
+        guard let url = URL(string: "\(server.url)/api/minio/health") else {
+            throw APIError.invalidURL
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw APIError.invalidResponse
+        }
+        
+        let healthResponse = try JSONDecoder().decode(MinioHealthResponse.self, from: data)
+        return healthResponse.enabled
+    }
 }
+
