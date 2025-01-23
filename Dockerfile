@@ -28,12 +28,10 @@ COPY --from=builder /app/.npmrc ./
 COPY --from=builder /app/prisma ./prisma/
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/docker-entrypoint.sh ./
 
 RUN chown -R node:node /app && \
     chmod -R 777 /app/logs && \
-    chmod 777 /app/prisma && \
-    chmod +x docker-entrypoint.sh
+    chmod 777 /app/prisma
 
 RUN apk add --no-cache curl
 
@@ -48,4 +46,11 @@ ENV NODE_ENV=production
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT}/api/health || exit 1
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
+CMD npx -y prisma migrate deploy && \
+    if [ $? -eq 0 ]; then \
+        echo "Database migration completed successfully" && \
+        exec node server.js; \
+    else \
+        echo "Database migration failed." && \
+        exit 1; \
+    fi
