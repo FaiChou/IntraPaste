@@ -15,7 +15,8 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
   - 支持多行文本
   - 点击即可复制
   - Shift + Enter 换行
-- 📸 图片分享
+- 📸 图片分享（可选）
+  - 需要配置 MinIO
   - 图片预览
   - 点击放大
   - 一键下载
@@ -29,7 +30,7 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
   - 密码管理
 - 🧹 系统功能
   - 自动清理过期内容
-  - 文件存储管理
+  - 可选的文件存储（MinIO）
   - 系统日志记录
 
 ## 技术栈
@@ -39,7 +40,7 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
 - [Prisma](https://www.prisma.io/) - 数据库 ORM
 - [TailwindCSS](https://tailwindcss.com/) - CSS 框架
 - [TypeScript](https://www.typescriptlang.org/) - 类型系统
-- [MinIO](https://min.io/) - 对象存储服务
+- [MinIO](https://min.io/) - 对象存储（可选）
 - [PM2](https://pm2.keymetrics.io/) - 进程管理器
 - [SwiftUI](https://developer.apple.com/xcode/swiftui/) - iOS UI 框架
 - [Docker](https://www.docker.com/) - 容器化工具
@@ -59,7 +60,8 @@ cd IntraPaste
 cp .env.example .env
 ```
 
-编辑 `.env` 文件配置 MinIO 设置：
+3. MinIO 配置（可选）：
+如果你想启用图片分享功能，需要在 `.env` 文件中配置 MinIO：
 ```bash
 MINIO_ENDPOINT=http://your-minio-server
 MINIO_PORT=9000
@@ -67,8 +69,9 @@ MINIO_ROOT_USER=your-user
 MINIO_ROOT_PASSWORD=your-password
 ```
 
-3. （可选）本地运行 MinIO：
-如果你没有 MinIO 服务器，可以在本地运行一个：
+如果不配置 MinIO，系统将以纯文本模式运行。
+
+你也可以使用 Docker 在本地运行 MinIO：
 ```bash
 docker run -d \
   --name minio \
@@ -96,6 +99,7 @@ chmod +x start.sh
 启动脚本会自动：
 - 启动应用容器
 - 初始化数据库并运行迁移
+- 检查并初始化 MinIO（如果已配置）
 
 5. 访问服务：
 - Web 界面：http://localhost:3210
@@ -107,8 +111,8 @@ chmod +x start.sh
 
 - Node.js 18+
 - SQLite
-- MinIO Server
-- Xcode 15+ (用于 iOS 开发)
+- MinIO Server（可选，用于图片分享）
+- Xcode 15+（用于 iOS 开发）
 
 #### 后端设置
 

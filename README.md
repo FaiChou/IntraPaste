@@ -15,7 +15,8 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
   - Multi-line text support
   - Click to copy
   - Shift + Enter for new line
-- 📸 Image Sharing
+- 📸 Image Sharing (Optional)
+  - Requires MinIO setup
   - Image preview
   - Click to zoom
   - One-click download
@@ -29,7 +30,7 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
   - Password management
 - 🧹 System Features
   - Auto cleanup expired content
-  - File storage management
+  - Optional file storage with MinIO
   - System logging
 
 ## Tech Stack
@@ -39,7 +40,7 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
 - [Prisma](https://www.prisma.io/) - Database ORM
 - [TailwindCSS](https://tailwindcss.com/) - CSS Framework
 - [TypeScript](https://www.typescriptlang.org/) - Type System
-- [MinIO](https://min.io/) - Object Storage
+- [MinIO](https://min.io/) - Object Storage (Optional)
 - [PM2](https://pm2.keymetrics.io/) - Process Manager
 - [SwiftUI](https://developer.apple.com/xcode/swiftui/) - iOS UI Framework
 - [Docker](https://www.docker.com/) - Containerization
@@ -59,7 +60,8 @@ cd IntraPaste
 cp .env.example .env
 ```
 
-Edit `.env` file with your MinIO settings:
+3. MinIO Configuration (Optional):
+If you want to enable image sharing, configure MinIO settings in your `.env` file:
 ```bash
 MINIO_ENDPOINT=http://your-minio-server
 MINIO_PORT=9000
@@ -67,8 +69,9 @@ MINIO_ROOT_USER=your-user
 MINIO_ROOT_PASSWORD=your-password
 ```
 
-3. (Optional) Run MinIO locally:
-If you don't have a MinIO server, you can run one locally:
+If MinIO is not configured, the system will operate in text-only mode.
+
+You can run MinIO locally using Docker:
 ```bash
 docker run -d \
   --name minio \
@@ -96,6 +99,7 @@ chmod +x start.sh
 The script will automatically:
 - Start the application container
 - Initialize the database and run migrations
+- Check and initialize MinIO if configured
 
 5. Access the service:
 - Web UI: http://localhost:3210
@@ -107,7 +111,7 @@ The script will automatically:
 
 - Node.js 18+
 - SQLite
-- MinIO Server
+- MinIO Server (Optional, for image sharing)
 - Xcode 15+ (for iOS development)
 
 #### Backend Setup
