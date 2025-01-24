@@ -18,7 +18,12 @@ prepare_directories() {
     # 创建目录(如果不存在)
     mkdir -p prisma logs
     
-    # 设置目录所有者为当前用户
+    # 创建数据库文件(如果不存在)
+    if [ ! -f prisma/dev.db ]; then
+        touch prisma/dev.db
+    fi
+    
+    # 设置目录和文件所有者为当前用户
     if [ -w "prisma" ] && [ -w "logs" ]; then
         # 如果目录可写,确保当前用户拥有
         chown -R $USER_ID:$GROUP_ID prisma logs 2>/dev/null || true

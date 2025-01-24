@@ -3,12 +3,10 @@ set -e
 
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Running database migrations..."
 
-if [ ! -f /app/prisma/dev.db ]; then
-    touch /app/prisma/dev.db
-fi
-
+# 检查数据库文件是否可写
 if [ ! -w /app/prisma/dev.db ]; then
-    echo "Warning: Database file is not writable by current user"
+    echo "Error: Database file is not writable by current user ($(id -u):$(id -g))"
+    echo "Please ensure the file permissions are correct"
     exit 1
 fi
 

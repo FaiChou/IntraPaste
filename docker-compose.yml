@@ -16,3 +16,6 @@ services:
       start_period: 10s
     restart: always
     user: "${USER_ID:-1001}:${GROUP_ID:-1001}"
+    environment:
+      - USER_ID=${USER_ID:-1001}
+      - GROUP_ID=${GROUP_ID:-1001}

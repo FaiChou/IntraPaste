@@ -35,7 +35,9 @@ ENV NPM_CONFIG_UPDATE_NOTIFIER=false
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
-RUN mkdir -p /app/logs /app/prisma
+# 创建必要目录
+RUN mkdir -p /app/logs /app/prisma && \
+    chown -R 1001:1001 /app
 
 COPY --from=builder /app/.npmrc ./
 COPY --from=builder /app/prisma ./prisma/
