@@ -26,15 +26,20 @@ FROM node:18-alpine AS runner
 
 WORKDIR /app
 
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 ENV NO_UPDATE_NOTIFIER=1
 ENV NPM_CONFIG_UPDATE_NOTIFIER=false
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
 RUN mkdir -p /app/logs /app/prisma
 
 COPY --from=builder /app/.npmrc ./
 COPY --from=builder /app/prisma ./prisma/
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY entrypoint.sh ./
 
 RUN chown -R node:node /app && \
@@ -42,12 +47,11 @@ RUN chown -R node:node /app && \
     chmod -R 777 /app/prisma && \
     chmod +x entrypoint.sh
 
-USER node
+USER nextjs
 
 EXPOSE 3210
-
 ENV PORT=3210
 ENV HOSTNAME="0.0.0.0"
-ENV NODE_ENV=production
+
 
 ENTRYPOINT ["/app/entrypoint.sh"]
