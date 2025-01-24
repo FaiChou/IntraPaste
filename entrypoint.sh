@@ -3,13 +3,6 @@ set -e
 
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Running database migrations..."
 
-chown -R node:node /app/prisma
-
-ls -al /app/prisma
-
-mkdir -p /app/prisma
-chmod -R 777 /app/prisma
-
 npx -y prisma migrate deploy 2>&1
 
 if [ $? -eq 0 ]; then
