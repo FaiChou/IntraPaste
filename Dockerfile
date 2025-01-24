@@ -42,8 +42,6 @@ RUN chown -R node:node /app && \
     chmod -R 777 /app/prisma && \
     chmod +x entrypoint.sh
 
-RUN apk add --no-cache curl
-
 USER node
 
 EXPOSE 3210
@@ -51,8 +49,5 @@ EXPOSE 3210
 ENV PORT=3210
 ENV HOSTNAME="0.0.0.0"
 ENV NODE_ENV=production
-
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT}/api/health || exit 1
 
 ENTRYPOINT ["/app/entrypoint.sh"]
