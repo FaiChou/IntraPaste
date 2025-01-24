@@ -15,3 +15,4 @@ services:
       retries: 3
       start_period: 10s
     restart: always
+    user: "${USER_ID:-1001}:${GROUP_ID:-1001}"

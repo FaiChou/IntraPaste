@@ -31,27 +31,24 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NO_UPDATE_NOTIFIER=1
 ENV NPM_CONFIG_UPDATE_NOTIFIER=false
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# 创建默认用户(当没有指定 USER_ID 时使用)
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
 RUN mkdir -p /app/logs /app/prisma
 
 COPY --from=builder /app/.npmrc ./
 COPY --from=builder /app/prisma ./prisma/
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY entrypoint.sh ./
 
-RUN chown -R node:node /app && \
-    chmod -R 777 /app/logs && \
-    chmod -R 777 /app/prisma && \
-    chmod +x entrypoint.sh
+RUN chmod +x entrypoint.sh
 
-USER nextjs
+# 不预设权限,让运行时的用户ID决定
 
 EXPOSE 3210
 ENV PORT=3210
 ENV HOSTNAME="0.0.0.0"
-
 
 ENTRYPOINT ["/app/entrypoint.sh"]
