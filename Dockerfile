@@ -39,7 +39,7 @@ COPY entrypoint.sh ./
 
 RUN chown -R node:node /app && \
     chmod -R 777 /app/logs && \
-    chmod 777 /app/prisma && \
+    chmod -R 777 /app/prisma && \
     chmod +x entrypoint.sh
 
 RUN apk add --no-cache curl
