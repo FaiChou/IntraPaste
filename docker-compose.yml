@@ -8,8 +8,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./prisma:/app/prisma:Z
-      - ./logs:/app/logs:Z
+      - ./prisma:/app/prisma:rw
+      - ./logs:/app/logs:rw
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3210/api/health || exit 1"]
       interval: 30s
