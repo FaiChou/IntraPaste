@@ -6,9 +6,6 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-export USER_ID=$(id -u)
-export GROUP_ID=$(id -g)
-
 check_requirements() {
     if [ ! -f .env ]; then
         echo -e "${RED}Error: .env file not found!${NC}"
