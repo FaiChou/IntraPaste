@@ -151,7 +151,7 @@ npm run build
 pm2 start ecosystem.config.js
 ```
 
-#### MinIO 设置
+#### MinIO 设置(可选，不配置 MinIO 则默认仅启用文本分享)
 
 1. 安装 MinIO Server
 

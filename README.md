@@ -152,7 +152,7 @@ npm run build
 pm2 start ecosystem.config.js
 ```
 
-#### MinIO Setup
+#### MinIO Setup (Optional, without MinIO, only text sharing is enabled)
 
 1. Install MinIO Server
 
