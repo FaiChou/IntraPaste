@@ -56,12 +56,15 @@ cd IntraPaste
 ```
 
 2. 配置环境变量：
+
 ```bash
 cp .env.example .env
 ```
 
 3. MinIO 配置（可选）：
+
 如果你想启用图片分享功能，需要在 `.env` 文件中配置 MinIO：
+
 ```bash
 MINIO_ENDPOINT=http://your-minio-server
 MINIO_PORT=9000
@@ -72,6 +75,7 @@ MINIO_ROOT_PASSWORD=your-password
 如果不配置 MinIO，系统将以纯文本模式运行。
 
 你也可以使用 Docker 在本地运行 MinIO：
+
 ```bash
 docker run -d \
   --name minio \
@@ -83,6 +87,7 @@ docker run -d \
 ```
 
 然后更新你的 `.env` 文件：
+
 ```bash
 MINIO_ENDPOINT=http://192.168.2.100
 MINIO_PORT=9000
@@ -91,17 +96,20 @@ MINIO_ROOT_PASSWORD=minioadmin
 ```
 
 4. 启动服务：
+
 ```bash
 chmod +x start.sh
 ./start.sh
 ```
 
 启动脚本会自动：
+
 - 启动应用容器
 - 初始化数据库并运行迁移
 - 检查并初始化 MinIO（如果已配置）
 
 5. 访问服务：
+
 - Web 界面：http://localhost:3210
 - MinIO 控制台（如果在本地运行）：http://192.168.2.100:9001
 
@@ -117,23 +125,27 @@ chmod +x start.sh
 #### 后端设置
 
 1. 安装依赖
+
 ```bash
 npm install
 ```
 
 2. 配置环境变量
+
 ```bash
 cp .env.example .env
 # 根据需要编辑 .env 文件
 ```
 
 3. 初始化数据库
+
 ```bash
 npx prisma generate
 npx prisma migrate deploy
 ```
 
 4. 构建并使用 PM2 启动
+
 ```bash
 npm run build
 pm2 start ecosystem.config.js
@@ -142,23 +154,27 @@ pm2 start ecosystem.config.js
 #### MinIO 设置
 
 1. 安装 MinIO Server
+
 ```bash
 # 使用 Docker
 docker run -p 9000:9000 -p 9002:9001 minio/minio server /data --console-address ":9001"
 ```
 
 2. Bucket 创建
+
 系统会自动创建名为 `intrapaste` 的 bucket，并设置适当的访问策略。
 
 ### iOS 应用设置
 
 1. 打开 iOS 项目
+
 ```bash
 cd ios/IntraPaste
 open IntraPaste.xcodeproj
 ```
 
 2. 构建和运行
+
 - 选择目标设备/模拟器
 - 按下 Cmd+R 或点击运行按钮
 - 应用需要 iOS 17.0 或更高版本
