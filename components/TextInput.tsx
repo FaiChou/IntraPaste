@@ -70,9 +70,20 @@ export function TextInput({ onSubmit }: TextInputProps) {
           fileType: file.type,
         }),
       })
-      const { data } = await res.json()
+      
+      const result = await res.json()
+      
+      if (!result.success) {
+        alert(result.message || '获取上传链接失败')
+        return
+      }
 
-      await fetch(data.uploadUrl, {
+      if (!result.data?.uploadUrl) {
+        alert('获取上传链接失败')
+        return
+      }
+
+      await fetch(result.data.uploadUrl, {
         method: 'PUT',
         body: file,
         headers: { 'Content-Type': file.type },
@@ -81,8 +92,8 @@ export function TextInput({ onSubmit }: TextInputProps) {
       onSubmit('', 'image', {
         fileName: file.name,
         fileType: file.type,
-        objectName: data.objectName,
-        fileUrl: data.fileUrl,
+        objectName: result.data.objectName,
+        fileUrl: result.data.fileUrl,
       })
 
       if (fileInputRef.current) {
@@ -90,7 +101,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
       }
     } catch (error) {
       console.error('Upload error:', error)
-      alert('上传失败')
+      alert('上传失败: ' + (error instanceof Error ? error.message : '未知错误'))
     } finally {
       setIsUploading(false)
     }

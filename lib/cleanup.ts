@@ -1,6 +1,7 @@
 import cron from 'node-cron'
 import { prisma } from './prisma'
 import { deleteObject } from './minio'
+import { cleanupUploadRecords, getUploadRecordSize } from './uploadLimit'
 import { logger } from './logger'
 
 export function startCleanupJob() {
@@ -62,16 +63,49 @@ export function startCleanupJob() {
         },
       })
       
+      // 清理上传记录
+      const beforeSize = getUploadRecordSize();
+      const cleanedRecords = cleanupUploadRecords();
+      const afterSize = getUploadRecordSize();
+      
       logger.logSystem('CLEANUP', {
         action: 'cleanup_completed',
         details: {
           deletedFiles: deletedCount,
-          deletedCards: result.count
+          deletedCards: result.count,
+          uploadRecords: {
+            before: beforeSize,
+            cleaned: cleanedRecords,
+            after: afterSize
+          }
         }
       })
     } catch (error) {
       logger.logSystem('CLEANUP', {
         action: 'cleanup_failed',
+        error: error instanceof Error ? error : new Error(String(error))
+      })
+    }
+  })
+
+  // 每10分钟清理一次上传记录
+  cron.schedule('*/10 * * * *', () => {
+    try {
+      const beforeSize = getUploadRecordSize();
+      const cleanedRecords = cleanupUploadRecords();
+      const afterSize = getUploadRecordSize();
+
+      logger.logSystem('CLEANUP', {
+        action: 'upload_records_cleaned',
+        details: {
+          before: beforeSize,
+          cleaned: cleanedRecords,
+          after: afterSize
+        }
+      })
+    } catch (error) {
+      logger.logSystem('CLEANUP', {
+        action: 'upload_records_cleanup_failed',
         error: error instanceof Error ? error : new Error(String(error))
       })
     }

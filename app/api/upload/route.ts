@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server'
 import { generatePresignedUrl } from '@/lib/minio'
+import { checkUploadLimit } from '@/lib/uploadLimit'
+import { headers } from 'next/headers'
+import { logger } from '@/lib/logger'
 
 export async function POST(request: Request) {
   try {
@@ -9,6 +12,24 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { success: false, message: '文件信息不完整' },
         { status: 400 }
+      )
+    }
+
+    const headersList = await headers()
+    const ipAddress = headersList.get('x-forwarded-for') || 'unknown'
+
+    // 检查上传限制
+    const { allowed, message } = checkUploadLimit(ipAddress)
+    
+    if (!allowed) {
+      logger.warn('UPLOAD', {
+        action: 'rate_limit',
+        ipAddress,
+        message
+      })
+      return NextResponse.json(
+        { success: false, message },
+        { status: 429 }
       )
     }
 
