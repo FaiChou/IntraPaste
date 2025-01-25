@@ -25,19 +25,16 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          npm ci
-        env:
-          PRISMA_SKIP_POSTINSTALL_GENERATE: true
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
 
       - name: Run ESLint
         run: npm run lint
 
       - name: Run type check
         run: npm run typecheck
-
-      - name: Generate Prisma client
-        run: npx prisma generate
 
       - name: Build test
         run: npm run build
