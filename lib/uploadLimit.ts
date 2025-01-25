@@ -1,8 +1,3 @@
-interface UploadRecord {
-  ip: string;
-  uploadHistory: number[];
-}
-
 // 使用 Map 来存储,比数组查找更快
 const userUploadRecord = new Map<string, number[]>();
 
