@@ -41,8 +41,14 @@ export async function POST(request: Request) {
     const ipAddress = headersList.get('x-forwarded-for') || 'unknown'
     const userAgent = headersList.get('user-agent') || 'unknown'
 
+    // 获取过期时间设置
+    const setting = await prisma.setting.findFirst({
+      where: { key: 'cardExpirationMinutes' }
+    })
+    const expirationMinutes = setting ? parseInt(setting.value) : 60
+
     const expiresAt = new Date()
-    expiresAt.setHours(expiresAt.getHours() + 1)
+    expiresAt.setMinutes(expiresAt.getMinutes() + expirationMinutes)
     
     let fileSize: number | undefined
 

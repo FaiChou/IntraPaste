@@ -13,6 +13,9 @@ export default function AdminPage() {
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [error, setError] = useState('')
+  const [expirationMinutes, setExpirationMinutes] = useState(60)
+  const [isExpirationOpen, setIsExpirationOpen] = useState(false)
+  const [expirationError, setExpirationError] = useState('')
   const router = useRouter()
 
   const checkAuth = useCallback(async () => {
@@ -35,10 +38,19 @@ export default function AdminPage() {
     setCards(data)
   }, [])
   
+  const fetchExpirationSetting = useCallback(async () => {
+    const res = await fetch('/api/settings')
+    const data = await res.json()
+    if (data.success) {
+      setExpirationMinutes(data.data)
+    }
+  }, [])
+
   useEffect(() => {
     checkAuth()
     fetchCards()
-  }, [checkAuth, fetchCards])
+    fetchExpirationSetting()
+  }, [checkAuth, fetchCards, fetchExpirationSetting])
 
   const handleDelete = async (id: number) => {
     await fetch(`/api/cards/${id}`, {
@@ -80,6 +92,29 @@ export default function AdminPage() {
     }
   }
 
+  const handleUpdateExpiration = async () => {
+    try {
+      const res = await fetch('/api/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ expirationMinutes }),
+      })
+      
+      const data = await res.json()
+      
+      if (data.success) {
+        setIsExpirationOpen(false)
+        setExpirationError('')
+      } else {
+        setExpirationError(data.message)
+      }
+    } catch {
+      setExpirationError('更新失败')
+    }
+  }
+
   return (
     <main className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
@@ -111,6 +146,21 @@ export default function AdminPage() {
           >
             修改密码
           </button>
+
+          <div className="relative group">
+            <button
+              onClick={() => setIsExpirationOpen(true)}
+              className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600"
+            >
+              过期时间设置
+            </button>
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block">
+              <div className="bg-gray-900 text-white text-sm rounded px-3 py-1.5 whitespace-nowrap">
+                当前过期时间: {expirationMinutes} 分钟
+              </div>
+              <div className="border-8 border-transparent border-t-gray-900 w-0 h-0 absolute left-1/2 -translate-x-1/2 -bottom-3"></div>
+            </div>
+          </div>
         </div>
         
         <div className="space-y-4 mb-8">
@@ -240,6 +290,58 @@ export default function AdminPage() {
                   <button
                     className="px-4 py-2 bg-blue-500 text-white rounded"
                     onClick={handleChangePassword}
+                  >
+                    确认修改
+                  </button>
+                </div>
+              </div>
+            </Dialog.Panel>
+          </div>
+        </Dialog>
+
+        <Dialog
+          open={isExpirationOpen}
+          onClose={() => setIsExpirationOpen(false)}
+          className="relative z-50"
+        >
+          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+          
+          <div className="fixed inset-0 flex items-center justify-center p-4">
+            <Dialog.Panel className="mx-auto max-w-sm rounded bg-white dark:bg-gray-800 p-6">
+              <Dialog.Title className="text-lg font-medium mb-4">
+                设置过期时间
+              </Dialog.Title>
+              
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    min="1"
+                    value={expirationMinutes}
+                    onChange={(e) => setExpirationMinutes(Math.max(1, parseInt(e.target.value) || 1))}
+                    className="w-24 px-4 py-2 border rounded-lg"
+                  />
+                  <span>分钟</span>
+                </div>
+                
+                <p className="text-sm text-gray-500">
+                  最小设置为1分钟
+                </p>
+                
+                {expirationError && (
+                  <p className="text-red-500 text-sm">{expirationError}</p>
+                )}
+                
+                <div className="flex justify-end gap-4">
+                  <button
+                    className="px-4 py-2 text-gray-500"
+                    onClick={() => setIsExpirationOpen(false)}
+                  >
+                    取消
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                    onClick={handleUpdateExpiration}
                   >
                     确认修改
                   </button>
