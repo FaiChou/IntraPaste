@@ -15,6 +15,9 @@ struct AddServerView: View {
                 Section {
                     TextField("服务器名称", text: $name)
                     TextField("服务器地址", text: $url)
+                        .keyboardType(.URL)
+                        .autocorrectionDisabled()
+                        .autocapitalization(.none)
                 }
                 
                 if let error = error {
