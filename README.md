@@ -1,3 +1,5 @@
+English | [中文](README_zh.md)
+
 # IntraPaste
 
 IntraPaste is a simple and efficient temporary content sharing service that supports text and image sharing. All content will be automatically cleaned up after a specified time to keep the system clean.

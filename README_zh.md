@@ -1,3 +1,5 @@
+[English](README.md) | 中文
+
 # IntraPaste
 
 IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图片的快速分享。所有内容都会在指定时间后自动清理，保证系统整洁。
