@@ -9,5 +9,9 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>需要访问相册以保存媒体文件</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>需要访问相册以保存媒体文件</string>
 </dict>
 </plist>

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D1645092D54B2FF00DF58EE /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1645072D54B2FF00DF58EE /* AudioPlayerView.swift */; };
+		4D16450A2D54B2FF00DF58EE /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1645082D54B2FF00DF58EE /* VideoPlayerView.swift */; };
 		4D84CD532D3938AB00A24CEE /* ImagePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84CD522D3938AB00A24CEE /* ImagePreviewView.swift */; };
 		4DD7CC222D2E2ADB0097C48D /* IntraPasteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */; };
 		4DD7CC262D2E2ADD0097C48D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7CC252D2E2ADD0097C48D /* Assets.xcassets */; };
@@ -33,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4D1645072D54B2FF00DF58EE /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
+		4D1645082D54B2FF00DF58EE /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		4D84CD522D3938AB00A24CEE /* ImagePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewView.swift; sourceTree = "<group>"; };
 		4DBF42E72D2E39AF00DA6FFD /* IntraPasteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntraPasteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DBF42F22D2E969E00DA6FFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -134,6 +138,8 @@
 		4DD7CC4E2D2E2C300097C48D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4D1645072D54B2FF00DF58EE /* AudioPlayerView.swift */,
+				4D1645082D54B2FF00DF58EE /* VideoPlayerView.swift */,
 				4DD7CC3B2D2E2C0F0097C48D /* AddServerView.swift */,
 				4DD7CC3E2D2E2C0F0097C48D /* CardCell.swift */,
 				4DD7CC422D2E2C0F0097C48D /* CardListView.swift */,
@@ -257,6 +263,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DD7CC432D2E2C0F0097C48D /* ServerManager.swift in Sources */,
+				4D1645092D54B2FF00DF58EE /* AudioPlayerView.swift in Sources */,
+				4D16450A2D54B2FF00DF58EE /* VideoPlayerView.swift in Sources */,
 				4DD7CC482D2E2C0F0097C48D /* APIClient.swift in Sources */,
 				4DD7CC4B2D2E2C0F0097C48D /* CardListView.swift in Sources */,
 				4D84CD532D3938AB00A24CEE /* ImagePreviewView.swift in Sources */,
