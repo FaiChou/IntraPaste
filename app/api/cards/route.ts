@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { cookies, headers } from 'next/headers'
-import { deleteObject, getObjectSize } from '@/lib/minio'
+import { deleteObject } from '@/lib/minio'
 
 export async function GET() {
   try {
