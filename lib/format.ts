@@ -1,5 +1,5 @@
 export function formatFileSize(bytes: number | undefined) {
-  if (!bytes) return '未知大小'
+  if (!bytes) return 'Unknown Size'
   
   if (bytes < 1024) return bytes + ' B'
   if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB'
@@ -8,11 +8,11 @@ export function formatFileSize(bytes: number | undefined) {
 }
 
 export function formatFileType(mimeType: string | undefined) {
-  if (!mimeType) return '未知类型'
+  if (!mimeType) return 'Unknown Type'
   
-  // 常见类型映射
+  // Common type mappings
   const typeMap: Record<string, string> = {
-    // 文档类型
+    // Document types
     'application/pdf': 'PDF',
     'application/msword': 'Word',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Word',
@@ -22,16 +22,16 @@ export function formatFileType(mimeType: string | undefined) {
     'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'PowerPoint',
     'application/x-iwork-pages-sffpages': 'Pages',
     'application/x-iwork-numbers-sffnumbers': 'Numbers',
-    // 文本类型
-    'text/plain': '文本文件',
+    // Text types
+    'text/plain': 'Text File',
     'text/html': 'HTML',
     'text/css': 'CSS',
     'text/javascript': 'JavaScript',
-    // 压缩文件
+    // Archive types
     'application/zip': 'ZIP',
     'application/x-rar-compressed': 'RAR',
     'application/x-7z-compressed': '7Z',
-    // 视频类型
+    // Video types
     'video/x-matroska': 'MKV',
     'video/x-msvideo': 'AVI',
     'video/x-flv': 'FLV',
@@ -47,20 +47,20 @@ export function formatFileType(mimeType: string | undefined) {
     'video/MP2T': 'TS'
   }
 
-  // 检查是否存在于映射表中
+  // Check if exists in mapping
   if (typeMap[mimeType]) {
     return typeMap[mimeType]
   }
 
-  // 处理通用类型
+  // Handle generic types
   if (mimeType.startsWith('image/')) {
     return mimeType.split('/')[1].toUpperCase()
   }
   if (mimeType.startsWith('video/')) {
-    // 对于未知的视频类型,尝试提取更友好的格式名
+    // For unknown video types, try to extract a friendlier format name
     const format = mimeType.split('/')[1]
     if (format.startsWith('x-')) {
-      return format.slice(2).toUpperCase() // 移除 'x-' 前缀
+      return format.slice(2).toUpperCase() // Remove 'x-' prefix
     }
     return format.toUpperCase()
   }
@@ -68,10 +68,10 @@ export function formatFileType(mimeType: string | undefined) {
     return mimeType.split('/')[1].toUpperCase()
   }
 
-  // 如果都不匹配,返回简化的MIME类型
-  const format = mimeType.split('/').pop() || '未知类型'
+  // If no match, return simplified MIME type
+  const format = mimeType.split('/').pop() || 'Unknown Type'
   if (format.startsWith('x-')) {
-    return format.slice(2).toUpperCase() // 移除 'x-' 前缀
+    return format.slice(2).toUpperCase() // Remove 'x-' prefix
   }
   return format.toUpperCase()
 }
