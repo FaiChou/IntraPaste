@@ -28,7 +28,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { content, type, fileName, fileType, objectName, fileUrl } = await request.json()
+    const { content, type, fileName, fileType, objectName, fileUrl, fileSize } = await request.json()
     
     if (!content && !objectName) {
       return NextResponse.json(
@@ -50,18 +50,12 @@ export async function POST(request: Request) {
     const expiresAt = new Date()
     expiresAt.setMinutes(expiresAt.getMinutes() + expirationMinutes)
     
-    let fileSize: number | undefined
-
-    if (type === 'image') {
-      fileSize = await getObjectSize(objectName)
-    }
-    
     const card = await prisma.card.create({
       data: {
         content,
         type,
         fileName,
-        fileSize,
+        fileSize: fileSize ? parseInt(fileSize) : null,  // 确保转换为数字
         fileType,
         filePath: fileUrl,
         ipAddress,

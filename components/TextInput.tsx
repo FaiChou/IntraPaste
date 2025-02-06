@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { FileInfo } from '@/app/page'
+import { checkFileSize, validateFileType } from '@/lib/uploadLimit'
 
 interface TextInputProps {
   onSubmit: (content: string, type: string, fileInfo?: FileInfo) => void
@@ -54,13 +55,22 @@ export function TextInput({ onSubmit }: TextInputProps) {
     const file = e.target.files?.[0]
     if (!file) return
 
-    if (!file.type.startsWith('image/')) {
-      alert('只支持上传图片文件')
-      return
-    }
-
     try {
       setIsUploading(true)
+
+      // 检查文件大小
+      const sizeCheck = checkFileSize(file.size)
+      if (!sizeCheck.allowed) {
+        alert(sizeCheck.message)
+        return
+      }
+
+      // 验证文件类型
+      const typeCheck = validateFileType(file.type, file.name)
+      if (!typeCheck.allowed) {
+        alert(typeCheck.message)
+        return
+      }
 
       const res = await fetch('/api/upload', {
         method: 'POST',
@@ -68,6 +78,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
         body: JSON.stringify({
           fileName: file.name,
           fileType: file.type,
+          fileSize: file.size
         }),
       })
       
@@ -78,22 +89,18 @@ export function TextInput({ onSubmit }: TextInputProps) {
         return
       }
 
-      if (!result.data?.uploadUrl) {
-        alert('获取上传链接失败')
-        return
-      }
-
       await fetch(result.data.uploadUrl, {
         method: 'PUT',
         body: file,
         headers: { 'Content-Type': file.type },
       })
 
-      onSubmit('', 'image', {
+      onSubmit('', result.data.fileType, {
         fileName: file.name,
         fileType: file.type,
         objectName: result.data.objectName,
         fileUrl: result.data.fileUrl,
+        fileSize: file.size,
       })
 
       if (fileInputRef.current) {
@@ -132,7 +139,6 @@ export function TextInput({ onSubmit }: TextInputProps) {
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
         onChange={handleFileUpload}
         className="hidden"
       />
@@ -141,9 +147,9 @@ export function TextInput({ onSubmit }: TextInputProps) {
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
-          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-400"
+          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-400"
         >
-          {isUploading ? '上传中...' : '上传图片'}
+          {isUploading ? '上传中...' : '上传文件'}
         </button>
       )}
       <button

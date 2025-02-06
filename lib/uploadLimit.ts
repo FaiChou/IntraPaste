@@ -1,6 +1,8 @@
 // 使用 Map 来存储,比数组查找更快
 const userUploadRecord = new Map<string, number[]>();
 
+const MAX_FILE_SIZE = 1024 * 1024 * 1024; // 1GB in bytes
+
 export function checkUploadLimit(ip: string): { allowed: boolean; message?: string } {
   const now = Date.now();
   const oneMinuteAgo = now - 60 * 1000;
@@ -58,4 +60,42 @@ export function cleanupUploadRecords() {
 
 export function getUploadRecordSize() {
   return userUploadRecord.size;
+}
+
+export function checkFileSize(size: number): { allowed: boolean; message?: string } {
+  if (size > MAX_FILE_SIZE) {
+    return { 
+      allowed: false, 
+      message: '文件大小超过限制(1GB)' 
+    };
+  }
+  return { allowed: true };
+}
+
+export function validateFileType(type: string, fileName: string): { 
+  allowed: boolean; 
+  message?: string;
+  fileType?: 'image' | 'video' | 'file';
+} {
+  const ext = fileName.split('.').pop()?.toLowerCase();
+  
+  // 图片类型
+  if (type.startsWith('image/')) {
+    return { allowed: true, fileType: 'image' };
+  }
+  
+  // 视频类型
+  if (type.startsWith('video/')) {
+    const allowedVideoFormats = ['mp4', 'webm', 'mov'];
+    if (!ext || !allowedVideoFormats.includes(ext)) {
+      return { 
+        allowed: false, 
+        message: '不支持的视频格式，仅支持 MP4, WebM, MOV' 
+      };
+    }
+    return { allowed: true, fileType: 'video' };
+  }
+  
+  // 其他文件类型
+  return { allowed: true, fileType: 'file' };
 } 

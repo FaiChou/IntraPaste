@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Card as PrismaCard } from '@prisma/client'
 import { Dialog } from '@headlessui/react'
 import Link from 'next/link'
+import { formatFileSize, getFileTypeIcon, formatFileType } from '@/lib/format'
 
 export default function AdminPage() {
   const [cards, setCards] = useState<PrismaCard[]>([])
@@ -115,6 +116,72 @@ export default function AdminPage() {
     }
   }
 
+  const renderCardContent = (card: PrismaCard) => {
+    if (card.type === 'text') {
+      return <p className="break-all">{card.content}</p>
+    }
+
+    return (
+      <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+        <div className="flex items-center gap-2">
+          <span>{getFileTypeIcon(card.type)}</span>
+          <span className="font-medium">{card.type.charAt(0).toUpperCase() + card.type.slice(1)}</span>
+        </div>
+        
+        {card.fileName && (
+          <p className="truncate" title={card.fileName}>
+            文件名: {card.fileName}
+          </p>
+        )}
+        
+        {card.fileSize && (
+          <p>文件大小: {formatFileSize(card.fileSize)}</p>
+        )}
+        
+        {card.fileType && (
+          <p>文件类型: {formatFileType(card.fileType)}</p>
+        )}
+        
+        {card.filePath && (
+          <div className="flex gap-2">
+            {card.type === 'video' ? (
+              <>
+                <a 
+                  href={card.filePath}
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="text-blue-500 hover:underline"
+                >
+                  预览视频
+                </a>
+                <span>|</span>
+              </>
+            ) : card.type === 'image' ? (
+              <>
+                <a 
+                  href={card.filePath}
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="text-blue-500 hover:underline"
+                >
+                  查看图片
+                </a>
+                <span>|</span>
+              </>
+            ) : null}
+            <a 
+              href={card.filePath}
+              download={card.fileName}
+              className="text-blue-500 hover:underline"
+            >
+              下载文件
+            </a>
+          </div>
+        )}
+      </div>
+    )
+  }
+
   return (
     <main className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
@@ -165,7 +232,7 @@ export default function AdminPage() {
         
         <div className="space-y-4 mb-8">
           {cards.map((card) => (
-            <div key={card.id} className="flex items-center justify-between p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
+            <div key={card.id} className="flex items-start justify-between p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
               <div className="flex-1 mr-4 min-w-0 space-y-2">
                 <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                   <span>创建时间: {new Date(card.createdAt).toLocaleString()}</span>
@@ -173,42 +240,21 @@ export default function AdminPage() {
                   <span>过期时间: {new Date(card.expiresAt).toLocaleString()}</span>
                 </div>
                 
-                <div className="space-y-1">
-                  {card.content && (
-                    <p className="break-all">{card.content}</p>
-                  )}
-                  
-                  {card.type === 'image' && (
-                    <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
-                      <p>类型: 图片</p>
-                      {card.fileName && <p>文件名: {card.fileName}</p>}
-                      {card.fileSize && <p>文件大小: {(card.fileSize / 1024 / 1024).toFixed(2)} MB</p>}
-                      {card.fileType && <p>文件类型: {card.fileType}</p>}
-                      {card.filePath && (
-                        <a 
-                          href={card.filePath}
-                          target="_blank"
-                          rel="noopener noreferrer" 
-                          className="text-blue-500 hover:underline"
-                        >
-                          查看图片
-                        </a>
-                      )}
-                    </div>
-                  )}
-                </div>
+                {renderCardContent(card)}
 
-                <div className="text-xs text-gray-400 dark:text-gray-500 space-y-1">
+                <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
                   <p>IP: {card.ipAddress}</p>
-                  <p>UA: {card.userAgent}</p>
+                  <p className="truncate" title={card.userAgent || undefined}>
+                    UA: {card.userAgent || '-'}
+                  </p>
                 </div>
               </div>
-              
+
               <button
                 onClick={() => handleDelete(card.id)}
-                className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded shrink-0"
+                className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
               >
-                🗑️
+                删除
               </button>
             </div>
           ))}
@@ -353,4 +399,4 @@ export default function AdminPage() {
       </div>
     </main>
   )
-} 
+}

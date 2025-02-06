@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { Dialog } from '@headlessui/react'
+import { formatFileSize, formatFileType } from '@/lib/format'
 
 interface CardProps {
   content?: string
@@ -11,9 +12,10 @@ interface CardProps {
   fileName?: string
   fileSize?: number
   filePath?: string
+  fileType?: string
 }
 
-export function Card({ content, createdAt, type, fileName, fileSize, filePath }: CardProps) {
+export function Card({ content, createdAt, type, fileName, fileSize, filePath, fileType }: CardProps) {
   const [copied, setCopied] = useState(false)
   const [isImageOpen, setIsImageOpen] = useState(false)
 
@@ -49,10 +51,59 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath }:
     }
   }
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return bytes + ' B'
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB'
-    return (bytes / (1024 * 1024)).toFixed(2) + ' MB'
+  if (type === 'video') {
+    return (
+      <div className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
+        <div className="aspect-video mb-2">
+          <video 
+            src={filePath} 
+            controls
+            className="w-full h-full rounded"
+            preload="metadata"
+          >
+            您的浏览器不支持视频播放
+          </video>
+        </div>
+        <div className="flex justify-between items-center text-sm text-gray-500">
+          <span>{new Date(createdAt).toLocaleString()}</span>
+          <div className="flex items-center gap-2">
+            <span>({formatFileSize(fileSize!)})</span>
+            <a 
+              href={filePath}
+              download={fileName}
+              className="text-blue-500 hover:text-blue-600"
+            >
+              下载
+            </a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (type === 'file') {
+    return (
+      <div className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
+        <div className="flex items-center justify-between">
+          <div className="flex-1 mr-4">
+            <p className="font-medium mb-1">{fileName}</p>
+            <p className="text-sm text-gray-500">
+              {formatFileSize(fileSize!)} • {formatFileType(fileType)}
+            </p>
+          </div>
+          <a 
+            href={filePath}
+            download={fileName}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            下载
+          </a>
+        </div>
+        <div className="mt-2 text-sm text-gray-500">
+          {new Date(createdAt).toLocaleString()}
+        </div>
+      </div>
+    )
   }
 
   if (type === 'image') {

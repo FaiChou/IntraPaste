@@ -21,6 +21,8 @@ model Card {
   
   ipAddress String?
   userAgent String?
+  mimeType  String?
+  fileExt   String?
 }
 
 model User {

@@ -10,6 +10,7 @@ export interface FileInfo {
   fileType: string;
   objectName: string;
   fileUrl: string;
+  fileSize?: number;
 }
 
 export default function Home() {
@@ -61,6 +62,7 @@ export default function Home() {
               fileName={card.fileName ?? undefined}
               fileSize={card.fileSize ?? undefined}
               filePath={card.filePath ?? undefined}
+              fileType={card.fileType ?? undefined}
             />
           ))}
         </div>
