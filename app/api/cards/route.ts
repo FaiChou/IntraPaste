@@ -99,7 +99,9 @@ export async function DELETE() {
   try {
     const cards = await prisma.card.findMany({
       where: {
-        type: 'image',
+        type: {
+          in: ['image', 'video', 'audio', 'file']
+        },
         filePath: {
           not: null
         }
@@ -113,7 +115,11 @@ export async function DELETE() {
       if (card.filePath) {
         const objectName = card.filePath.split('/').pop()
         if (objectName) {
-          await deleteObject(objectName)
+          try {
+            await deleteObject(objectName)
+          } catch (error) {
+            console.error('Failed to delete file:', objectName, error)
+          }
         }
       }
     }

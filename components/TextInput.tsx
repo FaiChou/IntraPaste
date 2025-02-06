@@ -28,7 +28,6 @@ export function TextInput({ onSubmit }: TextInputProps) {
   }, [content])
 
   useEffect(() => {
-    // 检查 MinIO 状态
     const checkMinioStatus = async () => {
       try {
         const res = await fetch('/api/minio/health')
@@ -58,14 +57,12 @@ export function TextInput({ onSubmit }: TextInputProps) {
     try {
       setIsUploading(true)
       
-      // 检查文件大小
       const sizeCheck = checkFileSize(file.size)
       if (!sizeCheck.allowed) {
         alert(sizeCheck.message)
         return
       }
 
-      // 验证文件类型
       const typeCheck = validateFileType(file.type, file.name)
       if (!typeCheck.allowed) {
         alert(typeCheck.message)

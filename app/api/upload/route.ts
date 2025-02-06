@@ -16,7 +16,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // 检查文件大小
     const sizeCheck = checkFileSize(fileSize)
     if (!sizeCheck.allowed) {
       return NextResponse.json(
@@ -25,7 +24,6 @@ export async function POST(request: Request) {
       )
     }
 
-    // 验证文件类型
     const typeCheck = validateFileType(fileType, fileName)
     if (!typeCheck.allowed) {
       return NextResponse.json(
@@ -37,7 +35,6 @@ export async function POST(request: Request) {
     const headersList = await headers()
     const ipAddress = headersList.get('x-forwarded-for') || 'unknown'
 
-    // 检查上传限制
     const { allowed, message } = checkUploadLimit(ipAddress)
     
     if (!allowed) {

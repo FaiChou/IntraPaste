@@ -95,4 +95,4 @@ export function validateFileType(type: string, fileName: string): {
   }
   
   return { allowed: true, fileType: 'file' };
-} 
+}
