@@ -44,7 +44,17 @@ export function formatFileType(mimeType: string | undefined) {
     'video/webm': 'WEBM',
     'video/ogg': 'OGV',
     'application/x-mpegURL': 'M3U8',
-    'video/MP2T': 'TS'
+    'video/MP2T': 'TS',
+    // Audio types
+    'audio/mpeg': 'MP3',
+    'audio/mp4': 'M4A',
+    'audio/ogg': 'OGG',
+    'audio/wav': 'WAV',
+    'audio/x-m4a': 'M4A',
+    'audio/webm': 'WEBM',
+    'audio/aac': 'AAC',
+    'audio/flac': 'FLAC',
+    'audio/x-ms-wma': 'WMA',
   }
 
   // Check if exists in mapping
@@ -82,6 +92,8 @@ export function getFileTypeIcon(type: string) {
       return '🖼️'
     case 'video':
       return '🎥'
+    case 'audio':
+      return '🎵'
     case 'file':
       return '📄'
     default:

@@ -161,6 +161,62 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
     )
   }
 
+  if (type === 'audio') {
+    return (
+      <div className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
+        <div className="mb-2">
+          <audio 
+            controls
+            className="w-full"
+            preload="metadata"
+            onError={(e) => {
+              // 如果音频加载失败,将其作为普通文件处理
+              const target = e.target as HTMLAudioElement;
+              target.parentElement?.classList.add('hidden');
+              const fallback = target.parentElement?.nextElementSibling;
+              if (fallback) {
+                fallback.classList.remove('hidden');
+              }
+            }}
+          >
+            <source src={filePath} type={fileType} />
+            您的浏览器不支持音频播放
+          </audio>
+          
+          {/* 音频播放失败时的后备方案 */}
+          <div className="hidden flex items-center justify-between">
+            <div className="flex-1 mr-4">
+              <p className="font-medium mb-1">{fileName}</p>
+              <p className="text-sm text-gray-500">
+                {formatFileSize(fileSize!)} • {formatFileType(fileType)}
+              </p>
+            </div>
+            <a 
+              href={filePath}
+              download={fileName}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              下载
+            </a>
+          </div>
+        </div>
+        <div className="flex justify-between items-center text-sm text-gray-500">
+          <span>{new Date(createdAt).toLocaleString()}</span>
+          <div className="flex items-center gap-2">
+            <span>({formatFileSize(fileSize!)})</span>
+            <a 
+              href={filePath}
+              download={fileName}
+              className="text-blue-500 hover:text-blue-600"
+            >
+              下载
+            </a>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div 
       className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow hover:shadow-md dark:shadow-gray-900 transition-shadow cursor-pointer border border-gray-100 dark:border-gray-800 h-fit max-h-[300px] flex flex-col"

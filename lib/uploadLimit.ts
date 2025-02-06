@@ -70,7 +70,7 @@ export function checkFileSize(size: number): { allowed: boolean; message?: strin
 export function validateFileType(type: string, fileName: string): { 
   allowed: boolean; 
   message?: string;
-  fileType?: 'image' | 'video' | 'file';
+  fileType?: 'image' | 'video' | 'audio' | 'file';
 } {
   const ext = fileName.split('.').pop()?.toLowerCase();
   
@@ -82,6 +82,14 @@ export function validateFileType(type: string, fileName: string): {
     const playableVideoFormats = ['mp4', 'webm', 'mov'];
     if (ext && playableVideoFormats.includes(ext)) {
       return { allowed: true, fileType: 'video' };
+    }
+    return { allowed: true, fileType: 'file' };
+  }
+
+  if (type.startsWith('audio/')) {
+    const playableAudioFormats = ['mp3', 'wav', 'ogg', 'm4a', 'webm', 'aac'];
+    if (ext && playableAudioFormats.includes(ext)) {
+      return { allowed: true, fileType: 'audio' };
     }
     return { allowed: true, fileType: 'file' };
   }
