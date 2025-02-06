@@ -31,6 +31,20 @@ export function formatFileType(mimeType: string | undefined) {
     'application/zip': 'ZIP',
     'application/x-rar-compressed': 'RAR',
     'application/x-7z-compressed': '7Z',
+    // 视频类型
+    'video/x-matroska': 'MKV',
+    'video/x-msvideo': 'AVI',
+    'video/x-flv': 'FLV',
+    'video/quicktime': 'MOV',
+    'video/x-ms-wmv': 'WMV',
+    'video/3gpp': '3GP',
+    'video/x-m4v': 'M4V',
+    'video/mpeg': 'MPEG',
+    'video/mp4': 'MP4',
+    'video/webm': 'WEBM',
+    'video/ogg': 'OGV',
+    'application/x-mpegURL': 'M3U8',
+    'video/MP2T': 'TS'
   }
 
   // 检查是否存在于映射表中
@@ -43,14 +57,23 @@ export function formatFileType(mimeType: string | undefined) {
     return mimeType.split('/')[1].toUpperCase()
   }
   if (mimeType.startsWith('video/')) {
-    return mimeType.split('/')[1].toUpperCase()
+    // 对于未知的视频类型,尝试提取更友好的格式名
+    const format = mimeType.split('/')[1]
+    if (format.startsWith('x-')) {
+      return format.slice(2).toUpperCase() // 移除 'x-' 前缀
+    }
+    return format.toUpperCase()
   }
   if (mimeType.startsWith('audio/')) {
     return mimeType.split('/')[1].toUpperCase()
   }
 
-  // 如果都不匹配，返回简化的MIME类型
-  return mimeType.split('/').pop()?.toUpperCase() || '未知类型'
+  // 如果都不匹配,返回简化的MIME类型
+  const format = mimeType.split('/').pop() || '未知类型'
+  if (format.startsWith('x-')) {
+    return format.slice(2).toUpperCase() // 移除 'x-' 前缀
+  }
+  return format.toUpperCase()
 }
 
 export function getFileTypeIcon(type: string) {

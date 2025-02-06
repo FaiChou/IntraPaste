@@ -86,14 +86,13 @@ export function validateFileType(type: string, fileName: string): {
   
   // 视频类型
   if (type.startsWith('video/')) {
-    const allowedVideoFormats = ['mp4', 'webm', 'mov'];
-    if (!ext || !allowedVideoFormats.includes(ext)) {
-      return { 
-        allowed: false, 
-        message: '不支持的视频格式，仅支持 MP4, WebM, MOV' 
-      };
+    const playableVideoFormats = ['mp4', 'webm', 'mov'];
+    // 如果是可播放的视频格式
+    if (ext && playableVideoFormats.includes(ext)) {
+      return { allowed: true, fileType: 'video' };
     }
-    return { allowed: true, fileType: 'video' };
+    // 其他视频格式作为普通文件处理
+    return { allowed: true, fileType: 'file' };
   }
   
   // 其他文件类型
