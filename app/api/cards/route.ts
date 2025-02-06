@@ -55,7 +55,7 @@ export async function POST(request: Request) {
         content,
         type,
         fileName,
-        fileSize: fileSize ? parseInt(fileSize) : null,  // 确保转换为数字
+        fileSize: fileSize ? parseInt(fileSize) : null,
         fileType,
         filePath: fileUrl,
         ipAddress,

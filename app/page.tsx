@@ -35,6 +35,7 @@ export default function Home() {
           fileType: fileInfo?.fileType ?? '',
           objectName: fileInfo?.objectName ?? '',
           fileUrl: fileInfo?.fileUrl ?? '',
+          fileSize: fileInfo?.fileSize ?? '',
         }
 
     await fetch('/api/cards', {

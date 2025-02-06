@@ -57,7 +57,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
 
     try {
       setIsUploading(true)
-
+      
       // 检查文件大小
       const sizeCheck = checkFileSize(file.size)
       if (!sizeCheck.allowed) {
