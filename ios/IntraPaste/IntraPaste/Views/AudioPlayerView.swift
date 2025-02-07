@@ -62,6 +62,7 @@ struct AudioPlayerView: View {
                 Text("音频已保存到文件。可在手机的`文件`应用中查看。")
             }
             .onAppear {
+                AudioSessionManager.shared.configureAudioSession()
                 if let url = URL(string: audioURL) {
                     audioPlayer.setupPlayer(with: url)
                 }

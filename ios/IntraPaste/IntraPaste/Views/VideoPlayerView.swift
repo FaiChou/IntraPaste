@@ -48,6 +48,7 @@ struct VideoPlayerView: View {
                 Text("视频已保存到文件。可在手机的`文件`应用中查看。")
             }
             .onAppear {
+                AudioSessionManager.shared.configureAudioSession()
                 if let url = URL(string: videoURL) {
                     player = AVPlayer(url: url)
                     player?.play()
