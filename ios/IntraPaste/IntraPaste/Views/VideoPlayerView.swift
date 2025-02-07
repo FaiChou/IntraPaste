@@ -63,7 +63,6 @@ struct VideoPlayerView: View {
         FileDownloader.shared.downloadFile(from: videoURL, fileName: fileName) { result in
             DispatchQueue.main.async {
                 isDownloading = false
-                
                 switch result {
                 case .success:
                     showingSaveSuccess = true

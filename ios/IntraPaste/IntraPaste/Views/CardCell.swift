@@ -10,12 +10,38 @@ struct CardCell: View {
     @State private var isDownloading = false
     @State private var showingSaveSuccess = false
     @Environment(\.colorScheme) var colorScheme
+    @State private var showingFullContent = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if card.type == "text" {
                 Text(card.content ?? "")
                     .lineLimit(3)
+                    .contextMenu {
+                        Button {
+                            if let content = card.content {
+                                UIPasteboard.general.string = content
+                                withAnimation {
+                                    isCopied = true
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    withAnimation {
+                                        isCopied = false
+                                    }
+                                }
+                            }
+                        } label: {
+                            Label("复制", systemImage: "doc.on.doc")
+                        }
+                        
+                        if let content = card.content {
+                            Button {
+                                showingFullContent = true
+                            } label: {
+                                Label("查看完整内容", systemImage: "doc.text.magnifyingglass")
+                            }
+                        }
+                    }
             } else {
                 HStack {
                     Group {
@@ -131,6 +157,33 @@ struct CardCell: View {
             Button("确定", role: .cancel) { }
         } message: {
             Text("文件已保存。可在手机的`文件`应用中查看。")
+        }
+        .sheet(isPresented: $showingFullContent) {
+            NavigationView {
+                ScrollView {
+                    Text(card.content ?? "")
+                        .padding()
+                }
+                .navigationTitle("完整内容")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            if let content = card.content {
+                                UIPasteboard.general.string = content
+                            }
+                        } label: {
+                            Image(systemName: "doc.on.doc")
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("关闭") {
+                            showingFullContent = false
+                        }
+                    }
+                }
+            }
         }
     }
     
