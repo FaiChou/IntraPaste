@@ -15,7 +15,7 @@ check_requirements() {
 
     if ! command -v docker compose &> /dev/null; then
         echo -e "${RED}Error: docker compose not found!${NC}"
-        echo "Please install Docker and docker compose."
+        echo "Please install Docker first."
         exit 1
     fi
 }
