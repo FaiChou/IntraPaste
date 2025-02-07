@@ -13,112 +13,142 @@ struct CardCell: View {
     @State private var showingFullContent = false
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            if card.type == "text" {
-                Text(card.content ?? "")
-                    .lineLimit(3)
-                    .contextMenu {
-                        Button {
-                            if let content = card.content {
-                                UIPasteboard.general.string = content
-                                withAnimation {
-                                    isCopied = true
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    withAnimation {
-                                        isCopied = false
-                                    }
-                                }
-                            }
-                        } label: {
-                            Label("复制", systemImage: "doc.on.doc")
-                        }
-                        
-                        if let content = card.content {
-                            Button {
-                                showingFullContent = true
-                            } label: {
-                                Label("查看完整内容", systemImage: "doc.text.magnifyingglass")
-                            }
-                        }
-                    }
-            } else {
-                HStack {
-                    Group {
-                        switch card.type {
-                        case "image":
-                            Image(systemName: "photo")
-                                .foregroundColor(.blue)
-                        case "video":
-                            Image(systemName: "video")
-                                .foregroundColor(.red)
-                        case "audio":
-                            Image(systemName: "music.note")
-                                .foregroundColor(.purple)
-                        default:
-                            Image(systemName: "doc")
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    .font(.title2)
-                    
-                    VStack(alignment: .leading) {
-                        Text(card.fileName ?? "未知文件")
-                            .font(.subheadline)
-                            .lineLimit(1)
-                        
-                        if let fileSize = card.fileSize {
-                            Text(formatFileSize(fileSize))
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                    }
+        HStack(alignment: .center, spacing: 12) {
+            Group {
+                switch card.type {
+                case "text":
+                    Image(systemName: "doc.text")
+                        .foregroundColor(.blue)
+                case "image":
+                    Image(systemName: "photo")
+                        .foregroundColor(.blue)
+                case "video":
+                    Image(systemName: "video")
+                        .foregroundColor(.red)
+                case "audio":
+                    Image(systemName: "music.note")
+                        .foregroundColor(.purple)
+                default:
+                    Image(systemName: "doc")
+                        .foregroundColor(.gray)
                 }
-                .contextMenu {
-                    if let filePath = card.filePath {
-                        Button {
-                            downloadFile(from: filePath, fileName: card.fileName ?? "未知文件")
-                        } label: {
-                            Label("下载", systemImage: "arrow.down.circle")
-                        }
-                        
-                        switch card.type {
-                        case "image":
-                            Button {
-                                showingImagePreview = true
-                            } label: {
-                                Label("预览", systemImage: "eye")
-                            }
-                        case "video" where card.isPlayableVideo:
-                            Button {
-                                showingVideoPlayer = true
-                            } label: {
-                                Label("播放", systemImage: "play.circle")
-                            }
-                        case "audio" where card.isPlayableAudio:
-                            Button {
-                                showingAudioPlayer = true
-                            } label: {
-                                Label("播放", systemImage: "play.circle")
-                            }
-                        default:
-                            Button {
-                                showingFileInfo = true
-                            } label: {
-                                Label("查看信息", systemImage: "info.circle")
-                            }
-                        }
+            }
+            .font(.system(size: 28))
+            .frame(width: 32)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                if card.type == "text" {
+                    Text(card.content ?? "")
+                        .lineLimit(3)
+                        .font(.body)
+                } else {
+                    Text(card.fileName ?? "未知文件")
+                        .font(.body)
+                        .lineLimit(1)
+                }
+                
+                HStack(spacing: 8) {
+                    Text(card.createdAt.formatted())
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    
+                    if card.type != "text", let fileSize = card.fileSize {
+                        Text("•")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                        Text(formatFileSize(fileSize))
+                            .font(.caption)
+                            .foregroundColor(.gray)
                     }
                 }
             }
-            
-            Text(card.createdAt.formatted())
-                .font(.caption)
-                .foregroundColor(.gray)
         }
-        .padding()
+        .padding(.vertical, 2)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color(.systemBackground))
+        .contextMenu {
+            if card.type == "text" {
+                if let content = card.content {
+                    Button {
+                        UIPasteboard.general.string = content
+                        withAnimation {
+                            isCopied = true
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                            withAnimation {
+                                isCopied = false
+                            }
+                        }
+                    } label: {
+                        Label("复制", systemImage: "doc.on.doc")
+                    }
+                    
+                    Button {
+                        showingFullContent = true
+                    } label: {
+                        Label("查看完整内容", systemImage: "doc.text.magnifyingglass")
+                    }
+                    
+                    ShareLink(item: content) {
+                        Label("分享", systemImage: "square.and.arrow.up")
+                    }
+                }
+            } else if let filePath = card.filePath {
+                Button {
+                    downloadFile(from: filePath, fileName: card.fileName ?? "未知文件")
+                } label: {
+                    Label("下载", systemImage: "arrow.down.circle")
+                }
+                
+                switch card.type {
+                case "image":
+                    Button {
+                        showingImagePreview = true
+                    } label: {
+                        Label("预览", systemImage: "eye")
+                    }
+                    
+                    if let url = URL(string: filePath) {
+                        ShareLink(item: url) {
+                            Label("分享", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                    
+                case "video" where card.isPlayableVideo:
+                    Button {
+                        showingVideoPlayer = true
+                    } label: {
+                        Label("播放", systemImage: "play.circle")
+                    }
+                    
+                    if let url = URL(string: filePath) {
+                        ShareLink(item: url) {
+                            Label("分享", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                    
+                case "audio" where card.isPlayableAudio:
+                    Button {
+                        showingAudioPlayer = true
+                    } label: {
+                        Label("播放", systemImage: "play.circle")
+                    }
+                    
+                    if let url = URL(string: filePath) {
+                        ShareLink(item: url) {
+                            Label("分享", systemImage: "square.and.arrow.up")
+                        }
+                    }
+                    
+                default:
+                    Button {
+                        showingFileInfo = true
+                    } label: {
+                        Label("查看信息", systemImage: "info.circle")
+                    }
+                }
+            }
+        }
         .onTapGesture {
             switch card.type {
             case "text":
