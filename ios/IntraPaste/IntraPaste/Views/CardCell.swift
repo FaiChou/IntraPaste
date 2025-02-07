@@ -17,24 +17,18 @@ struct CardCell: View {
             Group {
                 switch card.type {
                 case "text":
-                    Image(systemName: "doc.text")
-                        .foregroundColor(.blue)
+                    Image(.note).resizable()
                 case "image":
-                    Image(systemName: "photo")
-                        .foregroundColor(.blue)
+                    Image(.photo).resizable()
                 case "video":
-                    Image(systemName: "video")
-                        .foregroundColor(.red)
+                    Image(.video).resizable()
                 case "audio":
-                    Image(systemName: "music.note")
-                        .foregroundColor(.purple)
+                    Image(.audio).resizable()
                 default:
-                    Image(systemName: "doc")
-                        .foregroundColor(.gray)
+                    Image(.file).resizable()
                 }
             }
-            .font(.system(size: 28))
-            .frame(width: 32)
+            .frame(width: 32, height: 32)
             
             VStack(alignment: .leading, spacing: 4) {
                 if card.type == "text" {
