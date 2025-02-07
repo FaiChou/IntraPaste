@@ -12,6 +12,30 @@ struct MinioHealthResponse: Decodable {
     let enabled: Bool
 }
 
+// 添加文件类型枚举
+enum FileType {
+    case image
+    case document
+    
+    var mimeType: String {
+        switch self {
+        case .image:
+            return "image/jpeg"
+        case .document:
+            return "application/octet-stream"
+        }
+    }
+    
+    var cardType: String {
+        switch self {
+        case .image:
+            return "image"
+        case .document:
+            return "file"
+        }
+    }
+}
+
 class APIClient {
     static let shared = APIClient()
     
@@ -49,6 +73,8 @@ class APIClient {
         fileName: String? = nil,
         objectName: String? = nil,
         fileUrl: String? = nil,
+        fileType: String? = nil,
+        fileSize: Int? = nil,
         server: Server
     ) async throws -> Card {
         guard let url = URL(string: "\(server.url)/api/cards") else {
@@ -64,7 +90,9 @@ class APIClient {
             "type": type,
             "fileName": fileName as Any,
             "objectName": objectName as Any,
-            "fileUrl": fileUrl as Any
+            "fileUrl": fileUrl as Any,
+            "fileType": fileType as Any,
+            "fileSize": fileSize as Any
         ].compactMapValues { $0 }
         
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
@@ -138,7 +166,7 @@ class APIClient {
         }
     }
     
-    func uploadImage(imageData: Data, fileName: String, server: Server) async throws -> Card {
+    func uploadFile(fileData: Data, fileName: String, fileType: FileType = .document, server: Server) async throws -> Card {
         // 1. 获取预签名 URL
         guard let url = URL(string: "\(server.url)/api/upload") else {
             throw APIError.invalidURL
@@ -150,7 +178,7 @@ class APIClient {
         
         let body = [
             "fileName": fileName,
-            "fileType": "image/jpeg"
+            "fileType": fileType.mimeType
         ]
         request.httpBody = try JSONEncoder().encode(body)
         
@@ -174,15 +202,15 @@ class APIClient {
         
         let uploadResponse = try JSONDecoder().decode(UploadResponse.self, from: data)
         
-        // 2. 上传图片到预签名 URL
+        // 2. 上传文件到预签名 URL
         guard let uploadURL = URL(string: uploadResponse.data.uploadUrl) else {
             throw APIError.invalidURL
         }
         
         var uploadRequest = URLRequest(url: uploadURL)
         uploadRequest.httpMethod = "PUT"
-        uploadRequest.setValue("image/jpeg", forHTTPHeaderField: "Content-Type")
-        uploadRequest.httpBody = imageData
+        uploadRequest.setValue(fileType.mimeType, forHTTPHeaderField: "Content-Type")
+        uploadRequest.httpBody = fileData
         
         let (_, uploadResponseData) = try await URLSession.shared.data(for: uploadRequest)
         
@@ -194,10 +222,22 @@ class APIClient {
         // 3. 创建卡片
         return try await createCard(
             content: "",
-            type: "image",
+            type: fileType.cardType,
             fileName: fileName,
             objectName: uploadResponse.data.objectName,
             fileUrl: uploadResponse.data.fileUrl,
+            fileType: fileType.mimeType,
+            fileSize: fileData.count,
+            server: server
+        )
+    }
+    
+    // 为了保持向后兼容，保留 uploadImage 函数但内部调用新的 uploadFile 函数
+    func uploadImage(imageData: Data, fileName: String, server: Server) async throws -> Card {
+        return try await uploadFile(
+            fileData: imageData,
+            fileName: fileName,
+            fileType: .image,
             server: server
         )
     }
