@@ -34,9 +34,15 @@ start_services() {
 }
 
 main() {
+    start_time=$(date +%s)
+    
     check_requirements
     load_env
     start_services
+    
+    end_time=$(date +%s)
+    duration=$((end_time - start_time))
+    echo -e "${GREEN}Total execution time: ${duration} seconds${NC}"
 }
 
 main
