@@ -22,6 +22,26 @@ struct AudioPlayerView: View {
                     Text(fileName)
                         .font(.headline)
                     
+                    VStack(spacing: 8) {
+                        Slider(value: $audioPlayer.progress, in: 0...1) { editing in
+                            if editing {
+                                audioPlayer.isSeeking = true
+                            } else {
+                                audioPlayer.seekToProgress()
+                            }
+                        }
+                        
+                        HStack {
+                            Text(audioPlayer.currentTimeString)
+                                .font(.caption)
+                            Spacer()
+                            Text(audioPlayer.durationString)
+                                .font(.caption)
+                        }
+                        .foregroundColor(.gray)
+                    }
+                    .padding(.horizontal)
+                    
                     HStack {
                         Button {
                             audioPlayer.isPlaying ? audioPlayer.pause() : audioPlayer.play()
@@ -91,10 +111,25 @@ struct AudioPlayerView: View {
 class AudioPlayerManager: ObservableObject {
     private var player: AVPlayer?
     @Published var isPlaying = false
+    @Published var progress: Double = 0
+    @Published var currentTimeString: String = "00:00"
+    @Published var durationString: String = "00:00"
+    private var timeObserver: Any?
+    var isSeeking = false
     
     func setupPlayer(with url: URL) {
         let playerItem = AVPlayerItem(url: url)
         player = AVPlayer(playerItem: playerItem)
+        
+        timeObserver = player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 600), queue: .main) { [weak self] time in
+            guard let self = self, !self.isSeeking else { return }
+            
+            if let duration = self.player?.currentItem?.duration.seconds, duration.isFinite {
+                self.progress = time.seconds / duration
+                self.currentTimeString = self.formatTime(time.seconds)
+                self.durationString = self.formatTime(duration)
+            }
+        }
     }
     
     func play() {
@@ -111,5 +146,24 @@ class AudioPlayerManager: ObservableObject {
         player?.pause()
         player?.seek(to: .zero)
         isPlaying = false
+    }
+    
+    func seekToProgress() {
+        guard let player = player, let duration = player.currentItem?.duration else { return }
+        isSeeking = false
+        let time = CMTime(seconds: duration.seconds * progress, preferredTimescale: 600)
+        player.seek(to: time)
+    }
+    
+    private func formatTime(_ timeInSeconds: Double) -> String {
+        let minutes = Int(timeInSeconds / 60)
+        let seconds = Int(timeInSeconds.truncatingRemainder(dividingBy: 60))
+        return String(format: "%02d:%02d", minutes, seconds)
+    }
+    
+    deinit {
+        if let timeObserver = timeObserver {
+            player?.removeTimeObserver(timeObserver)
+        }
     }
 }
