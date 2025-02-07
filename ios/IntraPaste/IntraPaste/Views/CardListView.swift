@@ -77,7 +77,8 @@ struct CardListView: View {
                 .padding()
             }
         }
-        .navigationTitle("卡片列表")
+        .navigationTitle(server.name)
+        .toolbarRole(.editor)
         .toolbar {
             if !server.isLoggedIn {
                 Button("登录") {

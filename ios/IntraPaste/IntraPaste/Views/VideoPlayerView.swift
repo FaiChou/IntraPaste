@@ -45,7 +45,7 @@ struct VideoPlayerView: View {
             .alert("保存成功", isPresented: $showingSaveSuccess) {
                 Button("确定", role: .cancel) { }
             } message: {
-                Text("视频已保存到相册")
+                Text("视频已保存到文件。可在手机的`文件`应用中查看。")
             }
             .onAppear {
                 if let url = URL(string: videoURL) {
@@ -57,37 +57,19 @@ struct VideoPlayerView: View {
     }
     
     private func downloadVideo() {
-        guard let url = URL(string: videoURL) else { return }
-        
         isDownloading = true
         
-        let task = URLSession.shared.downloadTask(with: url) { localURL, _, error in
-            defer {
-                DispatchQueue.main.async {
-                    isDownloading = false
-                }
-            }
-            
-            guard let localURL = localURL, error == nil else {
-                print("Download error:", error ?? "unknown error")
-                return
-            }
-            
-            PHPhotoLibrary.requestAuthorization { status in
-                guard status == .authorized else { return }
+        FileDownloader.shared.downloadFile(from: videoURL, fileName: fileName) { result in
+            DispatchQueue.main.async {
+                isDownloading = false
                 
-                PHPhotoLibrary.shared().performChanges {
-                    let request = PHAssetCreationRequest.forAsset()
-                    request.addResource(with: .video, fileURL: localURL, options: nil)
-                } completionHandler: { success, error in
-                    DispatchQueue.main.async {
-                        if success {
-                            showingSaveSuccess = true
-                        }
-                    }
+                switch result {
+                case .success:
+                    showingSaveSuccess = true
+                case .failure(let error):
+                    print("Video save error:", error)
                 }
             }
         }
-        task.resume()
     }
 }

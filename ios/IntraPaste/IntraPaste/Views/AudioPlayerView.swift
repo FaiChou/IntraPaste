@@ -59,7 +59,7 @@ struct AudioPlayerView: View {
             .alert("保存成功", isPresented: $showingSaveSuccess) {
                 Button("确定", role: .cancel) { }
             } message: {
-                Text("音频已保存到文件")
+                Text("音频已保存到文件。可在手机的`文件`应用中查看。")
             }
             .onAppear {
                 if let url = URL(string: audioURL) {
@@ -70,39 +70,20 @@ struct AudioPlayerView: View {
     }
     
     private func downloadAudio() {
-        guard let url = URL(string: audioURL) else { return }
-        
         isDownloading = true
         
-        let task = URLSession.shared.downloadTask(with: url) { localURL, _, error in
-            defer {
-                DispatchQueue.main.async {
-                    isDownloading = false
-                }
-            }
-            
-            guard let localURL = localURL, error == nil else {
-                print("Download error:", error ?? "unknown error")
-                return
-            }
-            
-            let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let destinationURL = documentsPath.appendingPathComponent(fileName)
-            
-            do {
-                if FileManager.default.fileExists(atPath: destinationURL.path) {
-                    try FileManager.default.removeItem(at: destinationURL)
-                }
-                try FileManager.default.copyItem(at: localURL, to: destinationURL)
+        FileDownloader.shared.downloadFile(from: audioURL, fileName: fileName) { result in
+            DispatchQueue.main.async {
+                isDownloading = false
                 
-                DispatchQueue.main.async {
+                switch result {
+                case .success:
                     showingSaveSuccess = true
+                case .failure(let error):
+                    print("Audio save error:", error)
                 }
-            } catch {
-                print("File save error:", error)
             }
         }
-        task.resume()
     }
 }
 

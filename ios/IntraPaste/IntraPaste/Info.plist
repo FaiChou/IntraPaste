@@ -13,5 +13,9 @@
 	<string>需要访问相册以保存媒体文件</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>需要访问相册以保存媒体文件</string>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
 </dict>
 </plist>

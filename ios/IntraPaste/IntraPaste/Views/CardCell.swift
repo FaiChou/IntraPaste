@@ -7,6 +7,8 @@ struct CardCell: View {
     @State private var showingVideoPlayer = false
     @State private var showingAudioPlayer = false
     @State private var showingFileInfo = false
+    @State private var isDownloading = false
+    @State private var showingSaveSuccess = false
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
@@ -106,9 +108,18 @@ struct CardCell: View {
         }
         .alert("文件信息", isPresented: $showingFileInfo) {
             if let filePath = card.filePath {
-                Button("下载") {
-                    UIApplication.shared.open(URL(string: filePath)!)
+                Button {
+                    downloadFile(from: filePath, fileName: card.fileName ?? "未知文件")
+                } label: {
+                    HStack {
+                        if isDownloading {
+                            ProgressView()
+                                .scaleEffect(0.8)
+                        }
+                        Text("下载")
+                    }
                 }
+                .disabled(isDownloading)
             }
             Button("取消", role: .cancel) { }
         } message: {
@@ -116,15 +127,34 @@ struct CardCell: View {
                 Text("文件名：\(fileName)\n大小：\(formatFileSize(card.fileSize ?? 0))")
             }
         }
+        .alert("保存成功", isPresented: $showingSaveSuccess) {
+            Button("确定", role: .cancel) { }
+        } message: {
+            Text("文件已保存。可在手机的`文件`应用中查看。")
+        }
     }
     
     private func formatFileSize(_ bytes: Int) -> String {
-        if bytes < 1024 {
-            return "\(bytes) B"
-        } else if bytes < 1024 * 1024 {
-            return String(format: "%.2f KB", Double(bytes) / 1024)
-        } else {
-            return String(format: "%.2f MB", Double(bytes) / (1024 * 1024))
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = [.useAll]
+        formatter.countStyle = .file
+        return formatter.string(fromByteCount: Int64(bytes))
+    }
+    
+    private func downloadFile(from urlString: String, fileName: String) {
+        isDownloading = true
+        
+        FileDownloader.shared.downloadFile(from: urlString, fileName: fileName) { result in
+            DispatchQueue.main.async {
+                isDownloading = false
+                
+                switch result {
+                case .success:
+                    showingSaveSuccess = true
+                case .failure(let error):
+                    print("File save error:", error)
+                }
+            }
         }
     }
 }
