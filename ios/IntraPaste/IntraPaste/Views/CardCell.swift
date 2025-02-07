@@ -74,6 +74,42 @@ struct CardCell: View {
                         }
                     }
                 }
+                .contextMenu {
+                    if let filePath = card.filePath {
+                        Button {
+                            downloadFile(from: filePath, fileName: card.fileName ?? "未知文件")
+                        } label: {
+                            Label("下载", systemImage: "arrow.down.circle")
+                        }
+                        
+                        switch card.type {
+                        case "image":
+                            Button {
+                                showingImagePreview = true
+                            } label: {
+                                Label("预览", systemImage: "eye")
+                            }
+                        case "video" where card.isPlayableVideo:
+                            Button {
+                                showingVideoPlayer = true
+                            } label: {
+                                Label("播放", systemImage: "play.circle")
+                            }
+                        case "audio" where card.isPlayableAudio:
+                            Button {
+                                showingAudioPlayer = true
+                            } label: {
+                                Label("播放", systemImage: "play.circle")
+                            }
+                        default:
+                            Button {
+                                showingFileInfo = true
+                            } label: {
+                                Label("查看信息", systemImage: "info.circle")
+                            }
+                        }
+                    }
+                }
             }
             
             Text(card.createdAt.formatted())
@@ -83,8 +119,6 @@ struct CardCell: View {
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color(.systemBackground))
-        .cornerRadius(8)
-        .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
         .onTapGesture {
             switch card.type {
             case "text":
