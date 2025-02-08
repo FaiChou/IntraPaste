@@ -19,7 +19,6 @@ if (!fs.existsSync(LOG_CONFIG.LOG_DIR)) {
   fs.mkdirSync(LOG_CONFIG.LOG_DIR, { recursive: true })
 }
 
-// 添加自定义类型定义
 type LogMessage = Record<string, unknown>
 type ErrorType = Error | null | undefined
 

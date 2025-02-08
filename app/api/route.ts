@@ -3,7 +3,6 @@ import { ensureBucket } from '@/lib/minio'
 import { NextResponse } from 'next/server'
 import { logger } from '@/lib/logger'
 
-// 系统初始化
 Promise.all([
   startCleanupJob(),
   ensureBucket().catch(error => {
