@@ -14,8 +14,6 @@ on:
       - 'README_zh.md'
       - 'README.md'
 
-if: "!contains(github.event.head_commit.message, 'skip ci')"
-
 env:
   NODE_VERSION: '18'
   DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/intrapaste
@@ -24,6 +22,7 @@ jobs:
   lint-and-test:
     name: Code Check and Test
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
     
     steps:
       - name: Checkout code
@@ -59,7 +58,7 @@ jobs:
     name: Build and Push Docker Image
     needs: lint-and-test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: "!contains(github.event.head_commit.message, 'skip ci') && github.event_name == 'push' && github.ref == 'refs/heads/main'"
     
     steps:
       - name: Checkout code
