@@ -2,10 +2,10 @@ import { Client } from 'minio'
 import { logger } from './logger'
 
 const MINIO_CONFIG = {
-  endpoint: process.env.MINIO_ENDPOINT!,
+  endpoint: process.env.MINIO_ENDPOINT || 'http://your-minio-server',
   port: process.env.MINIO_PORT || '9000',
-  user: process.env.MINIO_ROOT_USER!,
-  password: process.env.MINIO_ROOT_PASSWORD!,
+  user: process.env.MINIO_ROOT_USER || 'your-user-name',
+  password: process.env.MINIO_ROOT_PASSWORD || 'your-password',
   bucket: 'intrapaste'
 } as const
 
@@ -18,9 +18,9 @@ const minioClient = new Client({
 })
 
 export async function checkMinioConnection() {
-  if (!process.env.MINIO_ENDPOINT || 
-      !process.env.MINIO_ROOT_USER || 
-      !process.env.MINIO_ROOT_PASSWORD) {
+  if (!MINIO_CONFIG.endpoint ||
+      !MINIO_CONFIG.user ||
+      !MINIO_CONFIG.password) {
     return false
   }
 
