@@ -1,7 +1,6 @@
 services:
   app:
-    build: .
-    # image: phyllislapin/intrapaste:latest
+    image: ghcr.io/faichou/intrapaste:latest
     ports:
       - "3210:3210"
     env_file:
