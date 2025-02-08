@@ -2,6 +2,10 @@ English | [中文](README_zh.md)
 
 # IntraPaste
 
+[![CI Status](https://github.com/FaiChou/IntraPaste/actions/workflows/ci.yml/badge.svg)](https://github.com/FaiChou/IntraPaste/actions)
+[![Docker Pulls](https://img.shields.io/docker/pulls/phyllislapin/intrapaste)](https://hub.docker.com/r/phyllislapin/intrapaste)
+[![License](https://img.shields.io/github/license/FaiChou/IntraPaste)](LICENSE)
+
 IntraPaste is a simple and efficient temporary content sharing service that supports text and image sharing. All content will be automatically cleaned up after a specified time to keep the system clean.
 
 > ⚠️ **Security Notice**: It is recommended to deploy this service within an intranet environment rather than exposing it to the public internet. This helps prevent potential information leaks and malicious usage.
