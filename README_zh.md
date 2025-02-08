@@ -210,7 +210,3 @@ open IntraPaste.xcodeproj
 - 支持的音频格式：mp3, wav, ogg, m4a, webm, aac
 - 频率限制：可配置的 IP 上传限制
 - 文件类型安全验证 
-
-## 许可证
-
-[MIT License](LICENSE)

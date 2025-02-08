@@ -211,7 +211,3 @@ open IntraPaste.xcodeproj
 - Supported audio formats: mp3, wav, ogg, m4a, webm, aac
 - Rate limiting: Configurable upload limits per IP
 - File type validation for security
-
-## License
-
-[MIT License](LICENSE)
