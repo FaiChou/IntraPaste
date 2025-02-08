@@ -63,7 +63,6 @@ export function startCleanupJob() {
         },
       })
       
-      // 清理上传记录
       const beforeSize = getUploadRecordSize();
       const cleanedRecords = cleanupUploadRecords();
       const afterSize = getUploadRecordSize();
@@ -88,7 +87,6 @@ export function startCleanupJob() {
     }
   })
 
-  // 每10分钟清理一次上传记录
   cron.schedule('*/10 * * * *', () => {
     try {
       const beforeSize = getUploadRecordSize();
