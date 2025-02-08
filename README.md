@@ -12,28 +12,35 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
   - Native iOS app with SwiftUI
   - Multiple server management
   - Dark mode support
-  - Image preview & download
+  - Media preview & download
 - 📝 Text Sharing
   - Multi-line text support
   - Click to copy
   - Shift + Enter for new line
-- 📸 Image Sharing (Optional)
+- 📸 Media Sharing (Optional)
   - Requires MinIO setup
-  - Image preview
-  - Click to zoom
+  - Image preview & zoom
+  - Video playback (mp4, webm, mov)
+  - Audio playback (mp3, wav, ogg, etc.)
+  - General file upload support
   - One-click download
 - 🎨 UI/UX
   - Light/Dark theme
   - Fully responsive design
   - Clean and intuitive interface
+  - Upload progress indication
 - 👨‍💼 Admin Features
   - Admin dashboard
   - Content management
   - Password management
+  - Upload settings
 - 🧹 System Features
   - Auto cleanup expired content
   - Optional file storage with MinIO
+  - Rate limiting
   - System logging
+  - File type validation
+  - Upload size limits (1GB max)
 
 ## Tech Stack
 
@@ -192,6 +199,14 @@ open IntraPaste.xcodeproj
   - `Views/` - SwiftUI views
   - `Services/` - API and server management
   - `Models/` - Data models
+
+### File Upload Limits
+
+- Maximum file size: 1GB
+- Supported video formats: mp4, webm, mov
+- Supported audio formats: mp3, wav, ogg, m4a, webm, aac
+- Rate limiting: Configurable upload limits per IP
+- File type validation for security
 
 ## License
 
