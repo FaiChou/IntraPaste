@@ -13,7 +13,7 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
 ## Features
 
 - 📱 iOS Client
-  - Native iOS app with SwiftUI
+  - Native iOS app with SwiftUI ([Download](https://apps.apple.com/cn/app/intrapaste/id6740268699?l=en-GB))
   - Multiple server management
   - Dark mode support
   - Media preview & download

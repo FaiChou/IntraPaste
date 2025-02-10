@@ -13,7 +13,7 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
 ## 功能特性
 
 - 📱 iOS 客户端
-  - 基于 SwiftUI 的原生应用
+  - 基于 SwiftUI 的原生应用（[App Store 下载](https://apps.apple.com/cn/app/intrapaste/id6740268699?l=en-GB)）
   - 多服务器管理
   - 深色模式支持
   - 媒体预览与下载
