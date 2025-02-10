@@ -125,6 +125,9 @@ chmod +x start.sh
 
 - Web 界面：http://localhost:3210
 - MinIO 控制台（如果在本地运行）：http://192.168.2.100:9001
+- 管理系统：http://localhost:3210/admin (默认密码：admin)
+
+> ⚠️ 出于安全考虑，请在首次登录后立即修改默认密码。
 
 ### 手动部署
 

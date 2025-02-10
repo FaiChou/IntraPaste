@@ -126,6 +126,9 @@ The script will automatically:
 
 - Web UI: http://localhost:3210
 - MinIO Console (if running locally): http://192.168.2.100:9001
+- Admin Management: http://localhost:3210/admin (default password: admin)
+
+> ⚠️ For security reasons, please change the default password immediately after first login.
 
 ### Manual Deployment
 
