@@ -210,3 +210,11 @@ open IntraPaste.xcodeproj
 - 支持的音频格式：mp3, wav, ogg, m4a, webm, aac
 - 频率限制：可配置的 IP 上传限制
 - 文件类型安全验证 
+
+## 预览
+
+![首页](https://faichou.github.io/IntraPastePrivacy/home.png)
+
+![管理页](https://faichou.github.io/IntraPastePrivacy/admin.png)
+
+![移动端](https://faichou.github.io/IntraPastePrivacy/mobile.png) 

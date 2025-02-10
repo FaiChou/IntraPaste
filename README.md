@@ -211,3 +211,11 @@ open IntraPaste.xcodeproj
 - Supported audio formats: mp3, wav, ogg, m4a, webm, aac
 - Rate limiting: Configurable upload limits per IP
 - File type validation for security
+
+## Preview
+
+![Home](https://faichou.github.io/IntraPastePrivacy/home.png)
+
+![Admin](https://faichou.github.io/IntraPastePrivacy/admin.png)
+
+![Mobile](https://faichou.github.io/IntraPastePrivacy/mobile.png)
