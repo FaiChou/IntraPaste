@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Dialog } from '@headlessui/react'
 import { formatFileSize, formatFileType } from '@/lib/format'
+import { useI18n } from '@/lib/i18n/context'
 
 interface CardProps {
   content?: string
@@ -18,6 +19,7 @@ interface CardProps {
 export function Card({ content, createdAt, type, fileName, fileSize, filePath, fileType }: CardProps) {
   const [copied, setCopied] = useState(false)
   const [isImageOpen, setIsImageOpen] = useState(false)
+  const { t } = useI18n()
 
   const fallbackCopyToClipboard = (text: string) => {
     const textArea = document.createElement('textarea')
@@ -51,6 +53,23 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
     }
   }
 
+  const renderFileInfo = () => (
+    <div className="space-y-1 text-sm text-gray-500 dark:text-gray-400">
+      <div>{new Date(createdAt).toLocaleString()}</div>
+      <div className="flex items-center justify-between">
+        <span>{formatFileSize(fileSize!)}</span>
+        <a 
+          href={filePath}
+          download={fileName}
+          className="text-blue-500 hover:text-blue-600"
+          onClick={(e) => e?.stopPropagation?.()}
+        >
+          {t.common.download}
+        </a>
+      </div>
+    </div>
+  )
+
   if (type === 'video') {
     return (
       <div className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
@@ -61,22 +80,10 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
             className="w-full h-full rounded"
             preload="metadata"
           >
-            您的浏览器不支持视频播放
+            {t.common.videoNotSupported}
           </video>
         </div>
-        <div className="flex justify-between items-center text-sm text-gray-500">
-          <span>{new Date(createdAt).toLocaleString()}</span>
-          <div className="flex items-center gap-2">
-            <span>({formatFileSize(fileSize!)})</span>
-            <a 
-              href={filePath}
-              download={fileName}
-              className="text-blue-500 hover:text-blue-600"
-            >
-              下载
-            </a>
-          </div>
-        </div>
+        {renderFileInfo()}
       </div>
     )
   }
@@ -84,24 +91,13 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
   if (type === 'file') {
     return (
       <div className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
-        <div className="flex items-center justify-between">
-          <div className="flex-1 mr-4">
-            <p className="font-medium mb-1">{fileName}</p>
-            <p className="text-sm text-gray-500">
-              {formatFileSize(fileSize!)} • {formatFileType(fileType)}
-            </p>
-          </div>
-          <a 
-            href={filePath}
-            download={fileName}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            下载
-          </a>
+        <div className="mb-2">
+          <p className="font-medium mb-1">{fileName}</p>
+          <p className="text-sm text-gray-500">
+            {formatFileType(fileType)}
+          </p>
         </div>
-        <div className="mt-2 text-sm text-gray-500">
-          {new Date(createdAt).toLocaleString()}
-        </div>
+        {renderFileInfo()}
       </div>
     )
   }
@@ -116,25 +112,12 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
           >
             <Image
               src={filePath!}
-              alt={fileName || '图片'}
+              alt={fileName || t.common.image}
               fill
               className="object-cover rounded"
             />
           </div>
-          <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-            <span>{new Date(createdAt).toLocaleString()}</span>
-            <div className="flex items-center gap-2">
-              <span>({formatFileSize(fileSize!)})</span>
-              <a 
-                href={filePath}
-                download={fileName}
-                className="text-blue-500 hover:text-blue-600"
-                onClick={(e) => e.stopPropagation()}
-              >
-                下载
-              </a>
-            </div>
-          </div>
+          {renderFileInfo()}
         </div>
 
         <Dialog
@@ -148,7 +131,7 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
             <Dialog.Panel className="max-w-4xl w-full relative aspect-[16/9]">
               <Image
                 src={filePath!}
-                alt={fileName || '图片'}
+                alt={fileName || t.common.image}
                 fill
                 className="rounded object-contain"
                 sizes="(max-width: 896px) 100vw, 896px"
@@ -170,7 +153,6 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
             className="w-full"
             preload="metadata"
             onError={(e) => {
-              // 如果音频加载失败,将其作为普通文件处理
               const target = e.target as HTMLAudioElement;
               target.parentElement?.classList.add('hidden');
               const fallback = target.parentElement?.nextElementSibling;
@@ -180,39 +162,19 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
             }}
           >
             <source src={filePath} type={fileType} />
-            您的浏览器不支持音频播放
+            {t.common.audioNotSupported}
           </audio>
           
-          {/* 音频播放失败时的后备方案 */}
           <div className="hidden flex items-center justify-between">
             <div className="flex-1 mr-4">
               <p className="font-medium mb-1">{fileName}</p>
               <p className="text-sm text-gray-500">
-                {formatFileSize(fileSize!)} • {formatFileType(fileType)}
+                {formatFileType(fileType)}
               </p>
             </div>
-            <a 
-              href={filePath}
-              download={fileName}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              下载
-            </a>
           </div>
         </div>
-        <div className="flex justify-between items-center text-sm text-gray-500">
-          <span>{new Date(createdAt).toLocaleString()}</span>
-          <div className="flex items-center gap-2">
-            <span>({formatFileSize(fileSize!)})</span>
-            <a 
-              href={filePath}
-              download={fileName}
-              className="text-blue-500 hover:text-blue-600"
-            >
-              下载
-            </a>
-          </div>
-        </div>
+        {renderFileInfo()}
       </div>
     )
   }
@@ -230,7 +192,7 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
       </p>
       <div className="mt-2 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
         <span>{new Date(createdAt).toLocaleString()}</span>
-        <span>{copied ? '已复制!' : '点击复制'}</span>
+        <span>{copied ? t.common.copied : t.common.clickToCopy}</span>
       </div>
     </div>
   )

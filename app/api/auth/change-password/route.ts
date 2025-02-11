@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   
   if (!adminToken) {
     return NextResponse.json(
-      { success: false, message: '未登录' },
+      { success: false, message: 'Not logged in' },
       { status: 401 }
     )
   }
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
     if (!oldPassword || !newPassword) {
       return NextResponse.json(
-        { success: false, message: '密码不能为空' },
+        { success: false, message: 'Password cannot be empty' },
         { status: 400 }
       )
     }
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     
     if (!user) {
       return NextResponse.json(
-        { success: false, message: '用户不存在' },
+        { success: false, message: 'User does not exist' },
         { status: 404 }
       )
     }
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     
     if (!isValid) {
       return NextResponse.json(
-        { success: false, message: '原密码错误' },
+        { success: false, message: 'Old password is incorrect' },
         { status: 401 }
       )
     }
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Change password error:', error)
     return NextResponse.json(
-      { success: false, message: '修改失败' },
+      { success: false, message: 'Change password failed' },
       { status: 500 }
     )
   }

@@ -25,7 +25,7 @@ export async function DELETE(
     })
 
     return NextResponse.json(
-      { success: false, message: '未登录' },
+      { success: false, message: 'Not logged in' },
       { status: 401 }
     )
   }
@@ -36,7 +36,7 @@ export async function DELETE(
 
   if (!user) {
     return NextResponse.json(
-      { success: false, message: '无效的登录状态' },
+      { success: false, message: 'Invalid login status' },
       { status: 401 }
     )
   }
@@ -46,7 +46,7 @@ export async function DELETE(
     
     if (isNaN(id)) {
       return NextResponse.json(
-        { success: false, message: '无效的ID' },
+        { success: false, message: 'Invalid ID' },
         { status: 400 }
       )
     }
@@ -66,7 +66,7 @@ export async function DELETE(
       })
 
       return NextResponse.json(
-        { success: false, message: '卡片不存在' },
+        { success: false, message: 'Card not found' },
         { status: 404 }
       )
     }
@@ -119,8 +119,8 @@ export async function DELETE(
     })
 
     return NextResponse.json(
-      { success: false, message: '删除失败' },
+      { success: false, message: 'Delete failed' },
       { status: 500 }
     )
   }
-} 
+}

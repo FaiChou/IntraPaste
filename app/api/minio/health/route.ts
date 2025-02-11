@@ -15,4 +15,4 @@ export async function GET() {
       error: 'MinIO connection failed' 
     })
   }
-} 
+}

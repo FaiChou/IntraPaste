@@ -19,7 +19,7 @@ export async function GET() {
       error: error instanceof Error ? error : new Error(String(error))
     })
     return NextResponse.json(
-      { success: false, message: '获取设置失败' },
+      { success: false, message: 'Get settings failed' },
       { status: 500 }
     )
   }
@@ -31,7 +31,7 @@ export async function PUT(request: Request) {
 
   if (!adminToken?.value) {
     return NextResponse.json(
-      { success: false, message: '未登录' },
+      { success: false, message: 'Not logged in' },
       { status: 401 }
     )
   }
@@ -42,7 +42,7 @@ export async function PUT(request: Request) {
 
   if (!user) {
     return NextResponse.json(
-      { success: false, message: '无效的登录状态' },
+      { success: false, message: 'Invalid login status' },
       { status: 401 }
     )
   }
@@ -52,7 +52,7 @@ export async function PUT(request: Request) {
     
     if (!expirationMinutes || expirationMinutes < 1) {
       return NextResponse.json(
-        { success: false, message: '过期时间不能小于1分钟' },
+        { success: false, message: 'Expiration time cannot be less than 1 minute' },
         { status: 400 }
       )
     }
@@ -79,8 +79,8 @@ export async function PUT(request: Request) {
       error: error instanceof Error ? error : new Error(String(error))
     })
     return NextResponse.json(
-      { success: false, message: '更新设置失败' },
+      { success: false, message: 'Update settings failed' },
       { status: 500 }
     )
   }
-} 
+}

@@ -20,7 +20,7 @@ export async function GET() {
   } catch (error) {
     console.error('Fetch cards error:', error)
     return NextResponse.json(
-      { success: false, message: '获取失败' },
+      { success: false, message: 'Get cards failed' },
       { status: 500 }
     )
   }
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     
     if (!content && !objectName) {
       return NextResponse.json(
-        { success: false, message: '内容不能为空' },
+        { success: false, message: 'Content cannot be empty' },
         { status: 400 }
       )
     }
@@ -41,7 +41,6 @@ export async function POST(request: Request) {
     const ipAddress = headersList.get('x-forwarded-for') || 'unknown'
     const userAgent = headersList.get('user-agent') || 'unknown'
 
-    // 获取过期时间设置
     const setting = await prisma.setting.findFirst({
       where: { key: 'cardExpirationMinutes' }
     })
@@ -68,7 +67,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Create card error:', error)
     return NextResponse.json(
-      { success: false, message: '创建失败' },
+      { success: false, message: 'Create card failed' },
       { status: 500 }
     )
   }
@@ -80,7 +79,7 @@ export async function DELETE() {
 
   if (!adminToken?.value) {
     return NextResponse.json(
-      { success: false, message: '未登录' },
+      { success: false, message: 'Not logged in' },
       { status: 401 }
     )
   }
@@ -91,7 +90,7 @@ export async function DELETE() {
 
   if (!user) {
     return NextResponse.json(
-      { success: false, message: '无效的登录状态' },
+      { success: false, message: 'Invalid login status' },
       { status: 401 }
     )
   }
@@ -129,7 +128,7 @@ export async function DELETE() {
   } catch (error) {
     console.error('Delete all cards error:', error)
     return NextResponse.json(
-      { success: false, message: '删除失败' },
+      { success: false, message: 'Delete all cards failed' },
       { status: 500 }
     )
   }

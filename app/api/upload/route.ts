@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     
     if (!fileName || !fileType) {
       return NextResponse.json(
-        { success: false, message: '文件信息不完整' },
+        { success: false, message: 'File information is incomplete' },
         { status: 400 }
       )
     }
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Generate upload URL error:', error)
     return NextResponse.json(
-      { success: false, message: '生成上传链接失败' },
+      { success: false, message: 'Generate upload URL failed' },
       { status: 500 }
     )
   }

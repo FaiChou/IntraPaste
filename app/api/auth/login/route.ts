@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       })
       
       return NextResponse.json(
-        { success: false, message: '密码不能为空' },
+        { success: false, message: 'Password cannot be empty' },
         { status: 400 }
       )
     }
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     
     if (!isValid) {
       return NextResponse.json(
-        { success: false, message: '密码错误' },
+        { success: false, message: 'Password is incorrect' },
         { status: 401 }
       )
     }
@@ -97,8 +97,8 @@ export async function POST(request: Request) {
     })
     
     return NextResponse.json(
-      { success: false, message: '登录失败' },
+      { success: false, message: 'Login failed' },
       { status: 500 }
     )
   }
-} 
+}

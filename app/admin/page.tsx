@@ -6,6 +6,7 @@ import { Card as PrismaCard } from '@prisma/client'
 import { Dialog } from '@headlessui/react'
 import Link from 'next/link'
 import { formatFileSize, getFileTypeIcon, formatFileType } from '@/lib/format'
+import { useI18n } from '@/lib/i18n/context'
 
 export default function AdminPage() {
   const [cards, setCards] = useState<PrismaCard[]>([])
@@ -18,6 +19,7 @@ export default function AdminPage() {
   const [isExpirationOpen, setIsExpirationOpen] = useState(false)
   const [expirationError, setExpirationError] = useState('')
   const router = useRouter()
+  const { t, language, setLanguage } = useI18n()
 
   const checkAuth = useCallback(async () => {
     const res = await fetch('/api/auth/check')
@@ -130,16 +132,16 @@ export default function AdminPage() {
         
         {card.fileName && (
           <p className="truncate" title={card.fileName}>
-            文件名: {card.fileName}
+            {t.admin.fileInfo.fileName}: {card.fileName}
           </p>
         )}
         
         {card.fileSize && (
-          <p>文件大小: {formatFileSize(card.fileSize)}</p>
+          <p>{t.admin.fileInfo.fileSize}: {formatFileSize(card.fileSize)}</p>
         )}
         
         {card.fileType && (
-          <p>文件类型: {formatFileType(card.fileType)}</p>
+          <p>{t.admin.fileInfo.fileType}: {formatFileType(card.fileType)}</p>
         )}
         
         {card.filePath && (
@@ -152,7 +154,7 @@ export default function AdminPage() {
                   rel="noopener noreferrer" 
                   className="text-blue-500 hover:underline"
                 >
-                  预览视频
+                  {t.common.preview}
                 </a>
                 <span>|</span>
               </>
@@ -164,7 +166,7 @@ export default function AdminPage() {
                   rel="noopener noreferrer" 
                   className="text-blue-500 hover:underline"
                 >
-                  查看图片
+                  {t.common.preview}
                 </a>
                 <span>|</span>
               </>
@@ -174,7 +176,7 @@ export default function AdminPage() {
               download={card.fileName}
               className="text-blue-500 hover:underline"
             >
-              下载文件
+              {t.common.download}
             </a>
           </div>
         )}
@@ -185,49 +187,50 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">管理面板</h1>
+        <h1 className="text-2xl font-bold mb-4">{t.admin.title}</h1>
         
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-4 mb-8">
           <Link 
             href="/"
-            className="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            className="inline-flex justify-center items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
           >
-            ← 返回首页
+            {t.admin.backToHome}
           </Link>
 
           <button
             onClick={() => setIsConfirmOpen(true)}
             disabled={cards.length === 0}
-            className={`px-4 py-2 text-white rounded-lg ${
+            className={`inline-flex justify-center items-center px-4 py-2 text-white rounded-lg ${
               cards.length === 0 
                 ? 'bg-red-300 cursor-not-allowed' 
                 : 'bg-red-500 hover:bg-red-600'
             }`}
           >
-            清空所有数据
+            {t.admin.clearAll}
           </button>
 
           <button
             onClick={() => setIsChangePasswordOpen(true)}
-            className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
+            className="inline-flex justify-center items-center px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600"
           >
-            修改密码
+            {t.admin.changePassword}
           </button>
 
-          <div className="relative group">
-            <button
-              onClick={() => setIsExpirationOpen(true)}
-              className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600"
-            >
-              过期时间设置
-            </button>
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block">
-              <div className="bg-gray-900 text-white text-sm rounded px-3 py-1.5 whitespace-nowrap">
-                当前过期时间: {expirationMinutes} 分钟
-              </div>
-              <div className="border-8 border-transparent border-t-gray-900 w-0 h-0 absolute left-1/2 -translate-x-1/2 -bottom-3"></div>
-            </div>
-          </div>
+          <button
+            onClick={() => setIsExpirationOpen(true)}
+            className="inline-flex justify-center items-center px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600"
+          >
+            {t.admin.expirationSetting}
+          </button>
+
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value as 'en' | 'zh')}
+            className="px-4 py-2 border rounded-lg bg-white dark:bg-gray-800 text-center md:text-left"
+          >
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+          </select>
         </div>
         
         <div className="space-y-4 mb-8">
@@ -235,17 +238,17 @@ export default function AdminPage() {
             <div key={card.id} className="flex items-start justify-between p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
               <div className="flex-1 mr-4 min-w-0 space-y-2">
                 <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                  <span>创建时间: {new Date(card.createdAt).toLocaleString()}</span>
+                  <span>{t.admin.fileInfo.createdAt}: {new Date(card.createdAt).toLocaleString()}</span>
                   <span>|</span>
-                  <span>过期时间: {new Date(card.expiresAt).toLocaleString()}</span>
+                  <span>{t.admin.fileInfo.expiresAt}: {new Date(card.expiresAt).toLocaleString()}</span>
                 </div>
                 
                 {renderCardContent(card)}
 
                 <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
-                  <p>IP: {card.ipAddress}</p>
+                  <p>{t.admin.fileInfo.ip}: {card.ipAddress}</p>
                   <p className="truncate" title={card.userAgent || undefined}>
-                    UA: {card.userAgent || '-'}
+                    {t.admin.fileInfo.ua}: {card.userAgent || '-'}
                   </p>
                 </div>
               </div>
@@ -254,7 +257,7 @@ export default function AdminPage() {
                 onClick={() => handleDelete(card.id)}
                 className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
               >
-                删除
+                {t.common.delete}
               </button>
             </div>
           ))}
@@ -269,9 +272,9 @@ export default function AdminPage() {
           
           <div className="fixed inset-0 flex items-center justify-center p-4">
             <Dialog.Panel className="mx-auto max-w-sm rounded bg-white dark:bg-gray-800 p-6">
-              <Dialog.Title className="text-lg font-medium mb-4">确认删除</Dialog.Title>
+              <Dialog.Title className="text-lg font-medium mb-4">{t.admin.confirmDelete.title}</Dialog.Title>
               <Dialog.Description className="mb-4">
-                确定要删除所有数据吗？此操作不可撤销。
+                {t.admin.confirmDelete.message}
               </Dialog.Description>
 
               <div className="flex justify-end gap-4">
@@ -279,13 +282,13 @@ export default function AdminPage() {
                   className="px-4 py-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                   onClick={() => setIsConfirmOpen(false)}
                 >
-                  取消
+                  {t.common.cancel}
                 </button>
                 <button
                   className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                   onClick={handleDeleteAll}
                 >
-                  确认删除
+                  {t.common.confirm}
                 </button>
               </div>
             </Dialog.Panel>
@@ -302,7 +305,7 @@ export default function AdminPage() {
           <div className="fixed inset-0 flex items-center justify-center p-4">
             <Dialog.Panel className="mx-auto max-w-sm rounded bg-white dark:bg-gray-800 p-6">
               <Dialog.Title className="text-lg font-medium mb-4">
-                修改密码
+                {t.admin.password.title}
               </Dialog.Title>
               
               <div className="space-y-4">
@@ -311,7 +314,7 @@ export default function AdminPage() {
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}
                   className="w-full px-4 py-2 border rounded-lg"
-                  placeholder="原密码"
+                  placeholder={t.admin.password.oldPassword}
                 />
                 
                 <input
@@ -319,7 +322,7 @@ export default function AdminPage() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="w-full px-4 py-2 border rounded-lg"
-                  placeholder="新密码"
+                  placeholder={t.admin.password.newPassword}
                 />
                 
                 {error && (
@@ -331,13 +334,13 @@ export default function AdminPage() {
                     className="px-4 py-2 text-gray-500"
                     onClick={() => setIsChangePasswordOpen(false)}
                   >
-                    取消
+                    {t.common.cancel}
                   </button>
                   <button
                     className="px-4 py-2 bg-blue-500 text-white rounded"
                     onClick={handleChangePassword}
                   >
-                    确认修改
+                    {t.common.confirm}
                   </button>
                 </div>
               </div>
@@ -355,7 +358,7 @@ export default function AdminPage() {
           <div className="fixed inset-0 flex items-center justify-center p-4">
             <Dialog.Panel className="mx-auto max-w-sm rounded bg-white dark:bg-gray-800 p-6">
               <Dialog.Title className="text-lg font-medium mb-4">
-                设置过期时间
+                {t.admin.expiration.title}
               </Dialog.Title>
               
               <div className="space-y-4">
@@ -367,11 +370,11 @@ export default function AdminPage() {
                     onChange={(e) => setExpirationMinutes(Math.max(1, parseInt(e.target.value) || 1))}
                     className="w-24 px-4 py-2 border rounded-lg"
                   />
-                  <span>分钟</span>
+                  <span>{t.admin.expiration.minutes}</span>
                 </div>
                 
                 <p className="text-sm text-gray-500">
-                  最小设置为1分钟
+                  {t.admin.expiration.minTime}
                 </p>
                 
                 {expirationError && (
@@ -383,13 +386,13 @@ export default function AdminPage() {
                     className="px-4 py-2 text-gray-500"
                     onClick={() => setIsExpirationOpen(false)}
                   >
-                    取消
+                    {t.common.cancel}
                   </button>
                   <button
                     className="px-4 py-2 bg-blue-500 text-white rounded"
                     onClick={handleUpdateExpiration}
                   >
-                    确认修改
+                    {t.common.confirm}
                   </button>
                 </div>
               </div>

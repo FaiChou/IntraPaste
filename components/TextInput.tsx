@@ -3,12 +3,14 @@
 import { useState, useRef, useEffect } from 'react'
 import { FileInfo } from '@/app/page'
 import { checkFileSize, validateFileType } from '@/lib/uploadLimit'
+import { useI18n } from '@/lib/i18n/context'
 
 interface TextInputProps {
   onSubmit: (content: string, type: string, fileInfo?: FileInfo) => void
 }
 
 export function TextInput({ onSubmit }: TextInputProps) {
+  const { t } = useI18n()
   const [content, setContent] = useState('')
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -130,7 +132,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
         onChange={(e) => setContent(e.target.value)}
         onKeyDown={handleKeyDown}
         className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none min-h-[44px] max-h-[200px] overflow-y-auto"
-        placeholder="输入要分享的文本... (Shift + Enter 换行)"
+        placeholder={t.home.textPlaceholder}
         rows={1}
       />
       <input
@@ -146,14 +148,14 @@ export function TextInput({ onSubmit }: TextInputProps) {
           disabled={isUploading}
           className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-400"
         >
-          {isUploading ? '上传中...' : '上传文件'}
+          {isUploading ? t.home.uploading : t.home.uploadButton}
         </button>
       )}
       <button
         type="submit"
         className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        发送
+        {t.common.send}
       </button>
     </form>
   )
