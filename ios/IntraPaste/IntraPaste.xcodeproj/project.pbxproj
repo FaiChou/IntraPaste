@@ -24,6 +24,7 @@
 		4DD7CC492D2E2C0F0097C48D /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC402D2E2C0F0097C48D /* Card.swift */; };
 		4DD7CC4A2D2E2C0F0097C48D /* ServerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC412D2E2C0F0097C48D /* ServerListView.swift */; };
 		4DD7CC4B2D2E2C0F0097C48D /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC422D2E2C0F0097C48D /* CardListView.swift */; };
+		4DEF0D382D5B2020001489CF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 4DEF0D372D5B2020001489CF /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		4DD7CC402D2E2C0F0097C48D /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		4DD7CC412D2E2C0F0097C48D /* ServerListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerListView.swift; sourceTree = "<group>"; };
 		4DD7CC422D2E2C0F0097C48D /* CardListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
+		4DEF0D372D5B2020001489CF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -104,6 +106,7 @@
 			children = (
 				4DBF42F22D2E969E00DA6FFD /* Info.plist */,
 				4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */,
+				4DEF0D372D5B2020001489CF /* Localizable.xcstrings */,
 				4DD7CC4E2D2E2C300097C48D /* Views */,
 				4DD7CC4D2D2E2C260097C48D /* Sevices */,
 				4DD7CC4C2D2E2C190097C48D /* Models */,
@@ -225,6 +228,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 4DD7CC152D2E2ADB0097C48D;
 			productRefGroup = 4DD7CC1F2D2E2ADB0097C48D /* Products */;
@@ -251,6 +255,7 @@
 			files = (
 				4DD7CC292D2E2ADD0097C48D /* Preview Assets.xcassets in Resources */,
 				4DD7CC262D2E2ADD0097C48D /* Assets.xcassets in Resources */,
+				4DEF0D382D5B2020001489CF /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,6 +399,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -450,6 +456,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

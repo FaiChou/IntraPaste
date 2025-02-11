@@ -48,7 +48,7 @@ struct CardListView: View {
                                             Button(role: .destructive) {
                                                 deleteCard(card)
                                             } label: {
-                                                Label("删除", systemImage: "trash")
+                                                Label("Delete", systemImage: "trash")
                                             }
                                         }
                                     }
@@ -137,11 +137,11 @@ struct CardListView: View {
         .toolbarRole(.editor)
         .toolbar {
             if !server.isLoggedIn {
-                Button("登录") {
+                Button("Login") {
                     showingLoginSheet = true
                 }
             } else {
-                Button("登出") {
+                Button("Logout") {
                     serverManager.updateServerLoginStatus(for: server, isLoggedIn: false)
                 }
             }
@@ -149,15 +149,15 @@ struct CardListView: View {
         .sheet(isPresented: $showingLoginSheet) {
             LoginView(server: server)
         }
-        .confirmationDialog("选择上传类型", isPresented: $showingActionSheet, titleVisibility: .visible) {
+        .confirmationDialog("Select Upload Type", isPresented: $showingActionSheet, titleVisibility: .visible) {
             PhotosPicker(
                 selection: $selectedItem,
                 matching: .images
             ) {
-                Text("从相册选择")
+                Text("Choose from Photos")
             }
             
-            Button("选择文件") {
+            Button("Choose File") {
                 showingDocumentPicker = true
             }
         }
@@ -170,8 +170,8 @@ struct CardListView: View {
             }
             checkMinioStatus()
         }
-        .alert("错误", isPresented: .constant(error != nil)) {
-            Button("确定") { error = nil }
+        .alert("Error", isPresented: .constant(error != nil)) {
+            Button("OK") { error = nil }
         } message: {
             if let error = error {
                 Text(error)
@@ -197,7 +197,7 @@ struct CardListView: View {
                         selectedItem = nil
                         await refreshCards()
                     } catch {
-                        self.error = "上传图片失败"
+                        self.error = "Upload failed"
                     }
                 }
             }
@@ -224,7 +224,7 @@ struct CardListView: View {
                     selectedDocument = nil
                     await refreshCards()
                 } catch {
-                    self.error = "上传文件失败"
+                    self.error = "Upload failed"
                 }
             }
         }
@@ -239,7 +239,7 @@ struct CardListView: View {
                 isLoading = false
             } catch {
                 print(error)
-                self.error = "获取卡片失败"
+                self.error = "Failed to get cards"
                 isLoading = false
             }
         }
@@ -256,7 +256,7 @@ struct CardListView: View {
                 fetchCards()
                 dismissKeyboard()
             } catch {
-                self.error = "创建卡片失败"
+                self.error = "Failed to create card"
             }
         }
     }
@@ -271,20 +271,21 @@ struct CardListView: View {
                 switch error {
                 case APIError.unauthorized:
                     serverManager.updateServerLoginStatus(for: server, isLoggedIn: false)
-                    self.error = "登录已过期，请重新登录"
+                    self.error = "Login expired, please login again"
                 default:
-                    self.error = "删除卡片失败"
+                    self.error = "Failed to delete card"
                 }
             }
         }
     }
+    
     @MainActor
     private func refreshCards() async {
         do {
             let refreshedCards = try await APIClient.shared.fetchCards(from: server)
             cards = refreshedCards
         } catch {
-            self.error = "刷新失败"
+            self.error = "Refresh failed"
         }
     }
     

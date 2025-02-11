@@ -23,7 +23,7 @@ struct VideoPlayerView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("关闭") {
+                    Button("Close") {
                         player?.pause()
                         dismiss()
                     }
@@ -42,10 +42,10 @@ struct VideoPlayerView: View {
                     .disabled(isDownloading)
                 }
             }
-            .alert("保存成功", isPresented: $showingSaveSuccess) {
-                Button("确定", role: .cancel) { }
+            .alert("Video saved", isPresented: $showingSaveSuccess) {
+                Button("OK", role: .cancel) { }
             } message: {
-                Text("视频已保存到文件。可在手机的`文件`应用中查看。")
+                Text("Video has been saved to Files. You can view it in the Files app.")
             }
             .onAppear {
                 AudioSessionManager.shared.configureAudioSession()

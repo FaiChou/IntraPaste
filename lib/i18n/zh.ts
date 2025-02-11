@@ -74,4 +74,4 @@ export default {
     networkError: '网络错误',
     serverError: '服务器错误',
   },
-} 
+}

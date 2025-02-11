@@ -13,8 +13,8 @@ struct AddServerView: View {
         NavigationView {
             Form {
                 Section {
-                    TextField("服务器名称", text: $name)
-                    TextField("服务器地址", text: $url)
+                    TextField("Server Name", text: $name)
+                    TextField("Server URL", text: $url)
                         .keyboardType(.URL)
                         .autocorrectionDisabled()
                         .autocapitalization(.none)
@@ -27,10 +27,10 @@ struct AddServerView: View {
                     }
                 }
             }
-            .navigationTitle("添加服务器")
+            .navigationTitle("Add Server")
             .navigationBarItems(
-                leading: Button("取消") { dismiss() },
-                trailing: Button("保存") { validateAndSave() }
+                leading: Button("Cancel") { dismiss() },
+                trailing: Button("Save") { validateAndSave() }
                     .disabled(name.isEmpty || url.isEmpty || isValidating)
             )
         }
@@ -39,7 +39,7 @@ struct AddServerView: View {
     @MainActor
     private func validateAndSave() {
         guard var urlComponents = URLComponents(string: url) else {
-            error = "无效的URL"
+            error = "Invalid URL"
             return
         }
         
@@ -48,7 +48,7 @@ struct AddServerView: View {
         }
         
         guard let finalURL = urlComponents.url?.absoluteString else {
-            error = "无效的URL"
+            error = "Invalid URL"
             return
         }
         
@@ -60,7 +60,7 @@ struct AddServerView: View {
                 serverManager.addServer(Server(name: name, url: finalURL))
                 dismiss()
             } catch {
-                self.error = "无法连接到服务器"
+                self.error = "Unable to connect to server"
                 isValidating = false
             }
         }

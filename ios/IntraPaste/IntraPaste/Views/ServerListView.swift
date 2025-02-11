@@ -15,7 +15,7 @@ struct ServerListView: View {
                             Text(server.url)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
-                            Text(server.isLoggedIn ? "已登录" : "未登录")
+                            Text(server.isLoggedIn ? "Logged In" : "Not Logged In")
                                 .font(.caption)
                                 .foregroundColor(server.isLoggedIn ? .green : .gray)
                         }
@@ -27,7 +27,7 @@ struct ServerListView: View {
                     }
                 }
             }
-            .navigationTitle("服务器列表")
+            .navigationTitle("Server List")
             .toolbar {
                 Button(action: { showingAddServer = true }) {
                     Image(systemName: "plus")

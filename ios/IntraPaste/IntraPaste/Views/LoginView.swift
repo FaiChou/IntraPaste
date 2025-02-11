@@ -12,7 +12,7 @@ struct LoginView: View {
         NavigationView {
             Form {
                 Section {
-                    SecureField("密码", text: $password)
+                    SecureField("Password", text: $password)
                 }
                 
                 if let error = error {
@@ -27,14 +27,14 @@ struct LoginView: View {
                         if isLoading {
                             ProgressView()
                         } else {
-                            Text("登录")
+                            Text("Login")
                         }
                     }
                     .disabled(password.isEmpty || isLoading)
                 }
             }
-            .navigationTitle("管理员登录")
-            .navigationBarItems(leading: Button("取消") { dismiss() })
+            .navigationTitle("Admin Login")
+            .navigationBarItems(leading: Button("Cancel") { dismiss() })
         }
     }
     
@@ -49,7 +49,7 @@ struct LoginView: View {
                 isLoading = false
                 dismiss()
             } catch {
-                self.error = "登录失败"
+                self.error = "Login failed"
                 isLoading = false
             }
         }

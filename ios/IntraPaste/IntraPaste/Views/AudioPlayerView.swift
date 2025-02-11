@@ -57,7 +57,7 @@ struct AudioPlayerView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("关闭") {
+                    Button("Close") {
                         audioPlayer.stop()
                         dismiss()
                     }
@@ -76,10 +76,10 @@ struct AudioPlayerView: View {
                     .disabled(isDownloading)
                 }
             }
-            .alert("保存成功", isPresented: $showingSaveSuccess) {
-                Button("确定", role: .cancel) { }
+            .alert("Save Successful", isPresented: $showingSaveSuccess) {
+                Button("OK", role: .cancel) { }
             } message: {
-                Text("音频已保存到文件。可在手机的`文件`应用中查看。")
+                Text("Audio has been saved to Files. You can view it in the Files app.")
             }
             .onAppear {
                 AudioSessionManager.shared.configureAudioSession()

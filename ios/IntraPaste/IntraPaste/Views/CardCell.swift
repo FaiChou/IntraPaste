@@ -36,7 +36,7 @@ struct CardCell: View {
                         .lineLimit(3)
                         .font(.body)
                 } else {
-                    Text(card.fileName ?? "未知文件")
+                    Text(card.fileName ?? "Unknown file")
                         .font(.body)
                         .lineLimit(1)
                 }
@@ -74,24 +74,24 @@ struct CardCell: View {
                             }
                         }
                     } label: {
-                        Label("复制", systemImage: "doc.on.doc")
+                        Label("Copy", systemImage: "doc.on.doc")
                     }
                     
                     Button {
                         showingFullContent = true
                     } label: {
-                        Label("查看完整内容", systemImage: "doc.text.magnifyingglass")
+                        Label("View Full Content", systemImage: "doc.text.magnifyingglass")
                     }
                     
                     ShareLink(item: content) {
-                        Label("分享", systemImage: "square.and.arrow.up")
+                        Label("Share", systemImage: "square.and.arrow.up")
                     }
                 }
             } else if let filePath = card.filePath {
                 Button {
-                    downloadFile(from: filePath, fileName: card.fileName ?? "未知文件")
+                    downloadFile(from: filePath, fileName: card.fileName ?? "Unknown file")
                 } label: {
-                    Label("下载", systemImage: "arrow.down.circle")
+                    Label("Download", systemImage: "arrow.down.circle")
                 }
                 
                 switch card.type {
@@ -99,12 +99,12 @@ struct CardCell: View {
                     Button {
                         showingImagePreview = true
                     } label: {
-                        Label("预览", systemImage: "eye")
+                        Label("Preview", systemImage: "eye")
                     }
                     
                     if let url = URL(string: filePath) {
                         ShareLink(item: url) {
-                            Label("分享", systemImage: "square.and.arrow.up")
+                            Label("Share", systemImage: "square.and.arrow.up")
                         }
                     }
                     
@@ -112,12 +112,12 @@ struct CardCell: View {
                     Button {
                         showingVideoPlayer = true
                     } label: {
-                        Label("播放", systemImage: "play.circle")
+                        Label("Play", systemImage: "play.circle")
                     }
                     
                     if let url = URL(string: filePath) {
                         ShareLink(item: url) {
-                            Label("分享", systemImage: "square.and.arrow.up")
+                            Label("Share", systemImage: "square.and.arrow.up")
                         }
                     }
                     
@@ -125,12 +125,12 @@ struct CardCell: View {
                     Button {
                         showingAudioPlayer = true
                     } label: {
-                        Label("播放", systemImage: "play.circle")
+                        Label("Play", systemImage: "play.circle")
                     }
                     
                     if let url = URL(string: filePath) {
                         ShareLink(item: url) {
-                            Label("分享", systemImage: "square.and.arrow.up")
+                            Label("Share", systemImage: "square.and.arrow.up")
                         }
                     }
                     
@@ -138,7 +138,7 @@ struct CardCell: View {
                     Button {
                         showingFileInfo = true
                     } label: {
-                        Label("查看信息", systemImage: "info.circle")
+                        Label("View Info", systemImage: "info.circle")
                     }
                 }
             }
@@ -169,7 +169,7 @@ struct CardCell: View {
         }
         .overlay(alignment: .trailing) {
             if isCopied {
-                Text("已复制")
+                Text("Copied")
                     .font(.caption)
                     .foregroundColor(.green)
                     .padding(.horizontal)
@@ -190,31 +190,31 @@ struct CardCell: View {
                 AudioPlayerView(audioURL: filePath, fileName: card.fileName ?? "audio.mp3")
             }
         }
-        .alert("文件信息", isPresented: $showingFileInfo) {
+        .alert("File Info", isPresented: $showingFileInfo) {
             if let filePath = card.filePath {
                 Button {
-                    downloadFile(from: filePath, fileName: card.fileName ?? "未知文件")
+                    downloadFile(from: filePath, fileName: card.fileName ?? "Unknown file")
                 } label: {
                     HStack {
                         if isDownloading {
                             ProgressView()
                                 .scaleEffect(0.8)
                         }
-                        Text("下载")
+                        Text("Download")
                     }
                 }
                 .disabled(isDownloading)
             }
-            Button("取消", role: .cancel) { }
+            Button("Cancel", role: .cancel) { }
         } message: {
             if let fileName = card.fileName {
-                Text("文件名：\(fileName)\n大小：\(formatFileSize(card.fileSize ?? 0))")
+                Text("\(fileName)\n\(formatFileSize(card.fileSize ?? 0))")
             }
         }
-        .alert("保存成功", isPresented: $showingSaveSuccess) {
-            Button("确定", role: .cancel) { }
+        .alert("File saved", isPresented: $showingSaveSuccess) {
+            Button("OK", role: .cancel) { }
         } message: {
-            Text("文件已保存。可在手机的`文件`应用中查看。")
+            Text("File saved message")
         }
         .sheet(isPresented: $showingFullContent) {
             NavigationView {
@@ -222,7 +222,7 @@ struct CardCell: View {
                     Text(card.content ?? "")
                         .padding()
                 }
-                .navigationTitle("完整内容")
+                .navigationTitle("Full Content")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -236,7 +236,7 @@ struct CardCell: View {
                     }
                     
                     ToolbarItem(placement: .navigationBarLeading) {
-                        Button("关闭") {
+                        Button("Close") {
                             showingFullContent = false
                         }
                     }

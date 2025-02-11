@@ -24,7 +24,7 @@ struct ImagePreviewView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("关闭") {
+                    Button("Close") {
                         dismiss()
                     }
                 }
@@ -43,10 +43,10 @@ struct ImagePreviewView: View {
                     .disabled(isDownloading || hasDownloaded)
                 }
             }
-            .alert("保存成功", isPresented: $showingSaveSuccess) {
-                Button("确定", role: .cancel) { }
+            .alert("Save Successful", isPresented: $showingSaveSuccess) {
+                Button("OK", role: .cancel) { }
             } message: {
-                Text("图片已保存到相册")
+                Text("Image has been saved to Photos")
             }
         }
     }
