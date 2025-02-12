@@ -10,6 +10,34 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
 
 > ⚠️ **Security Notice**: It is recommended to deploy this service within an intranet environment rather than exposing it to the public internet. This helps prevent potential information leaks and malicious usage.
 
+## Why IntraPaste?
+
+### Comparison with Similar Solutions
+
+#### vs. AirDrop
+- AirDrop is limited to Apple devices only
+- Requires both devices to have Bluetooth and WiFi enabled
+- Needs manual device discovery and acceptance
+- IntraPaste works across any platform with a web browser
+- No device pairing or discovery needed
+- Instant access through web interface
+
+#### vs. LocalSend
+- LocalSend requires app installation on all devices
+- Needs device discovery process
+- IntraPaste works directly in browser - no app needed
+- Access content instantly via URL
+- Perfect for quick text sharing with one-click copy
+
+### Key Advantages
+- **Universal Access**: Works on any device with a web browser
+- **No Installation**: Zero setup for end users
+- **Instant Sharing**: Just paste and share URL
+- **Text Optimized**: One-click copy for text content
+- **Intranet Focused**: Secure sharing within your network
+- **Cross-Platform**: Share between any devices/OS
+- **Simple Setup**: Single deployment serves entire network
+
 ## Features
 
 - 📱 iOS Client
