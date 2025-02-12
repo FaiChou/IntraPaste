@@ -17,6 +17,10 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
   - Multiple server management
   - Dark mode support
   - Media preview & download
+- 🌍 Internationalization
+  - Multiple language support
+  - Available in: English, 简体中文, 繁體中文, 日本語, Français, 한국어, Deutsch
+  - Easy language switching
 - 📝 Text Sharing
   - Multi-line text support
   - Click to copy
