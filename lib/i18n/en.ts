@@ -1,4 +1,4 @@
-export default {
+const en = {
   common: {
     copy: 'Copy',
     copied: 'Copied!',
@@ -75,3 +75,5 @@ export default {
     serverError: 'Server error',
   },
 }
+
+export default en

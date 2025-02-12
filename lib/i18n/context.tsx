@@ -2,9 +2,15 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import en from './en'
-import zh from './zh'
+import zh_CN from './zh_CN'
+import zh_HK from './zh_HK'
+import de from './de'
+import fr from './fr'
+import ja from './ja'
+import ko from './ko'
 
-const translations = { en, zh }
+const translations = { en, zh_CN, zh_HK, de, fr, ja, ko }
+export { translations }
 type Language = keyof typeof translations
 type TranslationType = typeof en
 
@@ -23,7 +29,17 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const savedLang = localStorage.getItem('language') as Language
-    const browserLang = navigator.language.startsWith('zh') ? 'zh' : 'en'
+    const getBrowserLang = () => {
+      const lang = navigator.language.toLowerCase()
+      if (lang.startsWith('zh-hk') || lang.startsWith('zh-tw')) {
+        return 'zh-HK'
+      } else if (lang.startsWith('zh')) {
+        return 'zh-CN'
+      }
+      return 'en'
+    }
+    
+    const browserLang = getBrowserLang()
     setLanguage(savedLang || browserLang)
   }, [])
 
@@ -45,4 +61,4 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-export const useI18n = () => useContext(I18nContext) 
+export const useI18n = () => useContext(I18nContext)

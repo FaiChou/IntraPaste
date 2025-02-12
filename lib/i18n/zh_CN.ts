@@ -1,4 +1,4 @@
-export default {
+const zh_CN = {
   common: {
     copy: '复制',
     copied: '已复制!',
@@ -19,7 +19,7 @@ export default {
     videoNotSupported: '您的浏览器不支持视频播放',
     audioNotSupported: '您的浏览器不支持音频播放',
     image: '图片',
-    copyError: '复制失败:',
+    copyError: '复制失败：',
   },
   home: {
     title: 'IntraPaste',
@@ -75,3 +75,5 @@ export default {
     serverError: '服务器错误',
   },
 }
+
+export default zh_CN
