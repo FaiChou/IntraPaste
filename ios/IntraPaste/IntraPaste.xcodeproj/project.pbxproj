@@ -229,6 +229,11 @@
 				en,
 				Base,
 				"zh-Hans",
+				"zh-HK",
+				fr,
+				de,
+				ja,
+				ko,
 			);
 			mainGroup = 4DD7CC152D2E2ADB0097C48D;
 			productRefGroup = 4DD7CC1F2D2E2ADB0097C48D /* Products */;
