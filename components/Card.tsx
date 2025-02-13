@@ -90,7 +90,7 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
 
   if (type === 'file') {
     return (
-      <div className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
+      <div className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow h-fit">
         <div className="mb-2">
           <p className="font-medium mb-1">{fileName}</p>
           <p className="text-sm text-gray-500">
@@ -146,7 +146,7 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
 
   if (type === 'audio') {
     return (
-      <div className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
+      <div className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow h-fit">
         <div className="mb-2">
           <audio 
             controls

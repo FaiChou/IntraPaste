@@ -95,7 +95,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto pb-24">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">IntraPaste</h1>
           
@@ -114,7 +114,7 @@ export default function Home() {
           </select>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 auto-rows-min">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min">
           {cards.map((card: PrismaCard) => (
             <CardComponent
               key={card.id} 
