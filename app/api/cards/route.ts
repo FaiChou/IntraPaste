@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { cookies, headers } from 'next/headers'
 import { deleteObject } from '@/lib/minio'
+import { sseManager } from '@/lib/sse'
 
 export async function GET() {
   try {
@@ -62,6 +63,8 @@ export async function POST(request: Request) {
         expiresAt,
       },
     })
+    
+    sseManager.broadcast({ type: 'new_card', card })
     
     return NextResponse.json(card)
   } catch (error) {
@@ -124,6 +127,7 @@ export async function DELETE() {
     }
 
     await prisma.card.deleteMany()
+    sseManager.broadcast({ type: 'clear_cards' })
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Delete all cards error:', error)

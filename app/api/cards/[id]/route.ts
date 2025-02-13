@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { cookies } from 'next/headers'
 import { deleteObject } from '@/lib/minio'
 import { logger } from '@/lib/logger'
+import { sseManager } from '@/lib/sse'
 
 export async function DELETE(
   request: Request,
@@ -88,6 +89,8 @@ export async function DELETE(
     await prisma.card.delete({
       where: { id },
     })
+    
+    sseManager.broadcast({ type: 'delete_card', cardId: id })
     
     logger.logAdmin('CARDS', {
       action: 'delete_card',
