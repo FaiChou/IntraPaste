@@ -16,7 +16,7 @@ export interface FileInfo {
 }
 
 export default function Home() {
-  const { t, language, setLanguage } = useI18n()
+  const { language, setLanguage } = useI18n()
   const [cards, setCards] = useState<PrismaCard[]>([])
 
   useEffect(() => {
