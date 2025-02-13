@@ -18,6 +18,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [minioEnabled, setMinioEnabled] = useState(false)
   const [placeholder, setPlaceholder] = useState(t.home.textPlaceholder)
+  const [isMobile, setIsMobile] = useState(false)
 
   const adjustHeight = () => {
     const textarea = textareaRef.current
@@ -48,22 +49,28 @@ export function TextInput({ onSubmit }: TextInputProps) {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) { // 768px 是 Tailwind md 断点
+      if (window.innerWidth < 768) {
         setPlaceholder(t.home.textPlaceholderMobile || '输入您想问的问题...')
       } else {
         setPlaceholder(t.home.textPlaceholder)
       }
     }
 
-    // 初始化
     handleResize()
 
-    // 监听窗口大小变化
     window.addEventListener('resize', handleResize)
 
-    // 清理函数
     return () => window.removeEventListener('resize', handleResize)
   }, [t.home.textPlaceholder, t.home.textPlaceholderMobile])
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      setIsMobile(isMobileDevice)
+    }
+
+    checkMobile()
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -136,7 +143,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
-      if (e.shiftKey) {
+      if (e.shiftKey || isMobile) {
         return
       } else {
         e.preventDefault()
