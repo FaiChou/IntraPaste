@@ -120,7 +120,15 @@ export default function AdminPage() {
 
   const renderCardContent = (card: PrismaCard) => {
     if (card.type === 'text') {
-      return <p className="break-all">{card.content}</p>
+      return (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+            <span>{getFileTypeIcon(card.type)}</span>
+            <span className="font-medium">Text</span>
+          </div>
+          <p className="break-all">{card.content}</p>
+        </div>
+      )
     }
 
     return (
