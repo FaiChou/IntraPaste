@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { Card as CardComponent } from '@/components/Card'
 import { TextInput } from '@/components/TextInput'
 import { Card as PrismaCard } from '@prisma/client'
+import { useI18n } from '@/lib/i18n/context'
+import { translations } from '@/lib/i18n/context'
 
 export interface FileInfo {
   fileName: string;
@@ -14,6 +16,7 @@ export interface FileInfo {
 }
 
 export default function Home() {
+  const { t, language, setLanguage } = useI18n()
   const [cards, setCards] = useState<PrismaCard[]>([])
 
   useEffect(() => {
@@ -93,7 +96,23 @@ export default function Home() {
   return (
     <main className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-8">IntraPaste</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-2xl font-bold">IntraPaste</h1>
+          
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value as keyof typeof translations)}
+            className="px-4 py-2 border rounded-lg bg-white dark:bg-gray-800"
+          >
+            <option value="en">English</option>
+            <option value="zh_CN">简体中文</option>
+            <option value="zh_HK">繁體中文</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+          </select>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 auto-rows-min">
           {cards.map((card: PrismaCard) => (
