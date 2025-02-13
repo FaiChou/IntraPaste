@@ -24,6 +24,7 @@ const zh_CN = {
   home: {
     title: 'IntraPaste',
     textPlaceholder: '输入要分享的文本... (Shift + Enter 换行)',
+    textPlaceholderMobile: '请输入内容...',
     uploadButton: '上传文件',
     uploading: '上传中...',
   },

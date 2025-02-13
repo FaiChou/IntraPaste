@@ -24,6 +24,7 @@ const ja = {
   home: {
     title: 'IntraPaste',
     textPlaceholder: '共有するテキストを入力... (Shift + Enter で改行)',
+    textPlaceholderMobile: '共有するテキストを入力...',
     uploadButton: 'ファイルをアップロード',
     uploading: 'アップロード中...',
   },

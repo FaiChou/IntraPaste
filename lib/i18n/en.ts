@@ -24,6 +24,7 @@ const en = {
   home: {
     title: 'IntraPaste',
     textPlaceholder: 'Enter text to share... (Shift + Enter for new line)',
+    textPlaceholderMobile: 'Enter your share...',
     uploadButton: 'Upload File',
     uploading: 'Uploading...',
   },

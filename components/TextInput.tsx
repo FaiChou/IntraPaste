@@ -16,6 +16,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [minioEnabled, setMinioEnabled] = useState(false)
+  const [placeholder, setPlaceholder] = useState(t.home.textPlaceholder)
 
   const adjustHeight = () => {
     const textarea = textareaRef.current
@@ -43,6 +44,25 @@ export function TextInput({ onSubmit }: TextInputProps) {
 
     checkMinioStatus()
   }, [])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) { // 768px 是 Tailwind md 断点
+        setPlaceholder(t.home.textPlaceholderMobile || '输入您想问的问题...')
+      } else {
+        setPlaceholder(t.home.textPlaceholder)
+      }
+    }
+
+    // 初始化
+    handleResize()
+
+    // 监听窗口大小变化
+    window.addEventListener('resize', handleResize)
+
+    // 清理函数
+    return () => window.removeEventListener('resize', handleResize)
+  }, [t.home.textPlaceholder, t.home.textPlaceholderMobile])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -132,7 +152,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
         onChange={(e) => setContent(e.target.value)}
         onKeyDown={handleKeyDown}
         className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none min-h-[44px] max-h-[200px] overflow-y-auto"
-        placeholder={t.home.textPlaceholder}
+        placeholder={placeholder}
         rows={1}
       />
       <input

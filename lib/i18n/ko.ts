@@ -24,6 +24,7 @@ const ko = {
   home: {
     title: 'IntraPaste',
     textPlaceholder: '공유할 텍스트 입력... (Shift + Enter로 줄바꿈)',
+    textPlaceholderMobile: '공유할 텍스트 입력...',
     uploadButton: '파일 업로드',
     uploading: '업로드 중...',
   },

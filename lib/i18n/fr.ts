@@ -24,6 +24,7 @@ const fr = {
   home: {
     title: 'IntraPaste',
     textPlaceholder: 'Entrez le texte à partager... (Maj + Entrée pour nouvelle ligne)',
+    textPlaceholderMobile: 'Entrez le texte à partager...',
     uploadButton: 'Téléverser un fichier',
     uploading: 'Téléversement...',
   },
