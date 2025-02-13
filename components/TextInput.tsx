@@ -145,7 +145,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="flex gap-2 items-end">
       <textarea
         ref={textareaRef}
         value={content}
@@ -166,14 +166,14 @@ export function TextInput({ onSubmit }: TextInputProps) {
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
-          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-400"
+          className="h-11 px-4 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-400 flex-shrink-0"
         >
           {isUploading ? t.home.uploading : t.home.uploadButton}
         </button>
       )}
       <button
         type="submit"
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="h-11 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex-shrink-0"
       >
         {t.common.send}
       </button>
