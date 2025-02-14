@@ -6,6 +6,8 @@ import { TextInput } from '@/components/TextInput'
 import { Card as PrismaCard } from '@prisma/client'
 import { useI18n } from '@/lib/i18n/context'
 import { translations } from '@/lib/i18n/context'
+import Link from 'next/link'
+import { Cog6ToothIcon } from '@heroicons/react/24/outline'
 
 export interface FileInfo {
   fileName: string;
@@ -16,7 +18,7 @@ export interface FileInfo {
 }
 
 export default function Home() {
-  const { language, setLanguage } = useI18n()
+  const { language, setLanguage, t } = useI18n()
   const [cards, setCards] = useState<PrismaCard[]>([])
 
   useEffect(() => {
@@ -99,19 +101,29 @@ export default function Home() {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">IntraPaste</h1>
           
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value as keyof typeof translations)}
-            className="px-4 py-2 border rounded-lg bg-white dark:bg-gray-800"
-          >
-            <option value="en">English</option>
-            <option value="zh_CN">简体中文</option>
-            <option value="zh_HK">繁體中文</option>
-            <option value="de">Deutsch</option>
-            <option value="fr">Français</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-          </select>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/admin"
+              className="p-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transition-colors"
+              title={t.admin.title}
+            >
+              <Cog6ToothIcon className="h-6 w-6" />
+            </Link>
+            
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value as keyof typeof translations)}
+              className="px-4 py-2 border rounded-lg bg-white dark:bg-gray-800"
+            >
+              <option value="en">English</option>
+              <option value="zh_CN">简体中文</option>
+              <option value="zh_HK">繁體中文</option>
+              <option value="de">Deutsch</option>
+              <option value="fr">Français</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+            </select>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min">
