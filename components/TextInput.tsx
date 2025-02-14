@@ -5,6 +5,7 @@ import { FileInfo } from '@/app/page'
 import { checkFileSize, validateFileType } from '@/lib/uploadLimit'
 import { useI18n } from '@/lib/i18n/context'
 import { PaperAirplaneIcon, PaperClipIcon } from '@heroicons/react/24/outline'
+import { Button } from '@headlessui/react'
 
 interface TextInputProps {
   onSubmit: (content: string, type: string, fileInfo?: FileInfo) => void
@@ -170,23 +171,23 @@ export function TextInput({ onSubmit }: TextInputProps) {
         className="hidden"
       />
       {minioEnabled && (
-        <button
+        <Button
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
-          className="h-11 w-16 flex items-center justify-center bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-gray-400 flex-shrink-0"
+          className="h-11 w-16 flex items-center justify-center bg-green-500 text-white rounded-lg data-[hover]:bg-green-600 data-[disabled]:bg-gray-400 flex-shrink-0"
           title={isUploading ? t.home.uploading : t.home.uploadButton}
         >
           <PaperClipIcon className="h-5 w-5" />
-        </button>
+        </Button>
       )}
-      <button
+      <Button
         type="submit"
-        className="h-11 w-16 flex items-center justify-center bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex-shrink-0"
+        className="h-11 w-16 flex items-center justify-center bg-blue-500 text-white rounded-lg data-[hover]:bg-blue-600 data-[focus]:ring-2 data-[focus]:ring-blue-500 flex-shrink-0"
         title={t.common.send}
       >
         <PaperAirplaneIcon className="h-5 w-5" />
-      </button>
+      </Button>
     </form>
   )
 }

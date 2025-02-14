@@ -8,6 +8,7 @@ import { useI18n } from '@/lib/i18n/context'
 import { translations } from '@/lib/i18n/context'
 import Link from 'next/link'
 import { Cog6ToothIcon } from '@heroicons/react/24/outline'
+import { LanguageSelector } from '@/components/LanguageSelector'
 
 export interface FileInfo {
   fileName: string;
@@ -110,19 +111,10 @@ export default function Home() {
               <Cog6ToothIcon className="h-6 w-6" />
             </Link>
             
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value as keyof typeof translations)}
-              className="px-4 py-2 border rounded-lg bg-white dark:bg-gray-800"
-            >
-              <option value="en">English</option>
-              <option value="zh_CN">简体中文</option>
-              <option value="zh_HK">繁體中文</option>
-              <option value="de">Deutsch</option>
-              <option value="fr">Français</option>
-              <option value="ja">日本語</option>
-              <option value="ko">한국어</option>
-            </select>
+            <LanguageSelector 
+              value={language} 
+              onChange={(value) => setLanguage(value as keyof typeof translations)} 
+            />
           </div>
         </div>
         
