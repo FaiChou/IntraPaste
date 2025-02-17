@@ -10,6 +10,7 @@
 		4D1645092D54B2FF00DF58EE /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1645072D54B2FF00DF58EE /* AudioPlayerView.swift */; };
 		4D16450A2D54B2FF00DF58EE /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1645082D54B2FF00DF58EE /* VideoPlayerView.swift */; };
 		4D84CD532D3938AB00A24CEE /* ImagePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84CD522D3938AB00A24CEE /* ImagePreviewView.swift */; };
+		4D996EF62D630670005E0892 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4D996EF52D630670005E0892 /* Settings.bundle */; };
 		4DA2E1B82D55BA1F00A3E90C /* FileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA2E1B72D55BA1F00A3E90C /* FileDownloader.swift */; };
 		4DA2E1BA2D55BE9500A3E90C /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA2E1B92D55BE9500A3E90C /* AudioSessionManager.swift */; };
 		4DD7CC222D2E2ADB0097C48D /* IntraPasteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */; };
@@ -41,6 +42,7 @@
 		4D1645072D54B2FF00DF58EE /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		4D1645082D54B2FF00DF58EE /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
 		4D84CD522D3938AB00A24CEE /* ImagePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewView.swift; sourceTree = "<group>"; };
+		4D996EF52D630670005E0892 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4DA2E1B72D55BA1F00A3E90C /* FileDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloader.swift; sourceTree = "<group>"; };
 		4DA2E1B92D55BE9500A3E90C /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		4DBF42E72D2E39AF00DA6FFD /* IntraPasteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntraPasteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,6 +109,7 @@
 				4DBF42F22D2E969E00DA6FFD /* Info.plist */,
 				4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */,
 				4DEF0D372D5B2020001489CF /* Localizable.xcstrings */,
+				4D996EF52D630670005E0892 /* Settings.bundle */,
 				4DD7CC4E2D2E2C300097C48D /* Views */,
 				4DD7CC4D2D2E2C260097C48D /* Sevices */,
 				4DD7CC4C2D2E2C190097C48D /* Models */,
@@ -258,6 +261,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D996EF62D630670005E0892 /* Settings.bundle in Resources */,
 				4DD7CC292D2E2ADD0097C48D /* Preview Assets.xcassets in Resources */,
 				4DD7CC262D2E2ADD0097C48D /* Assets.xcassets in Resources */,
 				4DEF0D382D5B2020001489CF /* Localizable.xcstrings in Resources */,

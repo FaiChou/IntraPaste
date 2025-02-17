@@ -14,6 +14,11 @@ struct IntraPasteApp: App {
         WindowGroup {
             ServerListView()
                 .environmentObject(serverManager)
+                .onAppear {
+                    if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                        UserDefaults.standard.set(version, forKey: "version_preference")
+                    }
+                }
         }
     }
 }
