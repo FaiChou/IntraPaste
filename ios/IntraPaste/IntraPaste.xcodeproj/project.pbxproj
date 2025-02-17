@@ -19,7 +19,6 @@
 		4DD7CC432D2E2C0F0097C48D /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC3A2D2E2C0F0097C48D /* ServerManager.swift */; };
 		4DD7CC442D2E2C0F0097C48D /* AddServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC3B2D2E2C0F0097C48D /* AddServerView.swift */; };
 		4DD7CC452D2E2C0F0097C48D /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC3C2D2E2C0F0097C48D /* Server.swift */; };
-		4DD7CC462D2E2C0F0097C48D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC3D2D2E2C0F0097C48D /* LoginView.swift */; };
 		4DD7CC472D2E2C0F0097C48D /* CardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC3E2D2E2C0F0097C48D /* CardCell.swift */; };
 		4DD7CC482D2E2C0F0097C48D /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC3F2D2E2C0F0097C48D /* APIClient.swift */; };
 		4DD7CC492D2E2C0F0097C48D /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC402D2E2C0F0097C48D /* Card.swift */; };
@@ -54,7 +53,6 @@
 		4DD7CC3A2D2E2C0F0097C48D /* ServerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
 		4DD7CC3B2D2E2C0F0097C48D /* AddServerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddServerView.swift; sourceTree = "<group>"; };
 		4DD7CC3C2D2E2C0F0097C48D /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
-		4DD7CC3D2D2E2C0F0097C48D /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4DD7CC3E2D2E2C0F0097C48D /* CardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCell.swift; sourceTree = "<group>"; };
 		4DD7CC3F2D2E2C0F0097C48D /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		4DD7CC402D2E2C0F0097C48D /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -155,7 +153,6 @@
 				4DD7CC3B2D2E2C0F0097C48D /* AddServerView.swift */,
 				4DD7CC3E2D2E2C0F0097C48D /* CardCell.swift */,
 				4DD7CC422D2E2C0F0097C48D /* CardListView.swift */,
-				4DD7CC3D2D2E2C0F0097C48D /* LoginView.swift */,
 				4DD7CC412D2E2C0F0097C48D /* ServerListView.swift */,
 				4D84CD522D3938AB00A24CEE /* ImagePreviewView.swift */,
 			);
@@ -293,7 +290,6 @@
 				4DD7CC4A2D2E2C0F0097C48D /* ServerListView.swift in Sources */,
 				4DD7CC442D2E2C0F0097C48D /* AddServerView.swift in Sources */,
 				4DD7CC452D2E2C0F0097C48D /* Server.swift in Sources */,
-				4DD7CC462D2E2C0F0097C48D /* LoginView.swift in Sources */,
 				4DD7CC222D2E2ADB0097C48D /* IntraPasteApp.swift in Sources */,
 				4DD7CC472D2E2C0F0097C48D /* CardCell.swift in Sources */,
 				4DD7CC492D2E2C0F0097C48D /* Card.swift in Sources */,

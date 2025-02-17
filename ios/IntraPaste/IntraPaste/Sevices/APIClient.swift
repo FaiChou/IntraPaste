@@ -110,36 +110,6 @@ class APIClient {
         return try decoder.decode(Card.self, from: data)
     }
     
-    func login(password: String, server: Server) async throws {
-        guard let url = URL(string: "\(server.url)/api/auth/login") else {
-            throw APIError.invalidURL
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let body = ["password": password]
-        request.httpBody = try JSONEncoder().encode(body)
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else {
-            throw APIError.unauthorized
-        }
-        
-        struct LoginResponse: Decodable {
-            let success: Bool
-        }
-        
-        let loginResponse = try JSONDecoder().decode(LoginResponse.self, from: data)
-        
-        guard loginResponse.success else {
-            throw APIError.unauthorized
-        }
-    }
-    
     func deleteCard(id: Int, server: Server) async throws {
         guard server.isLoggedIn else {
             throw APIError.unauthorized
@@ -167,7 +137,6 @@ class APIClient {
     }
     
     func uploadFile(fileData: Data, fileName: String, fileType: FileType = .document, server: Server) async throws -> Card {
-        // 1. 获取预签名 URL
         guard let url = URL(string: "\(server.url)/api/upload") else {
             throw APIError.invalidURL
         }
@@ -202,7 +171,6 @@ class APIClient {
         
         let uploadResponse = try JSONDecoder().decode(UploadResponse.self, from: data)
         
-        // 2. 上传文件到预签名 URL
         guard let uploadURL = URL(string: uploadResponse.data.uploadUrl) else {
             throw APIError.invalidURL
         }
@@ -219,7 +187,6 @@ class APIClient {
             throw APIError.invalidResponse
         }
         
-        // 3. 创建卡片
         return try await createCard(
             content: "",
             type: fileType.cardType,
@@ -232,7 +199,6 @@ class APIClient {
         )
     }
     
-    // 为了保持向后兼容，保留 uploadImage 函数但内部调用新的 uploadFile 函数
     func uploadImage(imageData: Data, fileName: String, server: Server) async throws -> Card {
         return try await uploadFile(
             fileData: imageData,

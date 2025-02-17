@@ -15,9 +15,6 @@ struct ServerListView: View {
                             Text(server.url)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
-                            Text(server.isLoggedIn ? "Logged In" : "Not Logged In")
-                                .font(.caption)
-                                .foregroundColor(server.isLoggedIn ? .green : .gray)
                         }
                     }
                 }

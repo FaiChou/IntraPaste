@@ -31,11 +31,4 @@ class ServerManager: ObservableObject {
             userDefaults.set(data, forKey: serversKey)
         }
     }
-    
-    func updateServerLoginStatus(for server: Server, isLoggedIn: Bool) {
-        if let index = servers.firstIndex(where: { $0.id == server.id }) {
-            servers[index].isLoggedIn = isLoggedIn
-            saveServers()
-        }
-    }
 }

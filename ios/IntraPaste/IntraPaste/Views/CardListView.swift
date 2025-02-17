@@ -18,7 +18,6 @@ struct CardListView: View {
     @EnvironmentObject var serverManager: ServerManager
     @State private var cards: [Card] = []
     @State private var newContent = ""
-    @State private var showingLoginSheet = false
     @State private var isLoading = false
     @State private var error: String?
     @State private var selectedItem: PhotosPickerItem?
@@ -43,15 +42,6 @@ struct CardListView: View {
                         List {
                             ForEach(cards) { card in
                                 CardCell(card: card)
-                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                        if server.isLoggedIn {
-                                            Button(role: .destructive) {
-                                                deleteCard(card)
-                                            } label: {
-                                                Label("Delete", systemImage: "trash")
-                                            }
-                                        }
-                                    }
                             }
                         }
                         .refreshable {
@@ -135,20 +125,6 @@ struct CardListView: View {
         }
         .navigationTitle(server.name)
         .toolbarRole(.editor)
-        .toolbar {
-            if !server.isLoggedIn {
-                Button("Login") {
-                    showingLoginSheet = true
-                }
-            } else {
-                Button("Logout") {
-                    serverManager.updateServerLoginStatus(for: server, isLoggedIn: false)
-                }
-            }
-        }
-        .sheet(isPresented: $showingLoginSheet) {
-            LoginView(server: server)
-        }
         .confirmationDialog("Select Upload Type", isPresented: $showingActionSheet, titleVisibility: .visible) {
             PhotosPicker(
                 selection: $selectedItem,
@@ -257,24 +233,6 @@ struct CardListView: View {
                 dismissKeyboard()
             } catch {
                 self.error = "Failed to create card"
-            }
-        }
-    }
-    
-    @MainActor
-    private func deleteCard(_ card: Card) {
-        Task {
-            do {
-                try await APIClient.shared.deleteCard(id: card.id, server: server)
-                fetchCards()
-            } catch {
-                switch error {
-                case APIError.unauthorized:
-                    serverManager.updateServerLoginStatus(for: server, isLoggedIn: false)
-                    self.error = "Login expired, please login again"
-                default:
-                    self.error = "Failed to delete card"
-                }
             }
         }
     }
