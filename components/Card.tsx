@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { Dialog } from '@headlessui/react'
+import { PhotoProvider, PhotoView } from 'react-photo-view'
 import { formatFileSize, formatFileType } from '@/lib/format'
 import { useI18n } from '@/lib/i18n/context'
+import 'react-photo-view/dist/react-photo-view.css'
 
 interface CardProps {
   content?: string
@@ -104,43 +106,21 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
 
   if (type === 'image') {
     return (
-      <>
+      <PhotoProvider>
         <div className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow hover:shadow-md dark:shadow-gray-900 transition-shadow cursor-pointer border border-gray-100 dark:border-gray-800">
-          <div 
-            className="relative aspect-video mb-2"
-            onClick={() => setIsImageOpen(true)}
-          >
-            <Image
-              src={filePath!}
-              alt={fileName || t.common.image}
-              fill
-              className="object-cover rounded"
-            />
-          </div>
-          {renderFileInfo()}
-        </div>
-
-        <Dialog
-          open={isImageOpen}
-          onClose={() => setIsImageOpen(false)}
-          className="relative z-50"
-        >
-          <div className="fixed inset-0 bg-black/70" aria-hidden="true" />
-          
-          <div className="fixed inset-0 flex items-center justify-center p-4">
-            <Dialog.Panel className="max-w-4xl w-full relative aspect-[16/9]">
+          <PhotoView src={filePath!}>
+            <div className="relative aspect-video mb-2">
               <Image
                 src={filePath!}
                 alt={fileName || t.common.image}
                 fill
-                className="rounded object-contain"
-                sizes="(max-width: 896px) 100vw, 896px"
-                priority
+                className="object-cover rounded"
               />
-            </Dialog.Panel>
-          </div>
-        </Dialog>
-      </>
+            </div>
+          </PhotoView>
+          {renderFileInfo()}
+        </div>
+      </PhotoProvider>
     )
   }
 
