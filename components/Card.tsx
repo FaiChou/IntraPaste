@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { Dialog } from '@headlessui/react'
 import { PhotoProvider, PhotoView } from 'react-photo-view'
 import { formatFileSize, formatFileType } from '@/lib/format'
 import { useI18n } from '@/lib/i18n/context'
@@ -20,7 +19,6 @@ interface CardProps {
 
 export function Card({ content, createdAt, type, fileName, fileSize, filePath, fileType }: CardProps) {
   const [copied, setCopied] = useState(false)
-  const [isImageOpen, setIsImageOpen] = useState(false)
   const { t } = useI18n()
 
   const fallbackCopyToClipboard = (text: string) => {
