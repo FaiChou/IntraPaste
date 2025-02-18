@@ -7,23 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D1645092D54B2FF00DF58EE /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1645072D54B2FF00DF58EE /* AudioPlayerView.swift */; };
-		4D16450A2D54B2FF00DF58EE /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D1645082D54B2FF00DF58EE /* VideoPlayerView.swift */; };
-		4D84CD532D3938AB00A24CEE /* ImagePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D84CD522D3938AB00A24CEE /* ImagePreviewView.swift */; };
 		4D996EF62D630670005E0892 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4D996EF52D630670005E0892 /* Settings.bundle */; };
-		4DA2E1B82D55BA1F00A3E90C /* FileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA2E1B72D55BA1F00A3E90C /* FileDownloader.swift */; };
-		4DA2E1BA2D55BE9500A3E90C /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA2E1B92D55BE9500A3E90C /* AudioSessionManager.swift */; };
 		4DD7CC222D2E2ADB0097C48D /* IntraPasteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */; };
 		4DD7CC262D2E2ADD0097C48D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7CC252D2E2ADD0097C48D /* Assets.xcassets */; };
 		4DD7CC292D2E2ADD0097C48D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7CC282D2E2ADD0097C48D /* Preview Assets.xcassets */; };
-		4DD7CC432D2E2C0F0097C48D /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC3A2D2E2C0F0097C48D /* ServerManager.swift */; };
-		4DD7CC442D2E2C0F0097C48D /* AddServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC3B2D2E2C0F0097C48D /* AddServerView.swift */; };
-		4DD7CC452D2E2C0F0097C48D /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC3C2D2E2C0F0097C48D /* Server.swift */; };
-		4DD7CC472D2E2C0F0097C48D /* CardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC3E2D2E2C0F0097C48D /* CardCell.swift */; };
-		4DD7CC482D2E2C0F0097C48D /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC3F2D2E2C0F0097C48D /* APIClient.swift */; };
-		4DD7CC492D2E2C0F0097C48D /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC402D2E2C0F0097C48D /* Card.swift */; };
-		4DD7CC4A2D2E2C0F0097C48D /* ServerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC412D2E2C0F0097C48D /* ServerListView.swift */; };
-		4DD7CC4B2D2E2C0F0097C48D /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC422D2E2C0F0097C48D /* CardListView.swift */; };
 		4DEF0D382D5B2020001489CF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 4DEF0D372D5B2020001489CF /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
@@ -38,31 +25,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4D1645072D54B2FF00DF58EE /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
-		4D1645082D54B2FF00DF58EE /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
-		4D84CD522D3938AB00A24CEE /* ImagePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewView.swift; sourceTree = "<group>"; };
 		4D996EF52D630670005E0892 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		4DA2E1B72D55BA1F00A3E90C /* FileDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloader.swift; sourceTree = "<group>"; };
-		4DA2E1B92D55BE9500A3E90C /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		4DBF42E72D2E39AF00DA6FFD /* IntraPasteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntraPasteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DBF42F22D2E969E00DA6FFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4DD7CC1E2D2E2ADB0097C48D /* IntraPaste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntraPaste.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntraPasteApp.swift; sourceTree = "<group>"; };
 		4DD7CC252D2E2ADD0097C48D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4DD7CC282D2E2ADD0097C48D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		4DD7CC3A2D2E2C0F0097C48D /* ServerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
-		4DD7CC3B2D2E2C0F0097C48D /* AddServerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddServerView.swift; sourceTree = "<group>"; };
-		4DD7CC3C2D2E2C0F0097C48D /* Server.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
-		4DD7CC3E2D2E2C0F0097C48D /* CardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardCell.swift; sourceTree = "<group>"; };
-		4DD7CC3F2D2E2C0F0097C48D /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
-		4DD7CC402D2E2C0F0097C48D /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
-		4DD7CC412D2E2C0F0097C48D /* ServerListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerListView.swift; sourceTree = "<group>"; };
-		4DD7CC422D2E2C0F0097C48D /* CardListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
 		4DEF0D372D5B2020001489CF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4DBF42E82D2E39AF00DA6FFD /* IntraPasteTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = IntraPasteTests; sourceTree = "<group>"; };
+		4DEEDF1A2D63637C007ECD4E /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
+		4DEEDF262D636380007ECD4E /* Sevices */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Sevices; sourceTree = "<group>"; };
+		4DEEDF2D2D636384007ECD4E /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,9 +85,9 @@
 				4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */,
 				4DEF0D372D5B2020001489CF /* Localizable.xcstrings */,
 				4D996EF52D630670005E0892 /* Settings.bundle */,
-				4DD7CC4E2D2E2C300097C48D /* Views */,
-				4DD7CC4D2D2E2C260097C48D /* Sevices */,
-				4DD7CC4C2D2E2C190097C48D /* Models */,
+				4DEEDF1A2D63637C007ECD4E /* Views */,
+				4DEEDF262D636380007ECD4E /* Sevices */,
+				4DEEDF2D2D636384007ECD4E /* Models */,
 				4DD7CC252D2E2ADD0097C48D /* Assets.xcassets */,
 				4DD7CC272D2E2ADD0097C48D /* Preview Content */,
 			);
@@ -123,40 +100,6 @@
 				4DD7CC282D2E2ADD0097C48D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		4DD7CC4C2D2E2C190097C48D /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				4DD7CC402D2E2C0F0097C48D /* Card.swift */,
-				4DD7CC3C2D2E2C0F0097C48D /* Server.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		4DD7CC4D2D2E2C260097C48D /* Sevices */ = {
-			isa = PBXGroup;
-			children = (
-				4DD7CC3F2D2E2C0F0097C48D /* APIClient.swift */,
-				4DD7CC3A2D2E2C0F0097C48D /* ServerManager.swift */,
-				4DA2E1B72D55BA1F00A3E90C /* FileDownloader.swift */,
-				4DA2E1B92D55BE9500A3E90C /* AudioSessionManager.swift */,
-			);
-			path = Sevices;
-			sourceTree = "<group>";
-		};
-		4DD7CC4E2D2E2C300097C48D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				4D1645072D54B2FF00DF58EE /* AudioPlayerView.swift */,
-				4D1645082D54B2FF00DF58EE /* VideoPlayerView.swift */,
-				4DD7CC3B2D2E2C0F0097C48D /* AddServerView.swift */,
-				4DD7CC3E2D2E2C0F0097C48D /* CardCell.swift */,
-				4DD7CC422D2E2C0F0097C48D /* CardListView.swift */,
-				4DD7CC412D2E2C0F0097C48D /* ServerListView.swift */,
-				4D84CD522D3938AB00A24CEE /* ImagePreviewView.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,6 +139,11 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4DEEDF1A2D63637C007ECD4E /* Views */,
+				4DEEDF262D636380007ECD4E /* Sevices */,
+				4DEEDF2D2D636384007ECD4E /* Models */,
 			);
 			name = IntraPaste;
 			productName = IntraPaste;
@@ -279,20 +227,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DD7CC432D2E2C0F0097C48D /* ServerManager.swift in Sources */,
-				4D1645092D54B2FF00DF58EE /* AudioPlayerView.swift in Sources */,
-				4DA2E1B82D55BA1F00A3E90C /* FileDownloader.swift in Sources */,
-				4D16450A2D54B2FF00DF58EE /* VideoPlayerView.swift in Sources */,
-				4DD7CC482D2E2C0F0097C48D /* APIClient.swift in Sources */,
-				4DD7CC4B2D2E2C0F0097C48D /* CardListView.swift in Sources */,
-				4D84CD532D3938AB00A24CEE /* ImagePreviewView.swift in Sources */,
-				4DA2E1BA2D55BE9500A3E90C /* AudioSessionManager.swift in Sources */,
-				4DD7CC4A2D2E2C0F0097C48D /* ServerListView.swift in Sources */,
-				4DD7CC442D2E2C0F0097C48D /* AddServerView.swift in Sources */,
-				4DD7CC452D2E2C0F0097C48D /* Server.swift in Sources */,
 				4DD7CC222D2E2ADB0097C48D /* IntraPasteApp.swift in Sources */,
-				4DD7CC472D2E2C0F0097C48D /* CardCell.swift in Sources */,
-				4DD7CC492D2E2C0F0097C48D /* Card.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
