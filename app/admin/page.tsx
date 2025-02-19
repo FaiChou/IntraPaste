@@ -244,7 +244,7 @@ export default function AdminPage() {
                 
                 {renderCardContent(card)}
 
-                <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
                   <p>{t.admin.fileInfo.ip}: {card.ipAddress}</p>
                   <p className="truncate" title={card.userAgent || undefined}>
                     {t.admin.fileInfo.ua}: {card.userAgent || '-'}
