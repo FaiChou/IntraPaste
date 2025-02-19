@@ -170,7 +170,9 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
       </p>
       <div className="mt-2 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
         <span>{new Date(createdAt).toLocaleString()}</span>
-        <span>{copied ? t.common.copied : t.common.clickToCopy}</span>
+        <span className={copied ? "text-green-500 dark:text-green-400" : ""}>
+          {copied ? t.common.copied : t.common.clickToCopy}
+        </span>
       </div>
     </div>
   )
