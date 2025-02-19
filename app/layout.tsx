@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Intrapaste",
-  description: "Intrapaste is a simple pastebin service that allows you to share text with others.",
+  title: "IntraPaste",
+  description: "IntraPaste is a simple pastebin service that allows you to share content with others.",
 };
 
 export default function RootLayout({
