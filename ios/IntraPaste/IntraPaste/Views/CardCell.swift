@@ -11,7 +11,7 @@ struct CardCell: View {
     @State private var showingSaveSuccess = false
     @Environment(\.colorScheme) var colorScheme
     @State private var showingFullContent = false
-    
+
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
             Group {
@@ -59,7 +59,6 @@ struct CardCell: View {
         }
         .padding(.vertical, 2)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.systemBackground))
         .contextMenu {
             if card.type == "text" {
                 if let content = card.content {
