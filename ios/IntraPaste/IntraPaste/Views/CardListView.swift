@@ -26,6 +26,7 @@ struct CardListView: View {
     @State private var showingImagePicker = false
     @State private var selectedImage: UIImage?
     @State private var buttonWidth: CGFloat = 0
+    @State private var showingCamera = false
     
     var body: some View {
         ZStack {
@@ -51,6 +52,11 @@ struct CardListView: View {
                 HStack(spacing: 8) {
                     if minioEnabled {
                         Menu {
+                            Button(action: {
+                                showingCamera = true
+                            }) {
+                                Label("Camera", systemImage: "camera")
+                            }
                             Button(action: {
                                 showingImagePicker = true
                             }) {
@@ -96,6 +102,12 @@ struct CardListView: View {
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(selectedImage: $selectedImage)
         }
+        .sheet(isPresented: $showingCamera) {
+            CameraPicker(selectedImage: $selectedImage)
+                .presentationDetents([.large])
+                .presentationDragIndicator(.hidden)
+                .ignoresSafeArea()
+        }
         .onAppear {
             if cards.isEmpty {
                 fetchCards()
@@ -107,6 +119,25 @@ struct CardListView: View {
         } message: {
             if let error = error {
                 Text(error)
+            }
+        }
+        .onChange(of: selectedDocument) { newValue in
+            guard let fileURL = newValue else { return }
+            Task {
+                do {
+                    let fileData = try Data(contentsOf: fileURL)
+                    let fileName = fileURL.lastPathComponent
+                    _ = try await APIClient.shared.uploadFile(
+                        fileData: fileData,
+                        fileName: fileName,
+                        fileType: .document,
+                        server: server
+                    )
+                    selectedDocument = nil
+                    await refreshCards()
+                } catch {
+                    self.error = "Upload failed"
+                }
             }
         }
         .onChange(of: selectedImage) { newImage in
