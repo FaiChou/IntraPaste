@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D245B232D6F2DE400D90B35 /* AddServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B192D6F2DE400D90B35 /* AddServerView.swift */; };
+		4D245B242D6F2DE400D90B35 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B1A2D6F2DE400D90B35 /* AudioPlayerView.swift */; };
+		4D245B252D6F2DE400D90B35 /* CameraPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B1B2D6F2DE400D90B35 /* CameraPicker.swift */; };
+		4D245B262D6F2DE400D90B35 /* CardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B1C2D6F2DE400D90B35 /* CardCell.swift */; };
+		4D245B272D6F2DE400D90B35 /* CardListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B1D2D6F2DE400D90B35 /* CardListView.swift */; };
+		4D245B282D6F2DE400D90B35 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B1E2D6F2DE400D90B35 /* ImagePicker.swift */; };
+		4D245B292D6F2DE400D90B35 /* ImagePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B1F2D6F2DE400D90B35 /* ImagePreviewView.swift */; };
+		4D245B2A2D6F2DE400D90B35 /* ServerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B202D6F2DE400D90B35 /* ServerListView.swift */; };
+		4D245B2B2D6F2DE400D90B35 /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B212D6F2DE400D90B35 /* VideoPlayerView.swift */; };
+		4D245B312D6F2DE900D90B35 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B2C2D6F2DE900D90B35 /* APIClient.swift */; };
+		4D245B322D6F2DE900D90B35 /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B2D2D6F2DE900D90B35 /* AudioSessionManager.swift */; };
+		4D245B332D6F2DE900D90B35 /* FileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B2E2D6F2DE900D90B35 /* FileDownloader.swift */; };
+		4D245B342D6F2DE900D90B35 /* ServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B2F2D6F2DE900D90B35 /* ServerManager.swift */; };
+		4D245B382D6F2DEC00D90B35 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B352D6F2DEC00D90B35 /* Card.swift */; };
+		4D245B392D6F2DEC00D90B35 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B362D6F2DEC00D90B35 /* Server.swift */; };
 		4D996EF62D630670005E0892 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4D996EF52D630670005E0892 /* Settings.bundle */; };
 		4DD7CC222D2E2ADB0097C48D /* IntraPasteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */; };
 		4DD7CC262D2E2ADD0097C48D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7CC252D2E2ADD0097C48D /* Assets.xcassets */; };
@@ -25,6 +40,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4D245B192D6F2DE400D90B35 /* AddServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerView.swift; sourceTree = "<group>"; };
+		4D245B1A2D6F2DE400D90B35 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
+		4D245B1B2D6F2DE400D90B35 /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
+		4D245B1C2D6F2DE400D90B35 /* CardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCell.swift; sourceTree = "<group>"; };
+		4D245B1D2D6F2DE400D90B35 /* CardListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardListView.swift; sourceTree = "<group>"; };
+		4D245B1E2D6F2DE400D90B35 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		4D245B1F2D6F2DE400D90B35 /* ImagePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreviewView.swift; sourceTree = "<group>"; };
+		4D245B202D6F2DE400D90B35 /* ServerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerListView.swift; sourceTree = "<group>"; };
+		4D245B212D6F2DE400D90B35 /* VideoPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
+		4D245B2C2D6F2DE900D90B35 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		4D245B2D2D6F2DE900D90B35 /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
+		4D245B2E2D6F2DE900D90B35 /* FileDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloader.swift; sourceTree = "<group>"; };
+		4D245B2F2D6F2DE900D90B35 /* ServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerManager.swift; sourceTree = "<group>"; };
+		4D245B352D6F2DEC00D90B35 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		4D245B362D6F2DEC00D90B35 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		4D996EF52D630670005E0892 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4DBF42E72D2E39AF00DA6FFD /* IntraPasteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntraPasteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DBF42F22D2E969E00DA6FFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -37,9 +67,6 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4DBF42E82D2E39AF00DA6FFD /* IntraPasteTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = IntraPasteTests; sourceTree = "<group>"; };
-		4DEEDF1A2D63637C007ECD4E /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
-		4DEEDF262D636380007ECD4E /* Sevices */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Sevices; sourceTree = "<group>"; };
-		4DEEDF2D2D636384007ECD4E /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +87,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D245B222D6F2DE400D90B35 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4D245B192D6F2DE400D90B35 /* AddServerView.swift */,
+				4D245B1A2D6F2DE400D90B35 /* AudioPlayerView.swift */,
+				4D245B1B2D6F2DE400D90B35 /* CameraPicker.swift */,
+				4D245B1C2D6F2DE400D90B35 /* CardCell.swift */,
+				4D245B1D2D6F2DE400D90B35 /* CardListView.swift */,
+				4D245B1E2D6F2DE400D90B35 /* ImagePicker.swift */,
+				4D245B1F2D6F2DE400D90B35 /* ImagePreviewView.swift */,
+				4D245B202D6F2DE400D90B35 /* ServerListView.swift */,
+				4D245B212D6F2DE400D90B35 /* VideoPlayerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4D245B302D6F2DE900D90B35 /* Sevices */ = {
+			isa = PBXGroup;
+			children = (
+				4D245B2C2D6F2DE900D90B35 /* APIClient.swift */,
+				4D245B2D2D6F2DE900D90B35 /* AudioSessionManager.swift */,
+				4D245B2E2D6F2DE900D90B35 /* FileDownloader.swift */,
+				4D245B2F2D6F2DE900D90B35 /* ServerManager.swift */,
+			);
+			path = Sevices;
+			sourceTree = "<group>";
+		};
+		4D245B372D6F2DEC00D90B35 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4D245B352D6F2DEC00D90B35 /* Card.swift */,
+				4D245B362D6F2DEC00D90B35 /* Server.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		4DD7CC152D2E2ADB0097C48D = {
 			isa = PBXGroup;
 			children = (
@@ -85,9 +148,9 @@
 				4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */,
 				4DEF0D372D5B2020001489CF /* Localizable.xcstrings */,
 				4D996EF52D630670005E0892 /* Settings.bundle */,
-				4DEEDF1A2D63637C007ECD4E /* Views */,
-				4DEEDF262D636380007ECD4E /* Sevices */,
-				4DEEDF2D2D636384007ECD4E /* Models */,
+				4D245B222D6F2DE400D90B35 /* Views */,
+				4D245B302D6F2DE900D90B35 /* Sevices */,
+				4D245B372D6F2DEC00D90B35 /* Models */,
 				4DD7CC252D2E2ADD0097C48D /* Assets.xcassets */,
 				4DD7CC272D2E2ADD0097C48D /* Preview Content */,
 			);
@@ -139,11 +202,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				4DEEDF1A2D63637C007ECD4E /* Views */,
-				4DEEDF262D636380007ECD4E /* Sevices */,
-				4DEEDF2D2D636384007ECD4E /* Models */,
 			);
 			name = IntraPaste;
 			productName = IntraPaste;
@@ -227,6 +285,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D245B232D6F2DE400D90B35 /* AddServerView.swift in Sources */,
+				4D245B242D6F2DE400D90B35 /* AudioPlayerView.swift in Sources */,
+				4D245B252D6F2DE400D90B35 /* CameraPicker.swift in Sources */,
+				4D245B312D6F2DE900D90B35 /* APIClient.swift in Sources */,
+				4D245B322D6F2DE900D90B35 /* AudioSessionManager.swift in Sources */,
+				4D245B332D6F2DE900D90B35 /* FileDownloader.swift in Sources */,
+				4D245B382D6F2DEC00D90B35 /* Card.swift in Sources */,
+				4D245B392D6F2DEC00D90B35 /* Server.swift in Sources */,
+				4D245B342D6F2DE900D90B35 /* ServerManager.swift in Sources */,
+				4D245B262D6F2DE400D90B35 /* CardCell.swift in Sources */,
+				4D245B272D6F2DE400D90B35 /* CardListView.swift in Sources */,
+				4D245B282D6F2DE400D90B35 /* ImagePicker.swift in Sources */,
+				4D245B292D6F2DE400D90B35 /* ImagePreviewView.swift in Sources */,
+				4D245B2A2D6F2DE400D90B35 /* ServerListView.swift in Sources */,
+				4D245B2B2D6F2DE400D90B35 /* VideoPlayerView.swift in Sources */,
 				4DD7CC222D2E2ADB0097C48D /* IntraPasteApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
