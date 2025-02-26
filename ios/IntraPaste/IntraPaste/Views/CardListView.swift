@@ -20,13 +20,11 @@ struct CardListView: View {
     @State private var newContent = ""
     @State private var isLoading = false
     @State private var error: String?
-    @State private var selectedItem: PhotosPickerItem?
     @State private var minioEnabled = false
-    @State private var showingActionSheet = false
     @State private var showingDocumentPicker = false
     @State private var selectedDocument: URL?
-    @State private var showingPhotoPicker = false
-    @State private var isExpanded = false
+    @State private var showingImagePicker = false
+    @State private var selectedImage: UIImage?
     @State private var buttonWidth: CGFloat = 0
     
     var body: some View {
@@ -52,66 +50,33 @@ struct CardListView: View {
                 
                 HStack(spacing: 8) {
                     if minioEnabled {
-                        HStack(spacing: 8) {
+                        Menu {
                             Button(action: {
-                                withAnimation(.spring()) {
-                                    isExpanded.toggle()
-                                }
+                                showingImagePicker = true
                             }) {
-                                Image(systemName: isExpanded ? "xmark.circle.fill" : "plus.circle.fill")
-                                    .foregroundColor(.blue)
-                                    .font(.system(size: 24))
+                                Label("Photo", systemImage: "photo")
                             }
-                            
-                            if isExpanded {
-                                PhotosPicker(
-                                    selection: $selectedItem,
-                                    matching: .images
-                                ) {
-                                    HStack {
-                                        Image(systemName: "photo")
-                                    }
-                                    .foregroundColor(.blue)
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 8)
-                                    .background(Color.blue.opacity(0.1))
-                                    .cornerRadius(8)
-                                }
-                                .transition(.move(edge: .leading).combined(with: .opacity))
-                                
-                                Button(action: {
-                                    showingDocumentPicker = true
-                                }) {
-                                    HStack {
-                                        Image(systemName: "doc")
-                                    }
-                                    .foregroundColor(.blue)
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 8)
-                                    .background(Color.blue.opacity(0.1))
-                                    .cornerRadius(8)
-                                }
-                                .transition(.move(edge: .leading).combined(with: .opacity))
+                            Button(action: {
+                                showingDocumentPicker = true
+                            }) {
+                                Label("Document", systemImage: "doc")
                             }
+                        } label: {
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundColor(.blue)
+                                .font(.system(size: 24))
                         }
                     }
                     
                     TextEditor(text: $newContent)
                         .frame(
                             minHeight: 40,
-                            maxHeight: max(40, min(120, newContent.height(withConstrainedWidth: isExpanded ? UIScreen.main.bounds.width - 240 : UIScreen.main.bounds.width - 120)))
+                            maxHeight: max(40, min(120, newContent.height(withConstrainedWidth: UIScreen.main.bounds.width - 120)))
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.gray.opacity(0.2), lineWidth: 1)
                         )
-                        .onTapGesture {
-                            if isExpanded {
-                                withAnimation(.spring()) {
-                                    isExpanded = false
-                                }
-                            }
-                        }
                     
                     Button(action: createNewCard) {
                         Image(systemName: "paperplane.fill")
@@ -125,20 +90,11 @@ struct CardListView: View {
         }
         .navigationTitle(server.name)
         .toolbarRole(.editor)
-        .confirmationDialog("Select Upload Type", isPresented: $showingActionSheet, titleVisibility: .visible) {
-            PhotosPicker(
-                selection: $selectedItem,
-                matching: .images
-            ) {
-                Text("Choose from Photos")
-            }
-            
-            Button("Choose File") {
-                showingDocumentPicker = true
-            }
-        }
         .sheet(isPresented: $showingDocumentPicker) {
             DocumentPicker(url: $selectedDocument)
+        }
+        .sheet(isPresented: $showingImagePicker) {
+            ImagePicker(selectedImage: $selectedImage)
         }
         .onAppear {
             if cards.isEmpty {
@@ -153,51 +109,19 @@ struct CardListView: View {
                 Text(error)
             }
         }
-        .onChange(of: selectedItem) { _ in
-            if isExpanded {
-                withAnimation(.spring()) {
-                    isExpanded = false
-                }
-            }
-            Task {
-                if let data = try? await selectedItem?.loadTransferable(type: Data.self),
-                   let uiImage = UIImage(data: data),
-                   let imageData = uiImage.jpegData(compressionQuality: 0.8) {
-                    do {
-                        _ = try await APIClient.shared.uploadFile(
-                            fileData: imageData,
-                            fileName: "\(Date().timeIntervalSince1970).jpg",
-                            fileType: .image,
-                            server: server
-                        )
-                        selectedItem = nil
-                        await refreshCards()
-                    } catch {
-                        self.error = "Upload failed"
-                    }
-                }
-            }
-        }
-        .onChange(of: selectedDocument) { newValue in
-            if isExpanded {
-                withAnimation(.spring()) {
-                    isExpanded = false
-                }
-            }
-            guard let fileURL = newValue else { return }
+        .onChange(of: selectedImage) { newImage in
+            guard let image = newImage,
+                  let imageData = image.jpegData(compressionQuality: 0.8) else { return }
             
             Task {
                 do {
-                    let fileName = fileURL.lastPathComponent
-                    let fileData = try Data(contentsOf: fileURL)
-                    
                     _ = try await APIClient.shared.uploadFile(
-                        fileData: fileData,
-                        fileName: fileName,
-                        fileType: .document,
+                        fileData: imageData,
+                        fileName: "\(Date().timeIntervalSince1970).jpg",
+                        fileType: .image,
                         server: server
                     )
-                    selectedDocument = nil
+                    selectedImage = nil
                     await refreshCards()
                 } catch {
                     self.error = "Upload failed"
