@@ -23,6 +23,7 @@
 		4D245B382D6F2DEC00D90B35 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B352D6F2DEC00D90B35 /* Card.swift */; };
 		4D245B392D6F2DEC00D90B35 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D245B362D6F2DEC00D90B35 /* Server.swift */; };
 		4D996EF62D630670005E0892 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4D996EF52D630670005E0892 /* Settings.bundle */; };
+		4DC143182D7060E400B21EDD /* InputBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC143172D7060E400B21EDD /* InputBar.swift */; };
 		4DD7CC222D2E2ADB0097C48D /* IntraPasteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */; };
 		4DD7CC262D2E2ADD0097C48D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7CC252D2E2ADD0097C48D /* Assets.xcassets */; };
 		4DD7CC292D2E2ADD0097C48D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DD7CC282D2E2ADD0097C48D /* Preview Assets.xcassets */; };
@@ -58,6 +59,7 @@
 		4D996EF52D630670005E0892 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4DBF42E72D2E39AF00DA6FFD /* IntraPasteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntraPasteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DBF42F22D2E969E00DA6FFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4DC143172D7060E400B21EDD /* InputBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBar.swift; sourceTree = "<group>"; };
 		4DD7CC1E2D2E2ADB0097C48D /* IntraPaste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntraPaste.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DD7CC212D2E2ADB0097C48D /* IntraPasteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntraPasteApp.swift; sourceTree = "<group>"; };
 		4DD7CC252D2E2ADD0097C48D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 				4D245B1B2D6F2DE400D90B35 /* CameraPicker.swift */,
 				4D245B1C2D6F2DE400D90B35 /* CardCell.swift */,
 				4D245B1D2D6F2DE400D90B35 /* CardListView.swift */,
+				4DC143172D7060E400B21EDD /* InputBar.swift */,
 				4D245B1E2D6F2DE400D90B35 /* ImagePicker.swift */,
 				4D245B1F2D6F2DE400D90B35 /* ImagePreviewView.swift */,
 				4D245B202D6F2DE400D90B35 /* ServerListView.swift */,
@@ -295,6 +298,7 @@
 				4D245B392D6F2DEC00D90B35 /* Server.swift in Sources */,
 				4D245B342D6F2DE900D90B35 /* ServerManager.swift in Sources */,
 				4D245B262D6F2DE400D90B35 /* CardCell.swift in Sources */,
+				4DC143182D7060E400B21EDD /* InputBar.swift in Sources */,
 				4D245B272D6F2DE400D90B35 /* CardListView.swift in Sources */,
 				4D245B282D6F2DE400D90B35 /* ImagePicker.swift in Sources */,
 				4D245B292D6F2DE400D90B35 /* ImagePreviewView.swift in Sources */,

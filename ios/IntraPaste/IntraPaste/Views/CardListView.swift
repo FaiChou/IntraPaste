@@ -1,18 +1,6 @@
 import SwiftUI
 import PhotosUI
 
-extension String {
-    func height(withConstrainedWidth width: CGFloat) -> CGFloat {
-        let size = CGSize(width: width, height: .greatestFiniteMagnitude)
-        let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: UIFont.systemFontSize)]
-        let estimatedFrame = self.boundingRect(with: size,
-                                             options: .usesLineFragmentOrigin,
-                                             attributes: attributes,
-                                             context: nil)
-        return estimatedFrame.height + 20
-    }
-}
-
 struct CardListView: View {
     let server: Server
     @EnvironmentObject var serverManager: ServerManager
@@ -27,73 +15,39 @@ struct CardListView: View {
     @State private var selectedImage: UIImage?
     @State private var buttonWidth: CGFloat = 0
     @State private var showingCamera = false
-    
     var body: some View {
-        ZStack {
-            VStack {
-                ZStack {
-                    if isLoading && cards.isEmpty {
-                        VStack {
-                            ProgressView()
-                            Spacer()
-                        }
-                    } else {
-                        List {
-                            ForEach(cards) { card in
-                                CardCell(card: card)
-                            }
-                        }
-                        .refreshable {
-                            await refreshCards()
-                        }
+        VStack {
+            ZStack {
+                List {
+                    ForEach(cards) { card in
+                        CardCell(card: card)
                     }
                 }
-                
-                HStack(spacing: 8) {
-                    if minioEnabled {
-                        Menu {
-                            Button(action: {
-                                showingCamera = true
-                            }) {
-                                Label("Camera", systemImage: "camera")
-                            }
-                            Button(action: {
-                                showingImagePicker = true
-                            }) {
-                                Label("Photo", systemImage: "photo")
-                            }
-                            Button(action: {
-                                showingDocumentPicker = true
-                            }) {
-                                Label("Document", systemImage: "doc")
-                            }
-                        } label: {
-                            Image(systemName: "plus.circle.fill")
-                                .foregroundColor(.blue)
-                                .font(.system(size: 24))
-                        }
-                    }
-                    
-                    TextEditor(text: $newContent)
-                        .frame(
-                            minHeight: 40,
-                            maxHeight: max(40, min(120, newContent.height(withConstrainedWidth: UIScreen.main.bounds.width - 120)))
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                        )
-                    
-                    Button(action: createNewCard) {
-                        Image(systemName: "paperplane.fill")
-                            .foregroundColor(.blue)
-                            .font(.system(size: 20))
-                    }
-                    .disabled(newContent.isEmpty)
+                .refreshable {
+                    await refreshCards()
                 }
-                .padding()
+                if isLoading && cards.isEmpty {
+                    VStack {
+                        ProgressView()
+                        Spacer()
+                    }
+                }
             }
+            .simultaneousGesture(
+                TapGesture().onEnded {
+                    dismissKeyboard()
+                }
+            )
+            InputBar(
+                text: $newContent,
+                showingCamera: $showingCamera,
+                showingImagePicker: $showingImagePicker,
+                showingDocumentPicker: $showingDocumentPicker,
+                minioEnabled: minioEnabled,
+                onSend: createNewCard
+            )
         }
+        .background(.clear)
         .navigationTitle(server.name)
         .toolbarRole(.editor)
         .sheet(isPresented: $showingDocumentPicker) {
