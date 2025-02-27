@@ -102,11 +102,9 @@ struct CardListView: View {
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(selectedImage: $selectedImage)
         }
-        .sheet(isPresented: $showingCamera) {
+        .fullScreenCover(isPresented: $showingCamera) {
             CameraPicker(selectedImage: $selectedImage)
-                .presentationDetents([.large])
-                .presentationDragIndicator(.hidden)
-                .ignoresSafeArea()
+                .edgesIgnoringSafeArea(.all)
         }
         .onAppear {
             if cards.isEmpty {
