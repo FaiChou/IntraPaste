@@ -15,6 +15,7 @@ struct CardListView: View {
     @State private var selectedImage: UIImage?
     @State private var buttonWidth: CGFloat = 0
     @State private var showingCamera = false
+    @State private var isInputLoading = false
     var body: some View {
         VStack {
             ZStack {
@@ -43,6 +44,7 @@ struct CardListView: View {
                 showingCamera: $showingCamera,
                 showingImagePicker: $showingImagePicker,
                 showingDocumentPicker: $showingDocumentPicker,
+                isLoading: $isInputLoading,
                 minioEnabled: minioEnabled,
                 onSend: createNewCard
             )
@@ -76,6 +78,7 @@ struct CardListView: View {
         .onChange(of: selectedDocument) { newValue in
             guard let fileURL = newValue else { return }
             Task {
+                isInputLoading = true
                 do {
                     let fileData = try Data(contentsOf: fileURL)
                     let fileName = fileURL.lastPathComponent
@@ -90,6 +93,7 @@ struct CardListView: View {
                 } catch {
                     self.error = "Upload failed"
                 }
+                isInputLoading = false
             }
         }
         .onChange(of: selectedImage) { newImage in
@@ -97,6 +101,7 @@ struct CardListView: View {
                   let imageData = image.jpegData(compressionQuality: 0.8) else { return }
             
             Task {
+                isInputLoading = true
                 do {
                     _ = try await APIClient.shared.uploadFile(
                         fileData: imageData,
@@ -109,10 +114,11 @@ struct CardListView: View {
                 } catch {
                     self.error = "Upload failed"
                 }
+                isInputLoading = false
             }
         }
     }
-    
+
     @MainActor
     private func fetchCards() {
         isLoading = true
@@ -133,6 +139,7 @@ struct CardListView: View {
         guard !newContent.isEmpty else { return }
         
         Task {
+            isInputLoading = true
             do {
                 _ = try await APIClient.shared.createCard(content: newContent, server: server)
                 newContent = ""
@@ -141,6 +148,7 @@ struct CardListView: View {
             } catch {
                 self.error = "Failed to create card"
             }
+            isInputLoading = false
         }
     }
     

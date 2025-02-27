@@ -24,6 +24,7 @@ struct InputBar: View {
     @Binding var showingCamera: Bool
     @Binding var showingImagePicker: Bool
     @Binding var showingDocumentPicker: Bool
+    @Binding var isLoading: Bool
     @Environment(\.colorScheme) var colorScheme
     let minioEnabled: Bool
     let onSend: () -> Void
@@ -76,16 +77,24 @@ struct InputBar: View {
                         textHeight = min(max(minHeight, newHeight), maxHeight)
                     }
                 Button(action: onSend) {
-                    Image(systemName: "arrow.up")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(colorScheme == .light ? .white : .black)
-                        .frame(width: 28, height: 28)
-                        .background(
-                            Circle()
-                                .fill(colorScheme == .light ? Color.black : Color.white)
-                        )
+                    Group {
+                        if isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: colorScheme == .light ? .white : .black))
+                                .scaleEffect(0.8)
+                        } else {
+                            Image(systemName: "arrow.up")
+                                .font(.system(size: 16, weight: .semibold))
+                        }
+                    }
+                    .foregroundColor(colorScheme == .light ? .white : .black)
+                    .frame(width: 28, height: 28)
+                    .background(
+                        Circle()
+                            .fill(text.isEmpty ? Color.gray : (colorScheme == .light ? Color.black : Color.white))
+                    )
                 }
-                .disabled(text.isEmpty)
+                .disabled(text.isEmpty || isLoading)
                 .padding(6)
             }
         }
