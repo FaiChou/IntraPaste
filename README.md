@@ -6,6 +6,17 @@ English | [中文](README_zh.md)
 [![Docker Pulls](https://img.shields.io/docker/pulls/phyllislapin/intrapaste)](https://hub.docker.com/r/phyllislapin/intrapaste)
 [![License](https://img.shields.io/github/license/FaiChou/IntraPaste)](LICENSE)
 
+<details>
+<summary>📸 Preview</summary>
+
+![Home](https://faichou.github.io/IntraPastePrivacy/home.png)
+
+![Admin](https://faichou.github.io/IntraPastePrivacy/admin.png)
+
+![Mobile](https://faichou.github.io/IntraPastePrivacy/mobile.png)
+
+</details>
+
 IntraPaste is a simple and efficient temporary content sharing service that supports text and image sharing. All content will be automatically cleaned up after a specified time to keep the system clean.
 
 > ⚠️ **Security Notice**: It is recommended to deploy this service within an intranet environment rather than exposing it to the public internet. This helps prevent potential information leaks and malicious usage.
@@ -246,11 +257,3 @@ open IntraPaste.xcodeproj
 - Supported audio formats: mp3, wav, ogg, m4a, webm, aac
 - Rate limiting: Configurable upload limits per IP
 - File type validation for security
-
-## Preview
-
-![Home](https://faichou.github.io/IntraPastePrivacy/home.png)
-
-![Admin](https://faichou.github.io/IntraPastePrivacy/admin.png)
-
-![Mobile](https://faichou.github.io/IntraPastePrivacy/mobile.png)

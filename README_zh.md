@@ -6,6 +6,17 @@
 [![Docker 拉取次数](https://img.shields.io/docker/pulls/phyllislapin/intrapaste)](https://hub.docker.com/r/phyllislapin/intrapaste)
 [![许可证](https://img.shields.io/github/license/FaiChou/IntraPaste)](LICENSE)
 
+<details>
+<summary>📸 预览</summary>
+
+![首页](https://faichou.github.io/IntraPastePrivacy/home.png)
+
+![管理页](https://faichou.github.io/IntraPastePrivacy/admin.png)
+
+![移动端](https://faichou.github.io/IntraPastePrivacy/mobile.png) 
+
+</details>
+
 IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图片的快速分享。所有内容都会在指定时间后自动清理，保证系统整洁。
 
 > ⚠️ **安全提醒**：建议将本服务部署在内网环境中使用，避免暴露在公网环境下。这可以防止敏感信息泄露和恶意使用。
@@ -245,11 +256,3 @@ open IntraPaste.xcodeproj
 - 支持的音频格式：mp3, wav, ogg, m4a, webm, aac
 - 频率限制：可配置的 IP 上传限制
 - 文件类型安全验证 
-
-## 预览
-
-![首页](https://faichou.github.io/IntraPastePrivacy/home.png)
-
-![管理页](https://faichou.github.io/IntraPastePrivacy/admin.png)
-
-![移动端](https://faichou.github.io/IntraPastePrivacy/mobile.png) 
