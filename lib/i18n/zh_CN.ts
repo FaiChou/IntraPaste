@@ -20,6 +20,7 @@ const zh_CN = {
     audioNotSupported: '您的浏览器不支持音频播放',
     image: '图片',
     copyError: '复制失败：',
+    dragAndDrop: '拖放文件到此处上传',
   },
   home: {
     title: 'IntraPaste',

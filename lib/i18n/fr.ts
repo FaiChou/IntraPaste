@@ -20,6 +20,7 @@ const fr = {
     audioNotSupported: 'Votre navigateur ne prend pas en charge la lecture audio',
     image: 'Image',
     copyError: 'Échec de la copie:',
+    dragAndDrop: 'Glisser-déposer un fichier ici pour téléverser',
   },
   home: {
     title: 'IntraPaste',

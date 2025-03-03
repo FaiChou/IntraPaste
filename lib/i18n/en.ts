@@ -20,6 +20,7 @@ const en = {
     audioNotSupported: 'Your browser does not support audio playback',
     image: 'Image',
     copyError: 'Copy failed:',
+    dragAndDrop: 'Drag and drop files here to upload',
   },
   home: {
     title: 'IntraPaste',

@@ -20,6 +20,7 @@ const ko = {
     audioNotSupported: '브라우저가 오디오 재생을 지원하지 않습니다',
     image: '이미지',
     copyError: '복사 실패:',
+    dragAndDrop: '파일을 여기에 드래그&드롭하여 업로드',
   },
   home: {
     title: 'IntraPaste',

@@ -15,6 +15,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
   const { t } = useI18n()
   const [content, setContent] = useState('')
   const [isUploading, setIsUploading] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [minioEnabled, setMinioEnabled] = useState(false)
@@ -51,7 +52,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
-        setPlaceholder(t.home.textPlaceholderMobile || '输入您想问的问题...')
+        setPlaceholder(t.home.textPlaceholderMobile || '请输入内容...')
       } else {
         setPlaceholder(t.home.textPlaceholder)
       }
@@ -81,8 +82,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
     }
   }
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+  const handleFileUpload = async (file: File) => {
     if (!file) return
 
     try {
@@ -142,6 +142,41 @@ export function TextInput({ onSubmit }: TextInputProps) {
     }
   }
 
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.dataTransfer.types.includes('Files') && minioEnabled) {
+      setIsDragging(true)
+    }
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.currentTarget === e.target) {
+      setIsDragging(false)
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    e.dataTransfer.dropEffect = 'copy'
+  }
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+
+    if (!minioEnabled) return
+
+    const files = Array.from(e.dataTransfer.files)
+    if (files.length > 0) {
+      await handleFileUpload(files[0])
+    }
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
       if (e.shiftKey || isMobile) {
@@ -154,7 +189,30 @@ export function TextInput({ onSubmit }: TextInputProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 items-end">
+    <form
+      onSubmit={handleSubmit}
+      className={`flex gap-2 items-end relative ${isDragging ? 'bg-blue-50 dark:bg-blue-900/20 rounded-lg' : ''}`}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+    >
+      {isDragging && minioEnabled && (
+        <div
+          className="absolute inset-0 flex items-center justify-center rounded-lg border-2 border-dashed border-blue-500 bg-blue-50 dark:bg-blue-900/20 z-10"
+          onDragEnter={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+          }}
+          onDragOver={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            e.dataTransfer.dropEffect = 'copy'
+          }}
+        >
+          <span className="text-blue-500">{t.common.dragAndDrop}</span>
+        </div>
+      )}
       <textarea
         ref={textareaRef}
         value={content}
@@ -167,7 +225,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
       <input
         ref={fileInputRef}
         type="file"
-        onChange={handleFileUpload}
+        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0])}
         className="hidden"
       />
       {minioEnabled && (

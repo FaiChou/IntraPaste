@@ -20,6 +20,7 @@ const ja = {
     audioNotSupported: 'お使いのブラウザは音声再生に対応していません',
     image: '画像',
     copyError: 'コピー失敗:',
+    dragAndDrop: 'ファイルをここにドラッグ&ドロップしてアップロード',
   },
   home: {
     title: 'IntraPaste',

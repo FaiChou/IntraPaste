@@ -20,6 +20,7 @@ const zh_HK = {
     audioNotSupported: '您的瀏覽器不支持音頻播放',
     image: '圖片',
     copyError: '複製失敗:',
+    dragAndDrop: '拖放文件到此處上傳',
   },
   home: {
     title: 'IntraPaste',
