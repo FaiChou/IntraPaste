@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { FileInfo } from '@/app/page'
 import { checkFileSize, validateFileType } from '@/lib/uploadLimit'
 import { useI18n } from '@/lib/i18n/context'
-import { PaperAirplaneIcon, PaperClipIcon } from '@heroicons/react/24/outline'
+import { PaperAirplaneIcon, PaperClipIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { Button } from '@headlessui/react'
 
 interface TextInputProps {
@@ -86,8 +86,6 @@ export function TextInput({ onSubmit }: TextInputProps) {
     if (!file) return
 
     try {
-      setIsUploading(true)
-      
       const sizeCheck = checkFileSize(file.size)
       if (!sizeCheck.allowed) {
         alert(sizeCheck.message)
@@ -137,8 +135,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
     } catch (error) {
       console.error('Upload error:', error)
       alert('上传失败: ' + (error instanceof Error ? error.message : '未知错误'))
-    } finally {
-      setIsUploading(false)
+      throw error
     }
   }
 
@@ -173,7 +170,12 @@ export function TextInput({ onSubmit }: TextInputProps) {
 
     const files = Array.from(e.dataTransfer.files)
     if (files.length > 0) {
-      await handleFileUpload(files[0])
+      setIsUploading(true)
+      try {
+        await handleFileUpload(files[0])
+      } finally {
+        setIsUploading(false)
+      }
     }
   }
 
@@ -225,18 +227,32 @@ export function TextInput({ onSubmit }: TextInputProps) {
       <input
         ref={fileInputRef}
         type="file"
-        onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0])}
+        onChange={async (e) => {
+          if (e.target.files?.[0]) {
+            setIsUploading(true)
+            try {
+              await handleFileUpload(e.target.files[0])
+            } finally {
+              setIsUploading(false)
+            }
+          }
+        }}
         className="hidden"
+        disabled={isUploading}
       />
       {minioEnabled && (
         <Button
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
-          className="h-11 w-16 flex items-center justify-center bg-green-500 text-white rounded-lg data-[hover]:bg-green-600 data-[disabled]:bg-gray-400 flex-shrink-0"
+          className="h-11 w-16 flex items-center justify-center bg-green-500 text-white rounded-lg data-[hover]:bg-green-600 data-[disabled]:bg-gray-400 flex-shrink-0 relative"
           title={isUploading ? t.home.uploading : t.home.uploadButton}
         >
-          <PaperClipIcon className="h-5 w-5" />
+          {isUploading ? (
+            <ArrowPathIcon className="h-5 w-5 animate-spin" />
+          ) : (
+            <PaperClipIcon className="h-5 w-5" />
+          )}
         </Button>
       )}
       <Button
