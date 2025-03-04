@@ -16,6 +16,10 @@ struct CardListView: View {
     @State private var buttonWidth: CGFloat = 0
     @State private var showingCamera = false
     @State private var isInputLoading = false
+    
+    private let successFeedback = UINotificationFeedbackGenerator()
+    private let errorFeedback = UIImpactFeedbackGenerator(style: .heavy)
+    
     var body: some View {
         VStack {
             ZStack {
@@ -89,9 +93,11 @@ struct CardListView: View {
                         server: server
                     )
                     selectedDocument = nil
+                    provideSuccessFeedback()
                     await refreshCards()
                 } catch {
                     self.error = "Upload failed"
+                    provideErrorFeedback()
                 }
                 isInputLoading = false
             }
@@ -110,9 +116,11 @@ struct CardListView: View {
                         server: server
                     )
                     selectedImage = nil
+                    provideSuccessFeedback()
                     await refreshCards()
                 } catch {
                     self.error = "Upload failed"
+                    provideErrorFeedback()
                 }
                 isInputLoading = false
             }
@@ -143,10 +151,12 @@ struct CardListView: View {
             do {
                 _ = try await APIClient.shared.createCard(content: newContent, server: server)
                 newContent = ""
+                provideSuccessFeedback()
                 fetchCards()
                 dismissKeyboard()
             } catch {
                 self.error = "Failed to create card"
+                provideErrorFeedback()
             }
             isInputLoading = false
         }
@@ -159,6 +169,7 @@ struct CardListView: View {
             cards = refreshedCards
         } catch {
             self.error = "Refresh failed"
+            provideErrorFeedback()
         }
     }
     
@@ -177,6 +188,14 @@ struct CardListView: View {
                 print("Failed to check MinIO status:", error)
             }
         }
+    }
+    
+    private func provideSuccessFeedback() {
+        successFeedback.notificationOccurred(.success)
+    }
+    
+    private func provideErrorFeedback() {
+        errorFeedback.impactOccurred()
     }
 }
 
