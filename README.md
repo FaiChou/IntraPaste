@@ -108,7 +108,7 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/FaiChou/IntraPaste.git
+git clone --depth=1 https://github.com/FaiChou/IntraPaste.git
 cd IntraPaste
 ```
 
