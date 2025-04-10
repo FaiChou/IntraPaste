@@ -170,7 +170,7 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
   return (
     <div 
       className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow hover:shadow-md dark:shadow-gray-900 transition-shadow cursor-pointer border border-gray-100 dark:border-gray-800 h-fit max-h-[300px] flex flex-col"
-      onClick={(e) => {
+      onClick={() => {
         if (content && isUrl(content)) {
           window.open(content, '_blank');
         } else {
