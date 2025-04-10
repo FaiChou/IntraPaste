@@ -21,6 +21,16 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
   const [copied, setCopied] = useState(false)
   const { t } = useI18n()
 
+  const isUrl = (text: string | undefined) => {
+    if (!text) return false;
+    try {
+      new URL(text);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   const fallbackCopyToClipboard = (text: string) => {
     const textArea = document.createElement('textarea')
     textArea.value = text
@@ -160,7 +170,13 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
   return (
     <div 
       className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow hover:shadow-md dark:shadow-gray-900 transition-shadow cursor-pointer border border-gray-100 dark:border-gray-800 h-fit max-h-[300px] flex flex-col"
-      onClick={handleCopy}
+      onClick={(e) => {
+        if (content && isUrl(content)) {
+          window.open(content, '_blank');
+        } else {
+          handleCopy();
+        }
+      }}
     >
       <p 
         className="text-gray-800 dark:text-gray-100 break-words whitespace-pre-wrap line-clamp-[10] overflow-hidden flex-1"
@@ -170,9 +186,24 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
       </p>
       <div className="mt-2 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
         <span>{new Date(createdAt).toLocaleString()}</span>
-        <span className={copied ? "text-green-500 dark:text-green-400" : ""}>
-          {copied ? t.common.copied : t.common.clickToCopy}
-        </span>
+        <div className="flex items-center gap-2">
+          {content && isUrl(content) && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCopy();
+              }}
+              className="text-blue-500 hover:text-blue-600"
+            >
+              {copied ? t.common.copied : t.common.copy}
+            </button>
+          )}
+          {!isUrl(content) && (
+            <span className={copied ? "text-green-500 dark:text-green-400" : ""}>
+              {copied ? t.common.copied : t.common.clickToCopy}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   )
