@@ -69,6 +69,7 @@ const zh_CN = {
     submit: '登录',
     error: '登录失败',
     incorrect: '密码错误',
+    backToHome: '返回首页',
   },
   errors: {
     uploadFailed: '上传失败: ',

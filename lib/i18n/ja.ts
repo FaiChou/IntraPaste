@@ -69,6 +69,7 @@ const ja = {
     submit: 'ログイン',
     error: 'ログインに失敗しました',
     incorrect: 'パスワードが正しくありません',
+    backToHome: 'ホームに戻る',
   },
   errors: {
     uploadFailed: 'アップロード失敗: ',

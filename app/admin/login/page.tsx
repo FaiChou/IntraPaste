@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useI18n } from '@/lib/i18n/context'
+import Link from 'next/link'
 
 export default function LoginPage() {
   const [password, setPassword] = useState('')
@@ -60,6 +61,12 @@ export default function LoginPage() {
             {t.login.submit}
           </button>
         </form>
+        
+        <div className="mt-4 text-center">
+          <Link href="/" className="inline-block w-full px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+          {t.login.backToHome}
+          </Link>
+        </div>
       </div>
     </main>
   )

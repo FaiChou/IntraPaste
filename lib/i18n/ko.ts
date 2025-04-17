@@ -69,6 +69,7 @@ const ko = {
     submit: '로그인',
     error: '로그인 실패',
     incorrect: '잘못된 비밀번호',
+    backToHome: '홈으로 돌아가기',
   },
   errors: {
     uploadFailed: '업로드 실패: ',

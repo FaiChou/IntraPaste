@@ -69,6 +69,7 @@ const fr = {
     submit: 'Connexion',
     error: 'Échec de la connexion',
     incorrect: 'Mot de passe incorrect',
+    backToHome: 'Retour à l\'accueil',
   },
   errors: {
     uploadFailed: 'Échec du téléversement: ',

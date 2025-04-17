@@ -69,6 +69,7 @@ const de = {
     submit: 'Anmelden',
     error: 'Anmeldung fehlgeschlagen',
     incorrect: 'Falsches Passwort',
+    backToHome: 'Zurück zur Startseite',
   },
   errors: {
     uploadFailed: 'Upload fehlgeschlagen: ',

@@ -69,6 +69,7 @@ const en = {
     submit: 'Login',
     error: 'Login failed',
     incorrect: 'Incorrect password',
+    backToHome: 'Back to Home',
   },
   errors: {
     uploadFailed: 'Upload failed: ',

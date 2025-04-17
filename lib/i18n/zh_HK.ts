@@ -69,6 +69,7 @@ const zh_HK = {
     submit: '登錄',
     error: '登錄失敗',
     incorrect: '密碼錯誤',
+    backToHome: '返回首頁',
   },
   errors: {
     uploadFailed: '上傳失敗: ',
