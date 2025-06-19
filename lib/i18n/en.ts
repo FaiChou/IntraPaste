@@ -21,6 +21,7 @@ const en = {
     image: 'Image',
     copyError: 'Copy failed:',
     dragAndDrop: 'Drag and drop files here to upload',
+    expiringSoon: 'Expiring Soon',
   },
   home: {
     title: 'IntraPaste',

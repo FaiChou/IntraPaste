@@ -124,6 +124,7 @@ export default function Home() {
               key={card.id} 
               content={card.content ?? ''}
               createdAt={typeof card.createdAt === 'string' ? card.createdAt : card.createdAt.toISOString()} 
+              expiresAt={typeof card.expiresAt === 'string' ? card.expiresAt : card.expiresAt.toISOString()}
               type={card.type}
               fileName={card.fileName ?? undefined}
               fileSize={card.fileSize ?? undefined}

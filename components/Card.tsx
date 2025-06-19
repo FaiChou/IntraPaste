@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { PhotoProvider, PhotoView } from 'react-photo-view'
 import { formatFileSize, formatFileType } from '@/lib/format'
@@ -10,6 +10,7 @@ import 'react-photo-view/dist/react-photo-view.css'
 interface CardProps {
   content?: string
   createdAt: string
+  expiresAt: string
   type: string
   fileName?: string
   fileSize?: number
@@ -17,9 +18,36 @@ interface CardProps {
   fileType?: string
 }
 
-export function Card({ content, createdAt, type, fileName, fileSize, filePath, fileType }: CardProps) {
+export function Card({ content, createdAt, expiresAt, type, fileName, fileSize, filePath, fileType }: CardProps) {
   const [copied, setCopied] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(0)
   const { t } = useI18n()
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime()
+      const expires = new Date(expiresAt).getTime()
+      const remaining = expires - now
+
+      if (remaining > 0) {
+        setTimeLeft(remaining)
+      } else {
+        setTimeLeft(0)
+      }
+    }
+
+    calculateTimeLeft()
+    const timer = setInterval(calculateTimeLeft, 1000)
+
+    return () => clearInterval(timer)
+  }, [expiresAt])
+
+  if (timeLeft <= 0) {
+    return null
+  }
+
+  const isExpiringSoon = timeLeft > 0 && timeLeft <= 60000 // 1分钟 = 60000毫秒
+  const progressPercentage = isExpiringSoon ? (timeLeft / 60000) * 100 : 0
 
   const isUrl = (text: string | undefined) => {
     if (!text) return false;
@@ -80,6 +108,25 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
     </div>
   )
 
+  const renderExpiryProgress = () => {
+    if (!isExpiringSoon) return null
+
+    return (
+      <div className="mt-3">
+        <div className="flex justify-between text-xs text-red-500 dark:text-red-400 mb-1">
+          <span>{t.common.expiringSoon}</span>
+          <span>{Math.ceil(timeLeft / 1000)}s</span>
+        </div>
+        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+          <div
+            className="bg-red-500 h-1.5 rounded-full transition-all duration-1000 ease-linear"
+            style={{ width: `${progressPercentage}%` }}
+          />
+        </div>
+      </div>
+    )
+  }
+
   if (type === 'video') {
     return (
       <div className="p-4 bg-white dark:bg-[#1a1a1a] rounded-lg shadow">
@@ -94,6 +141,7 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
           </video>
         </div>
         {renderFileInfo()}
+        {renderExpiryProgress()}
       </div>
     )
   }
@@ -108,6 +156,7 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
           </p>
         </div>
         {renderFileInfo()}
+        {renderExpiryProgress()}
       </div>
     )
   }
@@ -127,6 +176,7 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
             </div>
           </PhotoView>
           {renderFileInfo()}
+          {renderExpiryProgress()}
         </div>
       </PhotoProvider>
     )
@@ -163,6 +213,7 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
           </div>
         </div>
         {renderFileInfo()}
+        {renderExpiryProgress()}
       </div>
     )
   }
@@ -205,6 +256,7 @@ export function Card({ content, createdAt, type, fileName, fileSize, filePath, f
           )}
         </div>
       </div>
+      {renderExpiryProgress()}
     </div>
   )
 }

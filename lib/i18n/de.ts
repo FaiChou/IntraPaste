@@ -20,7 +20,8 @@ const de = {
     audioNotSupported: 'Ihr Browser unterstützt keine Audiowiedergabe',
     image: 'Bild',
     copyError: 'Kopieren fehlgeschlagen:',
-    dragAndDrop: 'Dateien hier ablegen, um hochzuladen',
+    dragAndDrop: 'Dateien hierher ziehen und ablegen zum Hochladen',
+    expiringSoon: 'Läuft bald ab',
   },
   home: {
     title: 'IntraPaste',

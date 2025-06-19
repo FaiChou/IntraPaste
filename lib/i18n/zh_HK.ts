@@ -19,8 +19,9 @@ const zh_HK = {
     videoNotSupported: '您的瀏覽器不支持視頻播放',
     audioNotSupported: '您的瀏覽器不支持音頻播放',
     image: '圖片',
-    copyError: '複製失敗:',
-    dragAndDrop: '拖放文件到此處上傳',
+    copyError: '複製失敗：',
+    dragAndDrop: '拖放檔案到此處上傳',
+    expiringSoon: '即將過期',
   },
   home: {
     title: 'IntraPaste',

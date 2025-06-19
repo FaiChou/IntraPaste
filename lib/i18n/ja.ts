@@ -19,8 +19,9 @@ const ja = {
     videoNotSupported: 'お使いのブラウザは動画再生に対応していません',
     audioNotSupported: 'お使いのブラウザは音声再生に対応していません',
     image: '画像',
-    copyError: 'コピー失敗:',
-    dragAndDrop: 'ファイルをここにドラッグ&ドロップしてアップロード',
+    copyError: 'コピーに失敗しました：',
+    dragAndDrop: 'ファイルをここにドラッグ＆ドロップしてアップロード',
+    expiringSoon: 'まもなく期限切れ',
   },
   home: {
     title: 'IntraPaste',

@@ -19,8 +19,9 @@ const fr = {
     videoNotSupported: 'Votre navigateur ne prend pas en charge la lecture vidéo',
     audioNotSupported: 'Votre navigateur ne prend pas en charge la lecture audio',
     image: 'Image',
-    copyError: 'Échec de la copie:',
-    dragAndDrop: 'Glisser-déposer un fichier ici pour téléverser',
+    copyError: 'Échec de la copie :',
+    dragAndDrop: 'Glissez et déposez les fichiers ici pour les télécharger',
+    expiringSoon: 'Expire bientôt',
   },
   home: {
     title: 'IntraPaste',

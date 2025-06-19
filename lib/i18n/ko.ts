@@ -21,6 +21,7 @@ const ko = {
     image: '이미지',
     copyError: '복사 실패:',
     dragAndDrop: '파일을 여기에 드래그&드롭하여 업로드',
+    expiringSoon: '곧 만료됨',
   },
   home: {
     title: 'IntraPaste',

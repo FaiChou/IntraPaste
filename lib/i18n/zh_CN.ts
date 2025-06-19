@@ -21,6 +21,7 @@ const zh_CN = {
     image: '图片',
     copyError: '复制失败：',
     dragAndDrop: '拖放文件到此处上传',
+    expiringSoon: '即将过期',
   },
   home: {
     title: 'IntraPaste',
