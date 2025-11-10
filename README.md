@@ -239,6 +239,61 @@ open IntraPaste.xcodeproj
 - Press Cmd+R or click the Run button
 - The app requires iOS 17.0 or later
 
+### Nginx Reverse Proxy
+
+When deploying IntraPaste behind an nginx reverse proxy, special attention must be paid to the `/api/sse` endpoint configuration. This endpoint uses Server-Sent Events (SSE) for real-time updates, which requires specific nginx settings to function correctly.
+
+> ⚠️ **Important**: For the `/api/sse` endpoint, you **must** set `proxy_cache off` and `proxy_buffering off`. These settings are critical for SSE to work properly, as buffering and caching can break the streaming connection.
+
+Example nginx configuration:
+
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    ssl_certificate     /etc/nginx/ssl/example.crt;
+    ssl_certificate_key /etc/nginx/ssl/example.key;
+
+    location /api/sse {
+        proxy_pass http://127.0.0.1:3210;
+        proxy_buffering off;        # Required for SSE
+        proxy_cache off;            # Required for SSE
+        chunked_transfer_encoding on;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_read_timeout 24h;
+        proxy_send_timeout 24h;
+        proxy_http_version 1.1;
+        proxy_set_header Connection '';
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3210;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+Key configuration points:
+
+- **`proxy_buffering off`**: Disables response buffering, allowing SSE events to be sent immediately to the client
+- **`proxy_cache off`**: Prevents caching of SSE responses, ensuring real-time data delivery
+- **`proxy_read_timeout 24h`** and **`proxy_send_timeout 24h`**: Extends timeout values to support long-lived SSE connections
+- **`proxy_http_version 1.1`** and **`Connection ''`**: Required for HTTP/1.1 keep-alive connections used by SSE
+
 ## Development
 
 - `app/page.tsx` - Main page

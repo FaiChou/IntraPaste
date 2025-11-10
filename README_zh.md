@@ -238,6 +238,61 @@ open IntraPaste.xcodeproj
 - 按下 Cmd+R 或点击运行按钮
 - 应用需要 iOS 17.0 或更高版本
 
+### Nginx 反向代理
+
+在使用 nginx 作为反向代理部署 IntraPaste 时，需要特别注意 `/api/sse` 接口的配置。该接口使用 Server-Sent Events (SSE) 实现实时更新功能，需要特定的 nginx 设置才能正常工作。
+
+> ⚠️ **重要提示**：对于 `/api/sse` 接口，**必须**设置 `proxy_cache off` 和 `proxy_buffering off`。这些设置对 SSE 的正常工作至关重要，因为缓冲和缓存会破坏流式连接。
+
+nginx 配置示例：
+
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    ssl_certificate     /etc/nginx/ssl/example.crt;
+    ssl_certificate_key /etc/nginx/ssl/example.key;
+
+    location /api/sse {
+        proxy_pass http://127.0.0.1:3210;
+        proxy_buffering off;        # SSE 必需设置
+        proxy_cache off;            # SSE 必需设置
+        chunked_transfer_encoding on;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_read_timeout 24h;
+        proxy_send_timeout 24h;
+        proxy_http_version 1.1;
+        proxy_set_header Connection '';
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3210;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+关键配置说明：
+
+- **`proxy_buffering off`**：禁用响应缓冲，允许 SSE 事件立即发送给客户端
+- **`proxy_cache off`**：禁止缓存 SSE 响应，确保实时数据传输
+- **`proxy_read_timeout 24h`** 和 **`proxy_send_timeout 24h`**：延长超时时间以支持长连接的 SSE
+- **`proxy_http_version 1.1`** 和 **`Connection ''`**：SSE 使用的 HTTP/1.1 长连接所必需
+
 ## 开发说明
 
 - `app/page.tsx` - 主页面
