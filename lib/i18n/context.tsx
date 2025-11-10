@@ -29,18 +29,19 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const savedLang = localStorage.getItem('language') as Language
-    const getBrowserLang = () => {
+    const getBrowserLang = (): Language => {
       const lang = navigator.language.toLowerCase()
       if (lang.startsWith('zh-hk') || lang.startsWith('zh-tw')) {
-        return 'zh-HK'
+        return 'zh_HK'
       } else if (lang.startsWith('zh')) {
-        return 'zh-CN'
+        return 'zh_CN'
       }
       return 'en'
     }
     
     const browserLang = getBrowserLang()
-    setLanguage(savedLang || browserLang)
+    const finalLang = (savedLang && savedLang in translations) ? savedLang : browserLang
+    setLanguage(finalLang)
   }, [])
 
   const handleSetLanguage = (lang: Language) => {
@@ -51,7 +52,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   return (
     <I18nContext.Provider 
       value={{ 
-        t: translations[language], 
+        t: translations[language] || en, 
         language,
         setLanguage: handleSetLanguage
       }}
