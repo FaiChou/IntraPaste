@@ -82,23 +82,20 @@ export async function createSSEConnection(req: NextRequest): Promise<Response> {
     },
   })
 
-  // 监听请求中止事件
-  req.signal.addEventListener('abort', async () => {
+  // 监听请求中止事件 - 使用 onabort 而不是 addEventListener
+  req.signal.onabort = () => {
     logger.info('SSE', { action: 'client_aborted', clientId })
-    try {
-      await writer.ready
-      await writer.close()
-    } catch (error) {
-      logger.warn('SSE', { action: 'writer_already_closed', clientId, error })
-    }
+    // 异步关闭 writer，不阻塞
+    writer.close().catch(() => {
+      // Writer 可能已经关闭，忽略错误
+    })
     sseManager.removeClient(clientId)
-  })
-
-  try {
-    await writer.write(encoder.encode('retry: 1000\n\n'))
-  } catch (error) {
-    logger.warn('SSE', { action: 'initial_write_failed', clientId, error })
   }
+
+  // 异步发送初始消息，不阻塞响应返回
+  writer.write(encoder.encode('retry: 1000\n\n')).catch((error) => {
+    logger.warn('SSE', { action: 'initial_write_failed', clientId, error })
+  })
 
   const enhancedResponse = Object.assign(response, {
     write: (data: string) => writer.write(encoder.encode(data)),
