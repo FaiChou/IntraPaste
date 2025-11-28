@@ -50,7 +50,7 @@ class SSEManager {
         try {
           await client.writer.close()
         } catch (closeError) {
-          // Writer 可能已经关闭，忽略错误
+          logger.warn('SSE', { action: 'writer_already_closed', clientId: client.id, error: closeError })
         }
       }
     })
@@ -89,7 +89,7 @@ export async function createSSEConnection(req: NextRequest): Promise<Response> {
       await writer.ready
       await writer.close()
     } catch (error) {
-      // Writer 可能已经关闭，忽略错误
+      logger.warn('SSE', { action: 'writer_already_closed', clientId, error })
     }
     sseManager.removeClient(clientId)
   })
