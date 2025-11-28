@@ -90,7 +90,10 @@ export async function DELETE(
       where: { id },
     })
     
-    sseManager.broadcast({ type: 'delete_card', cardId: id })
+    // 异步广播，不阻塞响应
+    void sseManager.broadcast({ type: 'delete_card', cardId: id }).catch((error) => {
+      logger.warn('SSE', { action: 'broadcast_failed', error })
+    })
     
     logger.logAdmin('CARDS', {
       action: 'delete_card',

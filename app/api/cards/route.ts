@@ -64,7 +64,10 @@ export async function POST(request: Request) {
       },
     })
     
-    sseManager.broadcast({ type: 'new_card', card })
+    // 异步广播，不阻塞响应
+    void sseManager.broadcast({ type: 'new_card', card }).catch((error) => {
+      console.error('SSE broadcast error:', error)
+    })
     
     return NextResponse.json(card)
   } catch (error) {
@@ -127,7 +130,10 @@ export async function DELETE() {
     }
 
     await prisma.card.deleteMany()
-    sseManager.broadcast({ type: 'clear_cards' })
+    // 异步广播，不阻塞响应
+    void sseManager.broadcast({ type: 'clear_cards' }).catch((error) => {
+      console.error('SSE broadcast error:', error)
+    })
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Delete all cards error:', error)

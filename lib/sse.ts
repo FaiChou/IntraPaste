@@ -1,10 +1,11 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { logger } from './logger'
 
 type Client = {
   id: string
   response: Response
+  writer: WritableStreamDefaultWriter<Uint8Array>
 }
 
 class SSEManager {
@@ -22,8 +23,8 @@ class SSEManager {
     return SSEManager.instance
   }
 
-  addClient(clientId: string, response: Response) {
-    this.clients.set(clientId, { id: clientId, response })
+  addClient(clientId: string, response: Response, writer: WritableStreamDefaultWriter<Uint8Array>) {
+    this.clients.set(clientId, { id: clientId, response, writer })
     logger.info('SSE', { action: 'client_connected', clientId })
   }
 
@@ -33,21 +34,39 @@ class SSEManager {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  broadcast(data: any) {
+  async broadcast(data: any) {
     const message = `data: ${JSON.stringify(data)}\n\n`
-    this.clients.forEach((client) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const writer = (client.response as any).write(message)
-      if (!writer) {
-        this.removeClient(client.id)
+    const encoder = new TextEncoder()
+    const clientsToRemove: string[] = []
+
+    // 使用 Promise.allSettled 并行处理所有客户端，不因单个失败而中断
+    const promises = Array.from(this.clients.values()).map(async (client) => {
+      try {
+        await client.writer.ready
+        await client.writer.write(encoder.encode(message))
+      } catch (error) {
+        logger.warn('SSE', { action: 'write_failed', clientId: client.id, error })
+        clientsToRemove.push(client.id)
+        try {
+          await client.writer.close()
+        } catch (closeError) {
+          // Writer 可能已经关闭，忽略错误
+        }
       }
+    })
+
+    await Promise.allSettled(promises)
+
+    // 清理失败的客户端
+    clientsToRemove.forEach((clientId) => {
+      this.removeClient(clientId)
     })
   }
 }
 
 export const sseManager = SSEManager.getInstance()
 
-export async function createSSEConnection(): Promise<Response> {
+export async function createSSEConnection(req: NextRequest): Promise<Response> {
   const headersList = await headers()
   const clientId = headersList.get('x-forwarded-for') || 'unknown'
 
@@ -63,13 +82,29 @@ export async function createSSEConnection(): Promise<Response> {
     },
   })
 
-  writer.write(encoder.encode('retry: 1000\n\n'))
-  
+  // 监听请求中止事件
+  req.signal.addEventListener('abort', async () => {
+    logger.info('SSE', { action: 'client_aborted', clientId })
+    try {
+      await writer.ready
+      await writer.close()
+    } catch (error) {
+      // Writer 可能已经关闭，忽略错误
+    }
+    sseManager.removeClient(clientId)
+  })
+
+  try {
+    await writer.write(encoder.encode('retry: 1000\n\n'))
+  } catch (error) {
+    logger.warn('SSE', { action: 'initial_write_failed', clientId, error })
+  }
+
   const enhancedResponse = Object.assign(response, {
     write: (data: string) => writer.write(encoder.encode(data)),
   })
 
-  sseManager.addClient(clientId, enhancedResponse)
+  sseManager.addClient(clientId, enhancedResponse, writer)
 
   return response
 }
