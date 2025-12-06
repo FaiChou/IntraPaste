@@ -13,7 +13,7 @@ const languages = [
 ] as const
 
 interface LanguageSelectorProps {
-  value: string
+  value: keyof typeof translations
   onChange: (value: keyof typeof translations) => void
 }
 
@@ -38,8 +38,7 @@ export function LanguageSelector({ value, onChange }: LanguageSelectorProps) {
               key={lang.code}
               value={lang.code}
               className={({ active, selected }) =>
-                `relative cursor-pointer select-none py-1.5 px-3 ${
-                  active ? 'bg-primary/10 dark:bg-primary/20' : ''
+                `relative cursor-pointer select-none py-1.5 px-3 ${active ? 'bg-primary/10 dark:bg-primary/20' : ''
                 } ${selected ? 'bg-primary/20' : ''}`
               }
             >
