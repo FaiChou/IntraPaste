@@ -18,7 +18,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
   const [isDragging, setIsDragging] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const [minioEnabled, setMinioEnabled] = useState(false)
+  const [s3Enabled, setS3Enabled] = useState(false)
   const [placeholder, setPlaceholder] = useState(t.home.textPlaceholder)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -35,18 +35,18 @@ export function TextInput({ onSubmit }: TextInputProps) {
   }, [content])
 
   useEffect(() => {
-    const checkMinioStatus = async () => {
+    const checkS3Status = async () => {
       try {
-        const res = await fetch('/api/minio/health')
+        const res = await fetch('/api/s3/health')
         const data = await res.json()
-        setMinioEnabled(data.enabled)
+        setS3Enabled(data.enabled)
       } catch (error) {
-        console.error('Failed to check MinIO status:', error)
-        setMinioEnabled(false)
+        console.error('Failed to check S3 status:', error)
+        setS3Enabled(false)
       }
     }
 
-    checkMinioStatus()
+    checkS3Status()
   }, [])
 
   useEffect(() => {
@@ -107,9 +107,9 @@ export function TextInput({ onSubmit }: TextInputProps) {
           fileSize: file.size
         }),
       })
-      
+
       const result = await res.json()
-      
+
       if (!result.success) {
         alert(result.message || '获取上传链接失败')
         return
@@ -142,7 +142,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
   const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    if (e.dataTransfer.types.includes('Files') && minioEnabled) {
+    if (e.dataTransfer.types.includes('Files') && s3Enabled) {
       setIsDragging(true)
     }
   }
@@ -166,7 +166,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
     e.stopPropagation()
     setIsDragging(false)
 
-    if (!minioEnabled) return
+    if (!s3Enabled) return
 
     const files = Array.from(e.dataTransfer.files)
     if (files.length > 0) {
@@ -199,7 +199,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      {isDragging && minioEnabled && (
+      {isDragging && s3Enabled && (
         <div
           className="absolute inset-0 flex items-center justify-center rounded-lg border-2 border-dashed border-blue-500 bg-blue-50 dark:bg-blue-900/20 z-10"
           onDragEnter={(e) => {
@@ -240,7 +240,7 @@ export function TextInput({ onSubmit }: TextInputProps) {
         className="hidden"
         disabled={isUploading}
       />
-      {minioEnabled && (
+      {s3Enabled && (
         <Button
           type="button"
           onClick={() => fileInputRef.current?.click()}

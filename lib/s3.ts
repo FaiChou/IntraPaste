@@ -13,6 +13,7 @@ import { logger } from './logger'
 
 const S3_CONFIG = {
     endpoint: process.env.S3_ENDPOINT || '',
+    publicUrl: process.env.S3_PUBLIC_URL || '', // Optional: Public URL for accessing files (e.g., R2.dev URL)
     region: process.env.S3_REGION || 'us-east-1',
     accessKey: process.env.S3_ACCESS_KEY || '',
     secretKey: process.env.S3_SECRET_KEY || '',
@@ -109,8 +110,16 @@ export async function generatePresignedUrl(fileName: string, fileType: string) {
     logger.info('generatePresignedUrl', { url })
 
     // Construct the public file URL
-    const endpointUrl = new URL(S3_CONFIG.endpoint)
-    const fileUrl = `${endpointUrl.protocol}//${endpointUrl.host}/${S3_CONFIG.bucket}/${objectName}`
+    // Use S3_PUBLIC_URL if configured (for R2, CloudFront, etc.), otherwise construct from endpoint
+    let fileUrl: string
+    if (S3_CONFIG.publicUrl) {
+        // Public URL provided (e.g., https://pub-xxx.r2.dev or custom domain)
+        fileUrl = `${S3_CONFIG.publicUrl}/${objectName}`
+    } else {
+        // Fallback to endpoint URL (for MinIO and similar)
+        const endpointUrl = new URL(S3_CONFIG.endpoint)
+        fileUrl = `${endpointUrl.protocol}//${endpointUrl.host}/${S3_CONFIG.bucket}/${objectName}`
+    }
 
     return {
         uploadUrl: url,

@@ -50,10 +50,12 @@ jobs:
       - name: Build test
         run: npm run build
         env:
-          MINIO_ENDPOINT: 'http://localhost'
-          MINIO_PORT: '9000'
-          MINIO_ROOT_USER: 'test'
-          MINIO_ROOT_PASSWORD: 'test'
+          S3_ENDPOINT: 'http://localhost:9000'
+          S3_PUBLIC_URL: ''
+          S3_REGION: 'us-east-1'
+          S3_ACCESS_KEY: 'test'
+          S3_SECRET_KEY: 'test'
+          S3_BUCKET: 'intrapaste'
 
   docker-build-push:
     name: Build and Push Docker Image

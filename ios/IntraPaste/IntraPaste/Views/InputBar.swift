@@ -14,11 +14,11 @@ struct InputBar: View {
     @Binding var showingDocumentPicker: Bool
     @Binding var isLoading: Bool
     @Environment(\.colorScheme) var colorScheme
-    let minioEnabled: Bool
+    let s3Enabled: Bool
     let onSend: () -> Void
     var body: some View {
         HStack(alignment: .bottom, spacing: 12) {
-            if minioEnabled {
+            if s3Enabled {
                 Menu {
                     Button(action: {
                         showingCamera = true

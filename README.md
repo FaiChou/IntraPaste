@@ -124,6 +124,7 @@ If you want to enable image sharing, configure S3 settings in your `.env` file:
 
 ```bash
 S3_ENDPOINT=http://your-s3-server:9000
+S3_PUBLIC_URL=
 S3_REGION=us-east-1
 S3_ACCESS_KEY=your-access-key
 S3_SECRET_KEY=your-secret-key
@@ -148,6 +149,7 @@ Then update your `.env` file:
 
 ```bash
 S3_ENDPOINT=http://192.168.2.100:9000
+S3_PUBLIC_URL=
 S3_REGION=us-east-1
 S3_ACCESS_KEY=minioadmin
 S3_SECRET_KEY=minioadmin

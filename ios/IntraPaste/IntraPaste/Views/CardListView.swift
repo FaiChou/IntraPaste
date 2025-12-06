@@ -8,7 +8,7 @@ struct CardListView: View {
     @State private var newContent = ""
     @State private var isLoading = false
     @State private var error: String?
-    @State private var minioEnabled = false
+    @State private var s3Enabled = false
     @State private var showingDocumentPicker = false
     @State private var selectedDocument: URL?
     @State private var showingImagePicker = false
@@ -49,7 +49,7 @@ struct CardListView: View {
                 showingImagePicker: $showingImagePicker,
                 showingDocumentPicker: $showingDocumentPicker,
                 isLoading: $isInputLoading,
-                minioEnabled: minioEnabled,
+                s3Enabled: s3Enabled,
                 onSend: createNewCard
             )
         }
@@ -70,7 +70,7 @@ struct CardListView: View {
             if cards.isEmpty {
                 fetchCards()
             }
-            checkMinioStatus()
+            checkS3Status()
         }
         .alert("Error", isPresented: .constant(error != nil)) {
             Button("OK") { error = nil }
@@ -179,13 +179,13 @@ struct CardListView: View {
     }
     
     @MainActor
-    private func checkMinioStatus() {
+    private func checkS3Status() {
         Task {
             do {
-                minioEnabled = try await APIClient.shared.checkMinioStatus(server: server)
+                s3Enabled = try await APIClient.shared.checkS3Status(server: server)
             } catch {
-                minioEnabled = false
-                print("Failed to check MinIO status:", error)
+                s3Enabled = false
+                print("Failed to check S3 status:", error)
             }
         }
     }

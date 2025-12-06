@@ -8,7 +8,7 @@ enum APIError: Error {
     case decodingError
 }
 
-struct MinioHealthResponse: Decodable {
+struct S3HealthResponse: Decodable {
     let enabled: Bool
 }
 
@@ -208,8 +208,8 @@ class APIClient {
         )
     }
     
-    func checkMinioStatus(server: Server) async throws -> Bool {
-        guard let url = URL(string: "\(server.url)/api/minio/health") else {
+    func checkS3Status(server: Server) async throws -> Bool {
+        guard let url = URL(string: "\(server.url)/api/s3/health") else {
             throw APIError.invalidURL
         }
         
@@ -220,7 +220,7 @@ class APIClient {
             throw APIError.invalidResponse
         }
         
-        let healthResponse = try JSONDecoder().decode(MinioHealthResponse.self, from: data)
+        let healthResponse = try JSONDecoder().decode(S3HealthResponse.self, from: data)
         return healthResponse.enabled
     }
 }
