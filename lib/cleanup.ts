@@ -1,6 +1,6 @@
 import cron from 'node-cron'
 import { prisma } from './prisma'
-import { deleteObject } from './minio'
+import { deleteObject } from './s3'
 import { cleanupUploadRecords, getUploadRecordSize } from './uploadLimit'
 import { logger } from './logger'
 
@@ -62,11 +62,11 @@ export function startCleanupJob() {
           },
         },
       })
-      
+
       const beforeSize = getUploadRecordSize();
       const cleanedRecords = cleanupUploadRecords();
       const afterSize = getUploadRecordSize();
-      
+
       logger.logSystem('CLEANUP', {
         action: 'cleanup_completed',
         details: {

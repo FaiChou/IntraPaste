@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { cookies } from 'next/headers'
-import { deleteObject } from '@/lib/minio'
+import { deleteObject } from '@/lib/s3'
 import { logger } from '@/lib/logger'
 import { sseManager } from '@/lib/sse'
 
@@ -44,7 +44,7 @@ export async function DELETE(
 
   try {
     const id = parseInt((await params).id)
-    
+
     if (isNaN(id)) {
       return NextResponse.json(
         { success: false, message: 'Invalid ID' },
@@ -76,7 +76,7 @@ export async function DELETE(
       const objectName = card.filePath.split('/').pop()
       if (objectName) {
         await deleteObject(objectName)
-        logger.logSystem('MINIO', {
+        logger.logSystem('S3', {
           action: 'delete_file',
           details: {
             objectName,
@@ -89,12 +89,12 @@ export async function DELETE(
     await prisma.card.delete({
       where: { id },
     })
-    
+
     // 异步广播，不阻塞响应
     void sseManager.broadcast({ type: 'delete_card', cardId: id }).catch((error) => {
       logger.warn('SSE', { action: 'broadcast_failed', error })
     })
-    
+
     logger.logAdmin('CARDS', {
       action: 'delete_card',
       userId: user.id,
@@ -112,7 +112,7 @@ export async function DELETE(
       startTime,
       statusCode: 200
     })
-    
+
     return NextResponse.json({ success: true })
   } catch (error) {
     logger.logRequest('CARDS', {

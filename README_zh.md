@@ -65,7 +65,7 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
   - 点击即可复制
   - Shift + Enter 换行
 - 📸 媒体分享（可选）
-  - 需要配置 MinIO
+  - 需要配置 S3 兼容存储
   - 图片预览与放大
   - 视频播放 (mp4, webm, mov)
   - 音频播放 (mp3, wav, ogg 等)
@@ -83,7 +83,7 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
   - 上传设置
 - 🧹 系统功能
   - 自动清理过期内容
-  - 可选的文件存储（MinIO）
+  - 可选的文件存储（S3 兼容服务）
   - 上传频率限制
   - 系统日志记录
   - 文件类型验证
@@ -96,7 +96,7 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
 - [Prisma](https://www.prisma.io/) - 数据库 ORM
 - [TailwindCSS](https://tailwindcss.com/) - CSS 框架
 - [TypeScript](https://www.typescriptlang.org/) - 类型系统
-- [MinIO](https://min.io/) - 对象存储（可选）
+- [AWS S3](https://aws.amazon.com/s3/) / [MinIO](https://min.io/) - S3 兼容对象存储（可选）
 - [PM2](https://pm2.keymetrics.io/) - 进程管理器
 - [SwiftUI](https://developer.apple.com/xcode/swiftui/) - iOS UI 框架
 - [Docker](https://www.docker.com/) - 容器化工具
@@ -117,20 +117,21 @@ cd IntraPaste
 cp .env.example .env
 ```
 
-3. MinIO 配置（可选）：
+3. S3 配置（可选）：
 
-如果你想启用图片分享功能，需要在 `.env` 文件中配置 MinIO：
+如果你想启用图片分享功能，需要在 `.env` 文件中配置 S3：
 
 ```bash
-MINIO_ENDPOINT=http://your-minio-server
-MINIO_PORT=9000
-MINIO_ROOT_USER=your-user
-MINIO_ROOT_PASSWORD=your-password
+S3_ENDPOINT=http://your-s3-server:9000
+S3_REGION=us-east-1
+S3_ACCESS_KEY=your-access-key
+S3_SECRET_KEY=your-secret-key
+S3_BUCKET=intrapaste
 ```
 
-如果不配置 MinIO，系统将以纯文本模式运行。
+如果不配置 S3，系统将以纯文本模式运行。
 
-你也可以使用 Docker 在本地运行 MinIO：
+你也可以使用 Docker 在本地运行 MinIO（S3 兼容）：
 
 ```bash
 docker run -d \
@@ -145,10 +146,11 @@ docker run -d \
 然后更新你的 `.env` 文件：
 
 ```bash
-MINIO_ENDPOINT=http://192.168.2.100
-MINIO_PORT=9000
-MINIO_ROOT_USER=minioadmin
-MINIO_ROOT_PASSWORD=minioadmin
+S3_ENDPOINT=http://192.168.2.100:9000
+S3_REGION=us-east-1
+S3_ACCESS_KEY=minioadmin
+S3_SECRET_KEY=minioadmin
+S3_BUCKET=intrapaste
 ```
 
 4. 启动服务：
@@ -162,7 +164,7 @@ chmod +x start.sh
 
 - 启动应用容器
 - 初始化数据库并运行迁移
-- 检查并初始化 MinIO（如果已配置）
+- 检查并初始化 S3 存储桶（如果已配置）
 
 5. 访问服务：
 
@@ -178,7 +180,7 @@ chmod +x start.sh
 
 - Node.js 18+
 - SQLite
-- MinIO Server（可选，用于图片分享）
+- S3 兼容存储（可选，用于图片分享）
 - Xcode 15+（用于 iOS 开发）
 
 #### 后端设置
@@ -210,9 +212,9 @@ npm run build
 pm2 start ecosystem.config.js
 ```
 
-#### MinIO 设置(可选，不配置 MinIO 则默认仅启用文本分享)
+#### S3 设置（可选，不配置 S3 则默认仅启用文本分享）
 
-1. 安装 MinIO Server
+1. 运行 S3 兼容存储服务（例如 MinIO）
 
 ```bash
 # 使用 Docker

@@ -65,7 +65,7 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
   - Click to copy
   - Shift + Enter for new line
 - 📸 Media Sharing (Optional)
-  - Requires MinIO setup
+  - Requires S3-compatible storage setup
   - Image preview & zoom
   - Video playback (mp4, webm, mov)
   - Audio playback (mp3, wav, ogg, etc.)
@@ -83,7 +83,7 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
   - Upload settings
 - 🧹 System Features
   - Auto cleanup expired content
-  - Optional file storage with MinIO
+  - Optional file storage with S3-compatible services
   - Rate limiting
   - System logging
   - File type validation
@@ -96,7 +96,7 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
 - [Prisma](https://www.prisma.io/) - Database ORM
 - [TailwindCSS](https://tailwindcss.com/) - CSS Framework
 - [TypeScript](https://www.typescriptlang.org/) - Type System
-- [MinIO](https://min.io/) - Object Storage (Optional)
+- [AWS S3](https://aws.amazon.com/s3/) / [MinIO](https://min.io/) - S3-Compatible Object Storage (Optional)
 - [PM2](https://pm2.keymetrics.io/) - Process Manager
 - [SwiftUI](https://developer.apple.com/xcode/swiftui/) - iOS UI Framework
 - [Docker](https://www.docker.com/) - Containerization
@@ -118,20 +118,21 @@ cd IntraPaste
 cp .env.example .env
 ```
 
-3. MinIO Configuration (Optional):
+3. S3 Configuration (Optional):
 
-If you want to enable image sharing, configure MinIO settings in your `.env` file:
+If you want to enable image sharing, configure S3 settings in your `.env` file:
 
 ```bash
-MINIO_ENDPOINT=http://your-minio-server
-MINIO_PORT=9000
-MINIO_ROOT_USER=your-user
-MINIO_ROOT_PASSWORD=your-password
+S3_ENDPOINT=http://your-s3-server:9000
+S3_REGION=us-east-1
+S3_ACCESS_KEY=your-access-key
+S3_SECRET_KEY=your-secret-key
+S3_BUCKET=intrapaste
 ```
 
-If MinIO is not configured, the system will operate in text-only mode.
+If S3 is not configured, the system will operate in text-only mode.
 
-You can run MinIO locally using Docker:
+You can run MinIO (S3-compatible) locally using Docker:
 
 ```bash
 docker run -d \
@@ -146,10 +147,11 @@ docker run -d \
 Then update your `.env` file:
 
 ```bash
-MINIO_ENDPOINT=http://192.168.2.100
-MINIO_PORT=9000
-MINIO_ROOT_USER=minioadmin
-MINIO_ROOT_PASSWORD=minioadmin
+S3_ENDPOINT=http://192.168.2.100:9000
+S3_REGION=us-east-1
+S3_ACCESS_KEY=minioadmin
+S3_SECRET_KEY=minioadmin
+S3_BUCKET=intrapaste
 ```
 
 4. Start the service:
@@ -163,7 +165,7 @@ The script will automatically:
 
 - Start the application container
 - Initialize the database and run migrations
-- Check and initialize MinIO if configured
+- Check and initialize S3 bucket if configured
 
 5. Access the service:
 
@@ -179,7 +181,7 @@ The script will automatically:
 
 - Node.js 18+
 - SQLite
-- MinIO Server (Optional, for image sharing)
+- S3-Compatible Storage (Optional, for image sharing)
 - Xcode 15+ (for iOS development)
 
 #### Backend Setup
@@ -211,9 +213,9 @@ npm run build
 pm2 start ecosystem.config.js
 ```
 
-#### MinIO Setup (Optional, without MinIO, only text sharing is enabled)
+#### S3 Setup (Optional, without S3, only text sharing is enabled)
 
-1. Install MinIO Server
+1. Run S3-Compatible Storage (e.g., MinIO)
 
 ```bash
 # Using Docker

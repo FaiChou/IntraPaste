@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { cookies, headers } from 'next/headers'
-import { deleteObject } from '@/lib/minio'
+import { deleteObject } from '@/lib/s3'
 import { sseManager } from '@/lib/sse'
 
 export async function GET() {
@@ -16,7 +16,7 @@ export async function GET() {
         createdAt: 'desc',
       },
     })
-    
+
     return NextResponse.json(cards)
   } catch (error) {
     console.error('Fetch cards error:', error)
@@ -30,7 +30,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const { content, type, fileName, fileType, objectName, fileUrl, fileSize } = await request.json()
-    
+
     if (!content && !objectName) {
       return NextResponse.json(
         { success: false, message: 'Content cannot be empty' },
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 
     const expiresAt = new Date()
     expiresAt.setMinutes(expiresAt.getMinutes() + expirationMinutes)
-    
+
     const card = await prisma.card.create({
       data: {
         content,
@@ -63,12 +63,12 @@ export async function POST(request: Request) {
         expiresAt,
       },
     })
-    
+
     // 异步广播，不阻塞响应
     void sseManager.broadcast({ type: 'new_card', card }).catch((error) => {
       console.error('SSE broadcast error:', error)
     })
-    
+
     return NextResponse.json(card)
   } catch (error) {
     console.error('Create card error:', error)

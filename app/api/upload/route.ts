@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { generatePresignedUrl } from '@/lib/minio'
+import { generatePresignedUrl } from '@/lib/s3'
 import { checkUploadLimit } from '@/lib/uploadLimit'
 import { headers } from 'next/headers'
 import { logger } from '@/lib/logger'
@@ -8,7 +8,7 @@ import { checkFileSize, validateFileType } from '@/lib/uploadLimit'
 export async function POST(request: Request) {
   try {
     const { fileName, fileType, fileSize } = await request.json()
-    
+
     if (!fileName || !fileType) {
       return NextResponse.json(
         { success: false, message: 'File information is incomplete' },
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     const ipAddress = headersList.get('x-forwarded-for') || 'unknown'
 
     const { allowed, message } = checkUploadLimit(ipAddress)
-    
+
     if (!allowed) {
       logger.warn('UPLOAD', {
         action: 'rate_limit',
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     }
 
     const { uploadUrl, objectName, fileUrl } = await generatePresignedUrl(fileName, fileType)
-    
+
     return NextResponse.json({
       success: true,
       data: {
