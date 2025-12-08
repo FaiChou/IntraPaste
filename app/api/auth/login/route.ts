@@ -5,10 +5,12 @@ import { cookies } from 'next/headers'
 import crypto from 'crypto'
 import { logger } from '@/lib/logger'
 
+const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin'
+
 export async function POST(request: Request) {
   const startTime = Date.now()
   const headers = Object.fromEntries(request.headers)
-  
+
   try {
     const { password } = await request.json()
 
@@ -21,7 +23,7 @@ export async function POST(request: Request) {
         statusCode: 400,
         error: new Error('Password is required')
       })
-      
+
       return NextResponse.json(
         { success: false, message: 'Password cannot be empty' },
         { status: 400 }
@@ -29,9 +31,9 @@ export async function POST(request: Request) {
     }
 
     let user = await prisma.user.findFirst()
-    
+
     if (!user) {
-      const hashedPassword = await bcrypt.hash('admin', 10)
+      const hashedPassword = await bcrypt.hash(DEFAULT_ADMIN_PASSWORD, 10)
       user = await prisma.user.create({
         data: {
           username: 'admin',
@@ -41,7 +43,7 @@ export async function POST(request: Request) {
     }
 
     const isValid = await bcrypt.compare(password, user.password)
-    
+
     if (!isValid) {
       return NextResponse.json(
         { success: false, message: 'Password is incorrect' },
@@ -50,7 +52,7 @@ export async function POST(request: Request) {
     }
 
     const token = crypto.randomBytes(32).toString('hex')
-    
+
     await prisma.user.update({
       where: { id: user.id },
       data: { token }
@@ -69,7 +71,7 @@ export async function POST(request: Request) {
       userId: user.id,
       details: {
         username: user.username,
-        isDefaultPassword: password === 'admin'
+        isDefaultPassword: password === DEFAULT_ADMIN_PASSWORD
       }
     })
 
@@ -82,9 +84,9 @@ export async function POST(request: Request) {
       statusCode: 200
     })
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
-      isDefaultPassword: password === 'admin'
+      isDefaultPassword: password === DEFAULT_ADMIN_PASSWORD
     })
   } catch (error) {
     logger.logRequest('AUTH', {
@@ -95,7 +97,7 @@ export async function POST(request: Request) {
       statusCode: 500,
       error: error instanceof Error ? error : new Error(String(error))
     })
-    
+
     return NextResponse.json(
       { success: false, message: 'Login failed' },
       { status: 500 }

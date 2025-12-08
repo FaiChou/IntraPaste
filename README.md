@@ -105,33 +105,71 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
 
 ### Docker Deployment (Recommended)
 
-1. Clone the repository:
+#### Quick Start (No Clone Required)
 
-```bash
-git clone --depth=1 https://github.com/FaiChou/IntraPaste.git
-cd IntraPaste
+1. Create a `docker-compose.yml` file:
+
+```yaml
+services:
+  app:
+    image: ghcr.io/faichou/intrapaste:latest
+    ports:
+      - "3210:3210"
+    environment:
+      # Optional: Set initial admin password (default: admin)
+      # ADMIN_PASSWORD: your-secure-password
+      # Optional: S3-compatible storage for media sharing
+      # Uncomment and configure the following if you want to enable media uploads
+      # Without S3 configuration, the system will operate in text-only mode
+      # S3_ENDPOINT: http://your-s3-server:9000
+      # S3_PUBLIC_URL: ""
+      # S3_REGION: auto
+      # S3_ACCESS_KEY: your-access-key
+      # S3_SECRET_KEY: your-secret-key
+      # S3_BUCKET: intrapaste
+    volumes:
+      - ./prisma:/app/prisma:rw
+      - ./logs:/app/logs:rw
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3210/api/health || exit 1"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+    restart: always
 ```
 
-2. Configure environment variables:
+2. Start the service:
 
 ```bash
-cp .env.example .env
+docker compose up -d
 ```
 
-3. S3 Configuration (Optional):
+That's it! The service will automatically:
 
-If you want to enable image sharing, configure S3 settings in your `.env` file:
+- Initialize the database and run migrations
+- Start the application in text-only mode
 
-```bash
-S3_ENDPOINT=http://your-s3-server:9000
-S3_PUBLIC_URL=
-S3_REGION=us-east-1
-S3_ACCESS_KEY=your-access-key
-S3_SECRET_KEY=your-secret-key
-S3_BUCKET=intrapaste
+3. Access the service:
+
+- Web UI: http://localhost:3210
+- Admin Management: http://localhost:3210/admin (default password: admin, or your configured `ADMIN_PASSWORD`)
+
+> ⚠️ For security reasons, please change the default password immediately after first login, or set `ADMIN_PASSWORD` environment variable before first run.
+
+#### Optional: Enable Media Sharing with S3
+
+To enable image/video/file sharing, you need an S3-compatible storage service. Uncomment and configure the S3 environment variables in your `docker-compose.yml`:
+
+```yaml
+environment:
+  S3_ENDPOINT: http://your-s3-server:9000
+  S3_PUBLIC_URL: ""
+  S3_REGION: auto
+  S3_ACCESS_KEY: your-access-key
+  S3_SECRET_KEY: your-secret-key
+  S3_BUCKET: intrapaste
 ```
-
-If S3 is not configured, the system will operate in text-only mode.
 
 You can run MinIO (S3-compatible) locally using Docker:
 
@@ -145,37 +183,17 @@ docker run -d \
   minio/minio server /data --console-address ":9001"
 ```
 
-Then update your `.env` file:
+Then configure your `docker-compose.yml`:
 
-```bash
-S3_ENDPOINT=http://192.168.2.100:9000
-S3_PUBLIC_URL=
-S3_REGION=us-east-1
-S3_ACCESS_KEY=minioadmin
-S3_SECRET_KEY=minioadmin
-S3_BUCKET=intrapaste
+```yaml
+environment:
+  S3_ENDPOINT: http://192.168.2.100:9000  # Replace with your server IP
+  S3_PUBLIC_URL: ""
+  S3_REGION: auto
+  S3_ACCESS_KEY: minioadmin
+  S3_SECRET_KEY: minioadmin
+  S3_BUCKET: intrapaste
 ```
-
-4. Start the service:
-
-```bash
-chmod +x start.sh
-./start.sh
-```
-
-The script will automatically:
-
-- Start the application container
-- Initialize the database and run migrations
-- Check and initialize S3 bucket if configured
-
-5. Access the service:
-
-- Web UI: http://localhost:3210
-- MinIO Console (if running locally): http://192.168.2.100:9001
-- Admin Management: http://localhost:3210/admin (default password: admin)
-
-> ⚠️ For security reasons, please change the default password immediately after first login.
 
 ### Manual Deployment
 

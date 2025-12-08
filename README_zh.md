@@ -105,32 +105,71 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
 
 ### Docker 部署（推荐）
 
-1. 克隆仓库：
-```bash
-git clone --depth=1 https://github.com/FaiChou/IntraPaste.git
-cd IntraPaste
+#### 极简部署（无需克隆仓库）
+
+1. 创建 `docker-compose.yml` 文件：
+
+```yaml
+services:
+  app:
+    image: ghcr.io/faichou/intrapaste:latest
+    ports:
+      - "3210:3210"
+    environment:
+      # 可选：设置初始管理员密码（默认：admin）
+      # ADMIN_PASSWORD: your-secure-password
+      # 可选：S3 兼容存储，用于媒体分享
+      # 如需启用媒体上传功能，请取消注释并配置以下选项
+      # 不配置 S3 时，系统将以纯文本模式运行
+      # S3_ENDPOINT: http://your-s3-server:9000
+      # S3_PUBLIC_URL: ""
+      # S3_REGION: auto
+      # S3_ACCESS_KEY: your-access-key
+      # S3_SECRET_KEY: your-secret-key
+      # S3_BUCKET: intrapaste
+    volumes:
+      - ./prisma:/app/prisma:rw
+      - ./logs:/app/logs:rw
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3210/api/health || exit 1"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+    restart: always
 ```
 
-2. 配置环境变量：
+2. 启动服务：
 
 ```bash
-cp .env.example .env
+docker compose up -d
 ```
 
-3. S3 配置（可选）：
+完成！服务会自动：
 
-如果你想启用图片分享功能，需要在 `.env` 文件中配置 S3：
+- 初始化数据库并运行迁移
+- 以纯文本模式启动应用
 
-```bash
-S3_ENDPOINT=http://your-s3-server:9000
-S3_PUBLIC_URL=
-S3_REGION=us-east-1
-S3_ACCESS_KEY=your-access-key
-S3_SECRET_KEY=your-secret-key
-S3_BUCKET=intrapaste
+3. 访问服务：
+
+- Web 界面：http://localhost:3210
+- 管理系统：http://localhost:3210/admin（默认密码：admin，或你配置的 `ADMIN_PASSWORD`）
+
+> ⚠️ 出于安全考虑，请在首次登录后立即修改默认密码，或在首次运行前设置 `ADMIN_PASSWORD` 环境变量。
+
+#### 可选：启用媒体分享（配置 S3）
+
+如需启用图片/视频/文件分享功能，需要配置 S3 兼容存储。取消注释并配置 `docker-compose.yml` 中的 S3 环境变量：
+
+```yaml
+environment:
+  S3_ENDPOINT: http://your-s3-server:9000
+  S3_PUBLIC_URL: ""
+  S3_REGION: auto
+  S3_ACCESS_KEY: your-access-key
+  S3_SECRET_KEY: your-secret-key
+  S3_BUCKET: intrapaste
 ```
-
-如果不配置 S3，系统将以纯文本模式运行。
 
 你也可以使用 Docker 在本地运行 MinIO（S3 兼容）：
 
@@ -144,37 +183,17 @@ docker run -d \
   minio/minio server /data --console-address ":9001"
 ```
 
-然后更新你的 `.env` 文件：
+然后配置你的 `docker-compose.yml`：
 
-```bash
-S3_ENDPOINT=http://192.168.2.100:9000
-S3_PUBLIC_URL=
-S3_REGION=us-east-1
-S3_ACCESS_KEY=minioadmin
-S3_SECRET_KEY=minioadmin
-S3_BUCKET=intrapaste
+```yaml
+environment:
+  S3_ENDPOINT: http://192.168.2.100:9000  # 替换为你的服务器 IP
+  S3_PUBLIC_URL: ""
+  S3_REGION: auto
+  S3_ACCESS_KEY: minioadmin
+  S3_SECRET_KEY: minioadmin
+  S3_BUCKET: intrapaste
 ```
-
-4. 启动服务：
-
-```bash
-chmod +x start.sh
-./start.sh
-```
-
-启动脚本会自动：
-
-- 启动应用容器
-- 初始化数据库并运行迁移
-- 检查并初始化 S3 存储桶（如果已配置）
-
-5. 访问服务：
-
-- Web 界面：http://localhost:3210
-- MinIO 控制台（如果在本地运行）：http://192.168.2.100:9001
-- 管理系统：http://localhost:3210/admin (默认密码：admin)
-
-> ⚠️ 出于安全考虑，请在首次登录后立即修改默认密码。
 
 ### 手动部署
 

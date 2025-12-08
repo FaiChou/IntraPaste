@@ -3,8 +3,18 @@ services:
     image: ghcr.io/faichou/intrapaste:latest
     ports:
       - "3210:3210"
-    env_file:
-      - .env
+    environment:
+      # Optional: Set initial admin password (default: admin)
+      # ADMIN_PASSWORD: your-secure-password
+      # Optional: S3-compatible storage for media sharing
+      # Uncomment and configure the following if you want to enable media uploads
+      # Without S3 configuration, the system will operate in text-only mode
+      # S3_ENDPOINT: http://your-s3-server:9000
+      # S3_PUBLIC_URL: ""
+      # S3_REGION: auto
+      # S3_ACCESS_KEY: your-access-key
+      # S3_SECRET_KEY: your-secret-key
+      # S3_BUCKET: intrapaste
     volumes:
       - ./prisma:/app/prisma:rw
       - ./logs:/app/logs:rw

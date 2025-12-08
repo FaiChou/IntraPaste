@@ -3,13 +3,15 @@ import { cookies } from 'next/headers'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 
+const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin'
+
 export async function GET() {
   try {
     const cookieStore = await cookies()
     const adminToken = cookieStore.get('admin_token')
-    
+
     if (!adminToken?.value) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
         message: 'No token provided'
       }, { status: 401 })
@@ -20,24 +22,24 @@ export async function GET() {
         token: adminToken.value
       }
     })
-    
+
     if (!user) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
         message: 'Invalid token'
       }, { status: 401 })
     }
 
-    const isDefaultPassword = await bcrypt.compare('admin', user.password)
+    const isDefaultPassword = await bcrypt.compare(DEFAULT_ADMIN_PASSWORD, user.password)
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
-      isDefaultPassword 
+      isDefaultPassword
     })
-    
+
   } catch (error) {
     console.error('Auth check error:', error)
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: false,
       message: 'Internal server error'
     }, { status: 500 })

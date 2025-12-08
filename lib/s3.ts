@@ -14,7 +14,7 @@ import { logger } from './logger'
 const S3_CONFIG = {
     endpoint: process.env.S3_ENDPOINT || '',
     publicUrl: process.env.S3_PUBLIC_URL || '', // Optional: Public URL for accessing files (e.g., R2.dev URL)
-    region: process.env.S3_REGION || 'us-east-1',
+    region: process.env.S3_REGION || 'auto',
     accessKey: process.env.S3_ACCESS_KEY || '',
     secretKey: process.env.S3_SECRET_KEY || '',
     bucket: process.env.S3_BUCKET || 'intrapaste',
