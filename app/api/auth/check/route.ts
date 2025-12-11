@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 
-const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin'
+const DEFAULT_PASSWORD = 'admin'
 
 export async function GET() {
   try {
@@ -30,7 +30,8 @@ export async function GET() {
       }, { status: 401 })
     }
 
-    const isDefaultPassword = await bcrypt.compare(DEFAULT_ADMIN_PASSWORD, user.password)
+    // 直接判断密码是否是硬编码的 "admin"
+    const isDefaultPassword = await bcrypt.compare(DEFAULT_PASSWORD, user.password)
 
     return NextResponse.json({
       success: true,

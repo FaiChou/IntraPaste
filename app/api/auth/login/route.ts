@@ -5,7 +5,8 @@ import { cookies } from 'next/headers'
 import crypto from 'crypto'
 import { logger } from '@/lib/logger'
 
-const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin'
+const DEFAULT_PASSWORD = 'admin'
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || DEFAULT_PASSWORD
 
 export async function POST(request: Request) {
   const startTime = Date.now()
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
     let user = await prisma.user.findFirst()
 
     if (!user) {
-      const hashedPassword = await bcrypt.hash(DEFAULT_ADMIN_PASSWORD, 10)
+      const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10)
       user = await prisma.user.create({
         data: {
           username: 'admin',
@@ -66,12 +67,15 @@ export async function POST(request: Request) {
       path: '/',
     })
 
+    // 直接判断密码是否是硬编码的 "admin"
+    const isDefaultPassword = password === DEFAULT_PASSWORD
+
     logger.logAdmin('AUTH', {
       action: 'login',
       userId: user.id,
       details: {
         username: user.username,
-        isDefaultPassword: password === DEFAULT_ADMIN_PASSWORD
+        isDefaultPassword
       }
     })
 
@@ -86,7 +90,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      isDefaultPassword: password === DEFAULT_ADMIN_PASSWORD
+      isDefaultPassword
     })
   } catch (error) {
     logger.logRequest('AUTH', {
