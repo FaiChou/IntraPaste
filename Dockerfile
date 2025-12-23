@@ -11,6 +11,7 @@ RUN npm ci --no-audit --no-fund --quiet || \
 
 ENV PRISMA_CLIENT_ENGINE_TYPE="binary"
 ENV PRISMA_ENGINES_TIMEOUT=30000
+ENV DATABASE_URL="file:./dev.db"
 
 COPY . .
 
@@ -25,7 +26,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN mkdir -p /app/logs /app/prisma
+RUN mkdir -p /app/logs /app/prisma /app/data
 
 COPY --from=builder /app/.npmrc ./
 COPY --from=builder /app/.next/standalone ./
@@ -40,5 +41,6 @@ RUN chmod +x entrypoint.sh
 EXPOSE 3210
 ENV PORT=3210
 ENV HOSTNAME="0.0.0.0"
+ENV DATABASE_URL="file:/app/data/dev.db"
 
 ENTRYPOINT ["/app/entrypoint.sh"]

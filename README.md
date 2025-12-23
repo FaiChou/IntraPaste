@@ -111,7 +111,7 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
 
 ```bash
 mkdir IntraPaste && cd IntraPaste
-mkdir -p prisma logs
+mkdir -p data logs
 ```
 
 2. Create a `docker-compose.yml` file:
@@ -133,9 +133,9 @@ services:
       # S3_ACCESS_KEY: your-access-key
       # S3_SECRET_KEY: your-secret-key
       # S3_BUCKET: intrapaste
-    volumes:
-      - ./prisma/dev.db:/app/prisma/dev.db:rw
-      - ./logs:/app/logs:rw
+      volumes:
+        - ./data:/app/data:rw
+        - ./logs:/app/logs:rw
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3210/api/health || exit 1"]
       interval: 30s
