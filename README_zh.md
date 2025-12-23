@@ -107,7 +107,13 @@ IntraPaste 是一个简单高效的临时内容分享服务，支持文本和图
 
 #### 极简部署（无需克隆仓库）
 
-1. 创建 `docker-compose.yml` 文件：
+1. 创建必要的目录：
+
+```bash
+mkdir IntraPaste && cd IntraPaste
+```
+
+2. 创建 `docker-compose.yml` 文件：
 
 ```yaml
 services:
@@ -138,7 +144,7 @@ services:
     restart: always
 ```
 
-2. 启动服务：
+3. 启动服务：
 
 ```bash
 docker compose up -d
@@ -149,7 +155,7 @@ docker compose up -d
 - 初始化数据库并运行迁移
 - 以纯文本模式启动应用
 
-3. 访问服务：
+4. 访问服务：
 
 - Web 界面：http://localhost:3210
 - 管理系统：http://localhost:3210/admin（默认密码：admin，或你配置的 `ADMIN_PASSWORD`）

@@ -107,7 +107,13 @@ IntraPaste is a simple and efficient temporary content sharing service that supp
 
 #### Quick Start (No Clone Required)
 
-1. Create a `docker-compose.yml` file:
+1. Create the required directories:
+
+```bash
+mkdir IntraPaste && cd IntraPaste
+```
+
+2. Create a `docker-compose.yml` file:
 
 ```yaml
 services:
@@ -138,7 +144,7 @@ services:
     restart: always
 ```
 
-2. Start the service:
+3. Start the service:
 
 ```bash
 docker compose up -d
@@ -149,7 +155,7 @@ That's it! The service will automatically:
 - Initialize the database and run migrations
 - Start the application in text-only mode
 
-3. Access the service:
+4. Access the service:
 
 - Web UI: http://localhost:3210
 - Admin Management: http://localhost:3210/admin (default password: admin, or your configured `ADMIN_PASSWORD`)
