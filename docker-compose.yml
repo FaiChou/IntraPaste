@@ -15,7 +15,7 @@ services:
       # S3_SECRET_KEY: your-secret-key
       # S3_BUCKET: intrapaste
     volumes:
-      - ./prisma:/app/prisma:rw
+      - ./prisma/dev.db:/app/prisma/dev.db:rw
       - ./logs:/app/logs:rw
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3210/api/health || exit 1"]
