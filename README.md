@@ -116,8 +116,7 @@ services:
     ports:
       - "3210:3210"
     environment:
-      # Optional: Set initial admin password (default: admin)
-      # ADMIN_PASSWORD: your-secure-password
+      ADMIN_PASSWORD: your-secure-password
       # Optional: S3-compatible storage for media sharing
       # Uncomment and configure the following if you want to enable media uploads
       # Without S3 configuration, the system will operate in text-only mode

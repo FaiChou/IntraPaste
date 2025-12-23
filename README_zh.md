@@ -116,8 +116,7 @@ services:
     ports:
       - "3210:3210"
     environment:
-      # 可选：设置初始管理员密码（默认：admin）
-      # ADMIN_PASSWORD: your-secure-password
+      ADMIN_PASSWORD: your-secure-password
       # 可选：S3 兼容存储，用于媒体分享
       # 如需启用媒体上传功能，请取消注释并配置以下选项
       # 不配置 S3 时，系统将以纯文本模式运行
