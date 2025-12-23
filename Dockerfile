@@ -30,6 +30,7 @@ RUN mkdir -p /app/logs /app/prisma
 COPY --from=builder /app/.npmrc ./
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/prisma ./prisma
 COPY entrypoint.sh ./
 
 RUN chmod +x entrypoint.sh
